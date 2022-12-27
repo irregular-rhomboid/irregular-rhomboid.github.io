@@ -73,7 +73,6 @@ All of this was served with a copious side of programming[^programming] in vario
 ## Miscellaneous courses
 
 - **Differential Geometry** (B2) and Cosmology (M1) Beautiful mathematics and physics aside, the language of Differential Geometry pops up here and there in ML. It's where the word *manifold* comes from.
-- Astronomy (B2) Okay, I'm mostly flexing with this one, but we have had a couple of masters thesis projects applying ML to astronomical data.
 - **Graph Theory** (B2) and **Network Science** (M2) A little Graph Theory/Network Science goes a long way. Besides [GNNs](https://arxiv.org/abs/1812.08434), it can provide intuitions about matrices.
 - Algebra and Geometry (B1) and Higher Algebra (B2) [Some elementary abstract algebra](https://www.eleuther.ai/beginners.pdf) is necessary for Linalg. Other than that, see [Geometric Deep Learning](https://geometricdeeplearning.com/).
 - Philosophy of Science (B1) and Formal Logic (B2) This one might seem far-fetched, but remember that *Science is not an assembly line job*. If you're not asking questions about what it is exactly that you're doing and why every once in a while, *you're doing it wrong*. Logic is just good and fun (especially since that course was about *non-classical logic*).[^phil] 
