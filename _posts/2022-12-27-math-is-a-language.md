@@ -34,7 +34,7 @@ Let me provide a definition of *what mathematics are* with regard to their unrea
 
 [^definition]: This is but one of many definitions, which doesn't capture all the things that one can say about mathematics.
 
-[^empirical]: By empirical world, I mean the set of all sensory experiences that an observer (e.g. a human) can have. This includes "the Natural world" that hard science concern themselves with, as well as thoughts and emotions. It is *anything* that can be felt or known.
+[^empirical]: By empirical world, I mean the set of all sensory experiences that an observer (e.g. a human) can have. This includes "the Natural world" that hard sciences concern themselves with, as well as thoughts and emotions. It is *anything* that can be felt or known.
 
 [^ambiguity]: Or at least very few. There's a reason we can still read mathematical texts from Ancient Greece and understand *exactly* what they mean, unlike poetry from the same era.
 
@@ -44,7 +44,7 @@ Sometimes, new mathematical language is created for the specific purpose of desc
 
 [^newton]: It is unclear if Newton's apple incident really happened, but regardless Newton's mechanics marked a profound revolution in that they suddenly allowed to *describe* many situations that couldn't be before.
 
-Sometimes, mathematical theories find applications decades after it was initially formulated. When Einstein revolutionized physics with his theory of General Relativity [^einstein], he used the mathematical language of Riemannian Geometry, which had been developed roughly forty years prior[^riemann].
+Sometimes, mathematical theories find applications decades after it was initially formulated. When Einstein revolutionized physics with his theory of General Relativity [^einstein], he used the mathematical language of Riemannian Geometry, which had been developed roughly forty years prior [^riemann].
 
 [^einstein]: A. Einstein, M. Grossmann, *Entwurf einer verallgemeinerten Relativitätstheorie und einer Theorie der Gravitation (Outline of a Generalized Theory of Relativity and of a Theory of Gravitation)*, Zeitschrift für Mathematik und Physik, 62, 225–261, (1913).
 
@@ -52,7 +52,7 @@ Sometimes, mathematical theories find applications decades after it was initiall
 
 The point of these examples is to insist on the fact that **applying mathematics is a two-step process**. The first is **recognizing an abstract pattern** that can be described using mathematical language. The second is **using the tools from that language** to gain insight into what you're trying to model.
 
-The first part is often neglected, but it's arguably *the most important part*. Einstein is considered a genius in part *simply because of the idea* to use Riemannian Geometry to describe the universe [^relativity]. 
+The first step is often neglected, but it's arguably *the most important part*. Einstein is considered a genius in part *simply because of the idea* to use Riemannian Geometry to describe the universe [^relativity]. 
 
 [^relativity]: The idea to use Riemannian geometry was suggested to him by one of his mathematician friends, but don't let that diminish Einstein in your mind.
 
@@ -63,7 +63,7 @@ I've just used the words tools and patterns to describe mathematical ideas. Beca
 - **A Tool** is something one *uses* on few occasions to perform specific tasks.
 - **A Pattern** is something one *sees*. They can be *recognized* at any moment.
 
-The main difference between the two is really a matter of *stance*. To use a tool, one first need a problem to apply it to, and muster the intent to apply it. To see a pattern, one need only adopt a mindset of constantly for them.
+The main difference between the two is really a matter of *stance*. To use a tool, one first need a problem to apply it to, and muster the intent to apply it. To see a pattern, one need only adopt a mindset of constantly looking out for them.
 
 Tools are only as useful as the number of problems you use them on, whereas patterns allow you to find new problems. I think the reason so many people complain that the math they learned was useless to them is that they thought they were handed an *Abstract Hammer 5000*™ that can only be used on *Patented Abstract Nails 3000*™, without realizing that this is literally just a hammer that can be used for other things than just hitting nails.
 
@@ -80,3 +80,5 @@ Maybe you're in public transport looking at the route map, and think of applying
 It won't necessarily work super well, and you'll end up with something a bit contrived. That's okay, your abstract muscles are still developing. Every once in a while, though, you'll land on something that *just fits* somehow, and you'll try to use the mathematical language you just applied to draw a conclusion about what you're trying to model, *and it will work*!
 
 When that happens, you will have tasted the joy of mathematicians.
+
+---
