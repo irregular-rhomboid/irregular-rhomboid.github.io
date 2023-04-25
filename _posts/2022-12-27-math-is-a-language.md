@@ -22,7 +22,7 @@ Such "result-focused" approach to education has already been [lamented before](h
 
 What I wish to discuss in this post is something I see as a fundamental mistake in thinking about the usefulness of mathematics, which is one of the generators of the thinking I described above. That mistake is **viewing mathematics as a set of tools** that one uses to solve different types of problems like one uses a hammer or a screwdriver, and then stores in its box.
 
-The reason I think this is mistaken is that, even though mathematics *can* be used a box of tools, it is the wrong way to think about it, especially when trying to learn mathematics, as it makes the math you learn less useful to you than it could be. This is counterintuitive, and boils down to a difference in mindset, which I will attempt to convey.
+The reason I think this is mistaken is that, even though mathematics *can* be used as a box of tools, it is the wrong way to think about it, especially when trying to learn mathematics, as it makes the math you learn less useful to you than it could be. This is counterintuitive, and boils down to a difference in mindset, which I will attempt to convey.
 
 Given that I am trying to transmit an antimeme, I am not optimistic about my chances of success.
 
@@ -42,7 +42,7 @@ I should qualify what I mean by "empirical world". I use it to mean the set of a
 
 When the language of mathematics is used to describe a situation from the empirical world, for example "one apple plus one apple equals two apples", we are making the assertion that a purely mathematical statement ("1+1=2") adequately describes this empirical situation. In this case, we are asserting that the language of arithmetic is appropriate for counting apples.
 
-Sometimes, new mathematical language is created for the specific purpose of describing certain aspects of the empirical world. When Newton had his epiphany next to an apple tree[^newton], he was trying to find a mathematical theory to describe the movements of bodies, from an apple falling from a tree to planets revolving around the stars.
+Sometimes, new mathematical language is created for the specific purpose of describing certain aspects of the empirical world. When Newton had his epiphany next to an apple tree[^newton], he was trying to find a mathematical theory to describe the movements of bodies, from an apple falling from a tree to planets revolving around the sun.
 
 [^newton]: It is unclear if Newton's apple incident really happened, but regardless Newton's mechanics marked a profound revolution in that they suddenly allowed to *describe* many situations that couldn't be before.
 
@@ -54,7 +54,7 @@ Sometimes, mathematical theories find applications decades after it was initiall
 
 The point of these examples is to insist on the fact that **applying mathematics is a two-step process**. The first is **recognizing an abstract pattern** that can be described using mathematical language. The second is **using the tools from that language** to gain insight into what you're trying to model.
 
-The first step is often neglected, but it's arguably *the most important part*. Einstein is considered a genius in part *simply because of the idea* to use Riemannian Geometry to describe the universe[^relativity]. The most successful applications of mathematics start with someone recognizing in the wild a pattern they've before in another context.
+The first step is often neglected, but it's arguably *the most important part*. Einstein is considered a genius in part *simply because of the idea* to use Riemannian Geometry to describe the universe[^relativity]. The most successful applications of mathematics start with someone recognizing in the wild a pattern they've encountered before in another context.
 
 [^relativity]: The idea to use Riemannian geometry was suggested to him by one of his mathematician friends, but don't let that diminish Einstein in your mind.
 
