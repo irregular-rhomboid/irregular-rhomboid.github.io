@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Stop learning Math to learn tools!"
-use_math: true
+use_math: false
 tags: [Math,Esthetics,Antimeme]
 ---
 
