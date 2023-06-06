@@ -182,7 +182,9 @@ prob_mt = ODEProblem(sys_rd, u0_mt, tspan, p_mt)
 sol_mt = solve(prob_mt, Rodas5())
 ```
 
-Let us again comment a few things. One downside of this approach is the apparent need to use `(collect(L .=> L_))...` which adds every single entry of `L` individually in the parameters (I couldn't get it to work otherwise). This leads me to expect that this approach won't be able to exploit the sparsity of `L`. Another problem is that it apparently just crashes for more than about 200 nodes with a stack overflow...
+Let us again comment a few things. One downside of this approach is the apparent need to use `(collect(L .=> L_))...` which adds every single entry of `L` individually in the parameters (I couldn't get it to work otherwise). This leads me to expect that this approach won't be able to exploit the sparsity of `L`. Another problem is that it apparently just crashes for more than about 100 nodes with a stack overflow...
+
+A simple trick to avoid unrolling the dense matmul is to just use the Laplacian matrix directly in the equations, without the symbolic variable. ModelingToolkit will then tailor the generated code to the specific graph being used. This indeed work a little better, but compilation times are still an issue on my machine, and actually hang forever above 200 nodes.
 
 ## Approach 3: NetworkDynamics
 
@@ -231,17 +233,19 @@ Let's finish with some comments before moving to the last part. Due to the way t
 
 ## Benchmarks
 
-Being able to easily define systems is well and good, but ultimately we also care about how fast the generated code is. For that purpose, I benchmarked the generated ODE functions for all three methods on a network with 5 nodes (see the notebook for details). In addition to the code shown in this post, I am comparing the hand-crafted function with a dense matrix in the parameters, and the NetworkDynamics functions using `@propagate_inbounds` (which they use in their [examples](https://pik-icone.github.io/NetworkDynamics.jl/dev/directed_and_weighted_graphs/))
+Being able to easily define systems is well and good, but ultimately we also care about how fast the generated code is. For that purpose, I benchmarked the generated ODE functions for all three methods on a network with 5 nodes (see the notebook for details). In addition to the code shown in this post, I am comparing the hand-crafted function with a dense matrix in the parameters, the ModelingToolkit function without the symbolic array (referred to a "sparse" in the plots), and the NetworkDynamics functions using `@propagate_inbounds` (which they use in their [examples](https://pik-icone.github.io/NetworkDynamics.jl/dev/directed_and_weighted_graphs/)). I'm running these benchmarks on a Laptop with an i7-1165G7 2.80GHz CPU, and 16GiB of RAM running Linux Mint 20.3. See the beginning of the post for the Julia/package versions.
 
-As we can see on the figure below, the hand-crafted function is the fastest, followed by ModelingToolkit and the hand-crafted function with dense matrix. NetworkDynamics is a bit behind, with the `@propagate_inbounds` version being appreciably faster.
+As we can see on the plot, ModelingToolkit is by far the fastest, with the version without symbolic array a little bit ahead. The hand crafted functions come next, with the sparse version a little faster. NetworkDynamics is trailing behind, with the `@propagate_inbounds` version being appreciably faster.
 
 ![A boxplot comparing the speed of the three approaches](/assets/img/julia-network-systems/boxplot.png)
 
 Now, this one test is obviously not conclusive enough. In particular, we need to look at what happens with larger systems. In the next figure, I repeated the previous benchmarks for multiple network sizes, and I'm plotting the median execution times of the ODE functions as a function of the number of nodes. I'm using Watts-Strogatz networks, which are sparse, so we should expect a difference in the scaling of the various approaches.
 
-As we can see, both hand-crafted variants are about even up until $N=50$ nodes, after which the dense matmul starts to fall behind. ModelingToolkit is the most performant for low values, but catches up with the hand-crafted functions at around $N=15$ nodes, and shows similar scaling to the dense matmul. NetworkDynamics on the other hand is consistently slower than the hand-crafted function with sparse matmul by roughly half an order of magnitude, but otherwise scales similarly with the number of nodes (as one would expect).
+As we can see, both hand-crafted variants are about even up until $N=50$ nodes, after which the dense matmul starts to fall behind. ModelingToolkit version is the most performant for low values, but the naive version catches up with the hand-crafted functions at around $N=15$ nodes, and scales quadratically as one would expect, whereas the version without the symbolic array is the fastest until 200 nodes (I couldn't get it to work beyond that). NetworkDynamics on the other hand is consistently slower than the hand-crafted function with sparse matmul by roughly half an order of magnitude, but otherwise scales similarly with the number of nodes (as one would expect). 
 
 ![A plot of the median run times of the three approaches](/assets/img/julia-network-systems/benchmarks.svg)
+
+Note that while ModelingToolkit generates the fastest functions, actually generating them takes a substantial time (about 20 seconds for 100 nodes, and 245 seconds for 200 nodes). It will also hog memory very quickly (the 200 nodes sparse version takes about 5.8 GiB!).
 
 Based on these observations, I'd stick with the hand-crafted method for most problems, using sparse matrices for large networks to save on memory. It would be nice if I found a way to work with ModelingToolkit for this, as it has the great advantage of being able to generate ODE functions that can run in parallel or on GPUs, which the hand-crafted functions can't as they are. As for NetworkDynamics, it doesn't perform great here, but this is not really the kind of systems it's intended for.
 
@@ -250,19 +254,21 @@ Based on these observations, I'd stick with the hand-crafted method for most pro
 Let's summarize what we discussed in this post.
 
 - When hand-crafting ODE functions, `@views` is your friend. So is `mul!`. It can be difficult to get rid of all the allocations in some cases, though.
-- ModelingToolkit is pretty good, but doesn't seem to handle large matrices of parameters well. Maybe I'm using it wrong, so it seems worth experimenting with. When debugging, `scalarize` is your friend.
+- ModelingToolkit is pretty good, but doesn't seem to handle large matrices of parameters well. Maybe I'm using it wrong, so it seems worth experimenting with. When debugging, `scalarize` is your friend. Beware compilation times.
 - NetworkDynamics adds a bit of boilerplate, for seemingly lackluster performance. Admittedly it's designed with heterogeneous systems like power networks in mind, but it seems like ModelingToolkit could do that job better. It should be noted that comparing it to `mul!` is a bit unfair, as the latter is heavily optimized. I suspect the adequate use of a [few macros](https://opensourc.es/blog/matrix-multiplication-performance/) could help here.
 
 Over all, each of the approaches covered here has its strengths and weaknesses. I will very likely come back to this with a more comprehensive set of benchmarks, comparing the effects of various options and optimizations, as well as more than just the function evaluations.
 
 ## Appendix
 
-I've kept a bunch of experimental details out of this post. In particular, I didn't say anything about the memory allocations, which actually follow a similar pattern as the execution times. See [the code](https://github.com/irregular-rhomboid/network-dynamics) for more.
-
-The difference between using Sparse and Dense matmuls is obviously highly dependent on the actual graph being used. A draft of this post used Erdos-Renyi graphs for the second benchmark, in which case both matmuls were about even as the Laplacian matrix wasn't sparse enough.
+In the making of this post, I made a number of rookie mistakes. I list the biggest ones here for the record.
 
 I initially made the mistake of putting my parameters in arrays instead of tuples. This can dramatically affect performance. Always use tuples.
 
-As was pointed out by one of the [NetworkDynamics.jl devs](https://github.com/irregular-rhomboid/network-dynamics/issues/1#issuecomment-1571576405), ModelingToolkit also provides Jacobians, which gives it a big advantage over the two other approaches when actually solving the ODEs, which cannot be appreciated when only looking at the ODE function evaluations. The downside is that MTK can also take a significant time to compile the system.
+Another mistake was running the first benchmark in a Jupyter notebook. For some reason, the results are slightly different there. In particular, the hand-crafted versions outperform ModelingToolkit (on my laptop). Be careful what environment you're running your benchmarks on.
+
+The difference between using Sparse and Dense matmuls is obviously highly dependent on the actual graph being used. A draft of this post used Erdos-Renyi graphs for the second benchmark, in which case both matmuls were about even as the Laplacian matrix wasn't sparse enough.
+
+As was pointed out by one of the [NetworkDynamics.jl devs](https://github.com/irregular-rhomboid/network-dynamics/issues/1#issuecomment-1571576405), ModelingToolkit also provides Jacobians, which gives it a big advantage over the two other approaches when actually solving the ODEs, which cannot be appreciated when only looking at the ODE function evaluations.
 
 One thing I didn't use here, but tried and failed to get working a while ago is using [Split ODEs](https://docs.sciml.ai/DiffEqDocs/stable/types/split_ode_types/) to separate between the local nonlinear dynamics and the linear coupling dynamics. I don't expect this to affect the ODE function performance in this case.
