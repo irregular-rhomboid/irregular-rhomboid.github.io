@@ -135,10 +135,84 @@ img {
   margin-right: auto;
 }
 // code blocks
+
+/*
 pre.highlight {
   background-color: #333446;
   padding: 5px;
   width: 95%;
   margin-left: auto;
   margin-right: auto;
+}*/
+// Copy code blocks to clipboard
+.gist {
+  td {
+    border: inherit; // fix Skeleton override
+  }
+}
+/**
+ * Code block.
+ */
+.language-sh code::before {
+  content: '$';
+  margin-right: 1rem;
+  color: #f8f8f2;
+}
+pre.highlight {
+  background-color: #333446;
+  padding: 5px;
+  position: relative;
+  width: 95%;
+  //margin-left: auto;
+  //margin-right: auto;
+  // override skeleton styles
+  > code {
+    border: 0;
+    overflow-x: auto;
+    padding-right: 0;
+    padding-left: 0;
+  }
+
+  &.highlight {
+    //border-left: 15px solid #35383c;
+    color: #c1c2c3;
+    overflow: auto;
+    white-space: pre;
+    word-wrap: normal;
+
+    &,
+    code {
+      //background-color: #222;
+      font-size: 18px;
+    }
+  }
+
+  // show copy button when hovering over code block
+  &:hover > button {
+    opacity: 1;
+  }
+
+  // copy code to clipboard
+  > button {
+    background-color: $background-color;
+    color: darken(#fff, 30%);
+    opacity: 0;
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    transition: all 0.2s ease-out;
+    border: 1;
+    padding: 1mm;
+    border-radius: 2mm;
+    border-width: 0.5mm;
+
+    &:active,
+    &:focus,
+    &:hover {
+      background-color: $background-color;
+      border-color: #ebb67b;
+      color: #ebb67b;
+      opacity: 1;
+    }
+  }
 }
