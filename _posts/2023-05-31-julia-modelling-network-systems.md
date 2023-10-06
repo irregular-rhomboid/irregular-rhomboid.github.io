@@ -21,7 +21,7 @@ $$ \dot{x}_i = f(x_i) - D \sum_{j=1}^N A_{ij}g(x_i, x_j), $$
 
 where $f$ is a function describing the local dynamics at node $i$, $A$ is the adjacency matrix of some graph with $N$ nodes and $g$ is a function describing the pairwise dynamics on two nodes connected by an edge. The classical choice for $g$ is to take $g(x_i,x_j) = x_j - x_i$, which leads to the *Laplacian coupling* (also known as diffusion coupling). The parameter $D$ is a constant describing the rate of diffusion.
 
-For our demonstration, we will use the famous [Brusselator](https://en.wikipedia.org/wiki/Brusselator) model for the local dynamics. The equations for this model are given by
+For our demonstration, we will use the famous [Brusselator](https://en.wikipedia.org/wiki/Brusselator) model for the local dynamics. It consists of two equations given by
 
 $$ \begin{align*} 
 \dot{x} &= a + x^2 y - bx -x, \\
@@ -40,7 +40,7 @@ $$ \begin{align*}
 If we allow borrowing some notations from Julia, we can rewrite these in vector form as
 
 $$ \begin{align*}
-\dot{x} &= f_u.(u,v) - D_u L u,\\
+\dot{u} &= f_u.(u,v) - D_u L u,\\
 \dot{v} &= f_v.(u,v) - D_v L v,
 \end{align*} $$
 
@@ -241,7 +241,7 @@ As we can see on the plot, ModelingToolkit is by far the fastest, with the versi
 
 Now, this one test is obviously not conclusive enough. In particular, we need to look at what happens with larger systems. In the next figure, I repeated the previous benchmarks for multiple network sizes, and I'm plotting the median execution times of the ODE functions as a function of the number of nodes. I'm using Watts-Strogatz networks, which are sparse, so we should expect a difference in the scaling of the various approaches.
 
-As we can see, both hand-crafted variants are about even up until $N=50$ nodes, after which the dense matmul starts to fall behind. ModelingToolkit version is the most performant for low values, but the naive version catches up with the hand-crafted functions at around $N=15$ nodes, and scales quadratically as one would expect, whereas the version without the symbolic array is the fastest until 200 nodes (I couldn't get it to work beyond that). NetworkDynamics on the other hand is consistently slower than the hand-crafted function with sparse matmul by roughly half an order of magnitude, but otherwise scales similarly with the number of nodes (as one would expect). 
+As we can see, both hand-crafted variants are about even up until $N=50$ nodes, after which the dense matmul starts to fall behind. The ModelingToolkit version is the most performant for low values, but the naive version catches up with the hand-crafted functions at around $N=15$ nodes, and scales quadratically as one would expect, whereas the version without the symbolic array is the fastest until 200 nodes (I couldn't get it to work beyond that). NetworkDynamics on the other hand is consistently slower than the hand-crafted function with sparse matmul by roughly half an order of magnitude, but otherwise scales similarly with the number of nodes (as one would expect). 
 
 ![A plot of the median run times of the three approaches](/assets/img/julia-network-systems/benchmarks.svg)
 
