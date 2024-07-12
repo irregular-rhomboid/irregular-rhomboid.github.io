@@ -125,7 +125,7 @@ Now comes the tricky bit of actually *defining* real numbers. There are various 
 
 Morally, we are sorting all the rational numbers on a line, and cutting at some point to separate $\mathbb{Q}$ into a lower part $L$ and an upper part $U$. Because $L$ has no greatest element, and $U$ has no smallest element, there is an "infinitesimal gap" between $L$ and $U$, which corresponds to a unique real number.
 
-After massaging this a little bit, we finally arrive at our definition of real numbers:
+After massaging this a bit, we finally arrive at our definition of real numbers:
 
 *A real number is a set $L \subset \mathbb{Q}$ with an upper bound and such that if $s\in L$ and $t<s$, then $t\in L$.*
 
@@ -229,7 +229,7 @@ For example, a string of alternating '0's and '1's could be computed in many pro
 
 Now for an infinite string of symbols, we can look at how the Kolmogorov complexity of its finite prefixes evolves. Based on the examples in the previous paragraphs, we can expect two main cases. Either the string is simple enough that there is a single program that can generate all its prefixes and the Kolmogorov complexity remains bounded, or there isn't and Kolmogorov complexity diverges to infinity.
 
-Using this notion, we can define an [*algorithmically random number*](https://en.wikipedia.org/wiki/Algorithmically_random_sequence) as a real number such that the Kolmogorov complexity of any its truncated binary expansions $s$ satisfies 
+Using this notion, we can define an [*algorithmically random number*](https://en.wikipedia.org/wiki/Algorithmically_random_sequence) as a real number such that the Kolmogorov complexity of its truncated binary expansions $s$ satisfies 
 $$K_A(s) > |s| - O(1),$$ 
 where $|s|$ denotes the length of the finite string $s$.
 
@@ -277,14 +277,14 @@ As previously established, Science is computable, which leaves open the status o
 
 First, whether human minds are computable. This is the founding postulate of the search for Artificial General Intelligence, arguably the holy grail of the field of computer science. This question has long been (and continues to be) the subject of vigorous debates, and I will not discuss it. I will simply note that personally, there seems to be little evidence for human minds being fundamentally non-computable, and plenty to the contrary. 
 
-There is another question that interests me more, however. If human cognition is computable, then how come we are able to conceive of non-computable things? What happens inside a mathematician's mind when he/she thinks of say, Chaitin's Omega? The straightforward answer would be that we are just fooling themselves, but we seem to be able to reason perfectly fine about these objects supposedly beyond our comprehension.
+There is another question that interests me more, however. If human cognition is computable, then how come we are able to conceive of non-computable things? What happens inside a mathematician's mind when he/she thinks of say, Chaitin's Omega? The straightforward answer would be that we are just fooling ourselves, but we seem to be able to reason perfectly fine about these objects supposedly beyond our comprehension.
 
 Second, whether the Universe is computable. This could be otherwise stated as whether there is such a thing as *true* randomness. The obvious candidate for this would be quantum mechanics. As a side note, let us remark that probability theory, the usual way to deal mathematically with randomness, was initially created to deal with *uncertainty*, in the sense of things that we could in principle know, but don't. The existence of "true" randomness would imply that there are things that we *cannot* know.
 
 Finally, we can consider the combinations of these two questions:
 
 1. If minds are non-computable, and the universe isn't, then there must be clearly be something "outside" the empirical world from where our non-computable minds emanate. This would suggest something like [Cartesian Dualism](https://en.wikipedia.org/wiki/Mind%E2%80%93body_dualism), or the [Simulation Hypothesis](https://en.wikipedia.org/wiki/Simulation_hypothesis).
-2. If neither minds, nor the universe are computable, there doesn't seem to be much that we can say, beyond the observation that there would be facts about the universe that science can never elucidate.
+2. If neither minds nor the universe are computable, there doesn't seem to be much that we can say, beyond the observation that there would be facts about the universe that science can never elucidate.
 3. If both minds and the universe are computable, we seem to be in the opposite situation that science could in principle come to a complete description of the universe, but that since minds are computational processes (and therefore deterministic), the notion of Free Will is completely illusory.
 4. If minds are computable, but the universe isn't, we seem even worse off than in the previous case. Not only is Free Will an illusion (perhaps due to non-computable processes acting as inputs to our minds), but we have no hope of achieving a complete rational picture of the universe. Even worse, there might exist true [non-computable minds](https://en.wikipedia.org/wiki/Solomonoff's_theory_of_inductive_inference), to which we would be as ants. This is probably not a good universe for us to exist in.
 
@@ -293,7 +293,7 @@ Finally, we can consider the combinations of these two questions:
 
 ## Conclusions and further reading
 
-Hopefully, If you've read all the way until this point, you should probably agree that accepting real numbers as we commonly do is not as straightforward a philosophical position as it might have seemed, and that bringing in the full power of non-computable numbers also brings with it some rather counterintuitive things that don't seem to physically make sense.
+Hopefully, if you've read all the way until this point, you should probably agree that accepting real numbers as we commonly do is not as straightforward a philosophical position as it might have seemed, and that bringing in the full power of non-computable numbers also brings with it some rather counterintuitive things that don't seem to physically make sense.
 
 Where do we go from here? One reaction would be to reject non-computable mathematics entirely and become a constructivist. While I mentioned that computable numbers are not necessarily nice to work with, there is nonetheless a large body of [beautiful mathematics](https://en.wikipedia.org/wiki/Reverse_mathematics), built around examining the intricate relations between theorems from classical mathematics and the formal languages that can prove them (possibly in a weaker form). Some go all the way into exploring parallel [*mathematical universes*](https://arxiv.org/abs/2404.01256).
 
