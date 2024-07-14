@@ -33,7 +33,7 @@ I hope at least to elicit the second of these symptoms, but beware that the last
 In order to make $\pi$, we first have to invent the universe, which in our case means the basic language from which everything is built up. Namely, [*Peano arithmetic*](https://en.wikipedia.org/wiki/Peano_axioms), which is the canonical formalization of the natural numbers. The rules of Peano arithmetic are essentially expressed in four axioms:
 
 1. $0$ is a natural number.
-2. If $n$ is a natural number, then its *successor* $S(n)$ is a natural number.
+2. If $n$ is a natural number, then its *successor* $S(n)$ (morally, '$n+1$') is a natural number.
 3. For all $n$, $S(n) \neq 0$, i.e. there is no natural number "before" $0$.
 4. For all natural numbers $m, n$, $S(m) = S(n) \Rightarrow m = n$, i.e. the successor operation is injective.
 
@@ -167,7 +167,9 @@ q_1 \ast q_2 & \text{if } q_1,q_2 \ge 0 \text{ or } q_1 \ast q_2 \le 0, \\
 - q_1 \ast q_2 & \text{if } q_1,q_2 < 0. 
 \end{cases} $$
 
-It is not too complicated to show that if $x,y \in \mathbb{R}$ and $p,q \in \mathbb{Q}$ such that $p \le x$ and $q \le y$, then $p \circledast  q \le x \ast y$, so that we may define the product of two real numbers as
+It is not too complicated to show[^formality] that if $x,y \in \mathbb{R}$ and $p,q \in \mathbb{Q}$ such that $p \le x$ and $q \le y$, then $p \circledast  q \le x \ast y$, so that we may define the product of two real numbers as
+
+[^formality]: I'm being less than entirely formal here, but to be rigorous, we should interpret $p \le x$ and $q \le y$ as $p \in x$ and $q \in y$.
 
 $$L_1 * L_2 \; := \; \{ s \circledast  t \, | \, s \in L_1, t \in L_2 \}. $$
 
@@ -196,7 +198,7 @@ Algebraically, computable numbers form a *field* that contains
 
 In fact, computable numbers contain most numbers we encounter in practice. However, computable numbers are *countable*! 
 
-Why? The reason is simple. A computable number has to be uniquely identified by a Turing machine (morally, a program), which takes up finitely many symbols chosen from a finite alphabet to express. This means the set of all programs/Turing machines is countable, so the programs that compute numbers also must be.
+Why? The reason is simple. A computable number has to be uniquely identified by a Turing machine (morally, a program), which takes up finitely many symbols chosen from a finite alphabet to express. This means the set of all programs/Turing machines is countable, so the programs that compute numbers must be countable too.
 
 But since real numbers are uncountable, there must exist real numbers that are not computable.
 
@@ -231,7 +233,7 @@ Now for an infinite string of symbols, we can look at how the Kolmogorov complex
 
 Using this notion, we can define an [*algorithmically random number*](https://en.wikipedia.org/wiki/Algorithmically_random_sequence) as a real number such that the Kolmogorov complexity of its truncated binary expansions $s$ satisfies 
 $$K_A(s) > |s| - O(1),$$ 
-where $|s|$ denotes the length of the finite string $s$.
+where $|s|$ denotes the length of the finite string $s$. In other words, the prefixes of $s$ are all "maximally complex", and their Kolmogorov complexity diverges. 
 
 Algorithmically random numbers capture the idea of "random" numbers due to an important characterization: They are indistinguishable from random noise by *any* statistical test[^randomness]. Another (which is really the same), is that there is no computable betting strategy that reliably makes money against the sequence of digits of an algorithmically random number.
 
@@ -247,7 +249,7 @@ Thanks to these facts, we can now give an interpretation to non-computable numbe
 >
 > --- L. Wittgenstein
 
-After all this math, we should probably stop and look back on what it might all mean in practice. We looked at computable numbers and observed that they were pretty much the only numbers we encounter, and that non-computable numbers (which actually are *almost all* real numbers) fit our intuition of randomness. We can go further than that and explore what exists in mathematics beyond computable numbers, and do some armchair philosophy about how to interpret this formalized notion of randomness.
+After all this math, we should probably stop and look back on what it might all mean in practice. We looked at computable numbers and observed that they were pretty much the only numbers we encounter, and that non-computable numbers (which are actually *almost all* real numbers) fit our intuition of randomness. We can go further than that and explore what exists in mathematics beyond computable numbers, and do some armchair philosophy about how to interpret this formalized notion of randomness.
 
 ### What does it mean to "know" a number?
 
@@ -269,9 +271,11 @@ Coming back to computable numbers, while there are numbers definable beyond them
 
 Let us conclude by continuing the discussion we started when observing that science can only manipulate computable numbers. If we think of science as the rational description of the empirical world, we can consider the following "picture":
 
-- **The Territory**, i.e. the Universe,
+- **The Territory**, i.e. the (empirical) Universe[^universe],
 - **The Map**, i.e. Science,
 - **The Mapmaker**, i.e. (Human?) minds.
+
+[^universe]: My wording is ambiguous here, but by and large in this section, by "Universe", I mean "The empirical universe", i.e. the "physical reality" that sciences tries to describe.
 
 As previously established, Science is computable, which leaves open the status of the other two parts. These are major philosophical questions that have never been more relevant than today.
 
@@ -279,15 +283,18 @@ First, whether human minds are computable. This is the founding postulate of the
 
 There is another question that interests me more, however. If human cognition is computable, then how come we are able to conceive of non-computable things? What happens inside a mathematician's mind when he/she thinks of say, Chaitin's Omega? The straightforward answer would be that we are just fooling ourselves, but we seem to be able to reason perfectly fine about these objects supposedly beyond our comprehension.
 
-Second, whether the Universe is computable. This could be otherwise stated as whether there is such a thing as *true* randomness. The obvious candidate for this would be quantum mechanics. As a side note, let us remark that probability theory, the usual way to deal mathematically with randomness, was initially created to deal with *uncertainty*, in the sense of things that we could in principle know, but don't. The existence of "true" randomness would imply that there are things that we *cannot* know.
+Second, whether the Universe is computable. This could be otherwise stated as whether there is such a thing as *true randomness*. The obvious candidate for this would be quantum mechanics. As a side note, let us remark that probability theory, the usual way to deal mathematically with randomness, was initially created to deal with *uncertainty*, in the sense of things that we could in principle know, but don't. The existence of "true" randomness would imply that there are things that we *cannot* know.
 
 Finally, we can consider the combinations of these two questions:
 
 1. If minds are non-computable, and the universe isn't, then there must be clearly be something "outside" the empirical world from where our non-computable minds emanate. This would suggest something like [Cartesian Dualism](https://en.wikipedia.org/wiki/Mind%E2%80%93body_dualism), or the [Simulation Hypothesis](https://en.wikipedia.org/wiki/Simulation_hypothesis).
-2. If neither minds nor the universe are computable, there doesn't seem to be much that we can say, beyond the observation that there would be facts about the universe that science can never elucidate.
+2. If neither minds nor the universe are computable, there doesn't seem to be much that we can say a priori, beyond the observation that there would be facts about the universe that science can never elucidate. There is however a wild possibility in that case[^dash]. If non-computable physical processes exist, it may be possible for us to harness them to perform [*hypercomputation*](https://en.wikipedia.org/wiki/Hypercomputation). The consequences of that would be literally *apocalyptic*[^apocalypse], as we would be able to do things like solve the Halting Problem or solve the Collatz Conjecture by brute force in an instant. Since these would still be out of the grasp of computable science, we may have to develop a higher order "Hyperscience" that can cope with non-computable objects.
 3. If both minds and the universe are computable, we seem to be in the opposite situation that science could in principle come to a complete description of the universe, but that since minds are computational processes (and therefore deterministic), the notion of Free Will is completely illusory.
 4. If minds are computable, but the universe isn't, we seem even worse off than in the previous case. Not only is Free Will an illusion (perhaps due to non-computable processes acting as inputs to our minds), but we have no hope of achieving a complete rational picture of the universe. Even worse, there might exist true [non-computable minds](https://en.wikipedia.org/wiki/Solomonoff's_theory_of_inductive_inference), to which we would be as ants. This is probably not a good universe for us to exist in.
 
+[^dash]: Thanks to Dashiell Stander for pointing that out to me.
+
+[^apocalypse]: The word "Apocalypse" here should be understood as both "[The End of the World as we know it](https://en.wikipedia.org/wiki/Apocalyptic_and_post-apocalyptic_fiction)" and "[Cosmic Revelation](https://en.wikipedia.org/wiki/Apocalypse)".
 
 ![](/assets/img/real/map-territory.png)
 
