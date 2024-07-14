@@ -127,7 +127,7 @@ Morally, we are sorting all the rational numbers on a line, and cutting at some 
 
 After massaging this a bit, we finally arrive at our definition of real numbers:
 
-*A real number is a set $L \subset \mathbb{Q}$ with an upper bound and such that if $s\in L$ and $t<s$, then $t\in L$.*
+*A real number is a set $L \subset \mathbb{Q}$ with an upper bound, and such that if $s\in L$ and $t<s$, then $t\in L$.*
 
 For example, we can define the square root of $2$ as
 
