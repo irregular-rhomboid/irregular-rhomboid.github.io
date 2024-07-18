@@ -30,7 +30,7 @@ I hope at least to elicit the second of these symptoms, but beware that the last
 >
 > --- L. Kronecker
 
-In order to make $\pi$, we first have to invent the universe, which in our case means the basic language from which everything is built up. Namely, [*Peano arithmetic*](https://en.wikipedia.org/wiki/Peano_axioms), which is the canonical formalization of the natural numbers. The rules of Peano arithmetic are essentially expressed in four axioms:
+In order to make $\pi$ from scratch, we first have to invent the universe, which in our case means the basic language from which everything is built up. Namely, [*Peano arithmetic*](https://en.wikipedia.org/wiki/Peano_axioms), which is the canonical formalization of the natural numbers. The rules of Peano arithmetic are essentially expressed in four axioms:
 
 1. $0$ is a natural number.
 2. If $n$ is a natural number, then its *successor* $S(n)$ (morally, '$n+1$') is a natural number.
