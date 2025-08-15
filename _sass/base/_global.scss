@@ -1,5 +1,5 @@
 * {
-  margin: 0;
+  margin: auto;
   padding: 0;
   box-sizing: border-box;
 }
@@ -26,17 +26,25 @@ body {
   font-family: $font-family-main;
   font-size: $font-size;
   word-wrap: break-word;
+  
+}
+
+em, i, .italic {
+  font-family: $font-family-emph, serif;
 }
 h1, h2, h3, h4, h5, h6 {
   font-family: $font-family-headings;
   line-height: 1.2;
+  padding-left: 0%;
   margin: 0.67em 0;
+  max-width: 850px;
   a {
     color: $text-color;
   }
 }
 h1 {
   font-size: 2.5em;
+  margin-left: 0;
 }
 h2 {
   font-size: 2em;
@@ -46,6 +54,11 @@ h3 {
 }
 h4 {
   font-size: 1.15em;
+}
+p, ul, ol {
+  max-width: 850px;
+  margin-left: 0;
+  margin-right: auto;
 }
 blockquote {
     border-left: 2px solid;
@@ -89,16 +102,19 @@ dd {
 }
 p, ol, ul, dl, .math-display {
   line-height: 1.5;
-  margin-bottom: 1em;
+  margin-bottom: 1em;  
 }
 // KaTeX math display
 .math-display {
   display: inline-block;
   width: 100%;
 }
+li {
+  margin-bottom: 0.5em;
+}
 // Lists within lists
 li > ul, li > ol {
-    margin-bottom: 0;
+    margin-bottom: 0.5em;
     margin-left: 1em;
 }
 ol, ul {
