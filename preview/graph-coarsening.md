@@ -43,8 +43,8 @@ This last equation is known as the epidemic threshold equation, and gives an (ap
 Of all the assumptions made so far, the most unreasonable one is that the population is homogeneously mixed. Diseases such as COVID spread through social contacts, and thus an infected individual is more likely to transmit the disease to their friends and family members than to someone living in the next town over. We can model this social structure by using some graph $G=(V,E)$ where each vertex represent an individual, and an edge $ij \in E$ represents a social connection between vertices $i$ and $j$. If we make the somewhat extreme assumption that infection only gets transmitted via edges and that the rate of transmission is the same for everyone, we can again model the system as a set of chemical equations
 
 $$\begin{align*} 
-S_i + I_j &\stackrel{\beta}{\longrightarrow} I_i + I_j,\;\; \forall ij \in E,\\
-I_i &\stackrel{\gamma}{\longrightarrow} R_i,\;\; \forall i \in V.
+S_i + I_j &\stackrel{\beta}{\longrightarrow} I_i + I_j,~~ \forall ij \in E,\\
+I_i &\stackrel{\gamma}{\longrightarrow} R_i,~~ \forall i \in V.
 \end{align*}$$
 
 The compartments $S_i$, $I_i$, $R_i$ now represent the state of individual $i$, and it is appropriate to think of the "concentration" of these compartments as the probability that $i$ is in a given state. The mean-field equations for this model are given by
@@ -96,11 +96,11 @@ We can restate the above in terms of categories. The set of partitions $\Pi(V)$ 
 Suppose we have some graph $G = (V,E)$ that we would like to coarse-grain. It seems natural to aggregate vertices using partitions, but we also need to preserve information about the "size" of these partitions. We can do this by lifting our graph to a weighted graph. Given some partition $\pi \in \Pi(V)$, the *coarse-grained graph*ws $G/\pi$ is the weighted graph $(\pi, E_\pi, w_\pi, w_{E_\pi})$, with vertex set $\pi$, with an edge $uv \in E_\pi$ if there exist vertices $i \in u, j \in v$ such that $ij \in E$. The vertex and edge weights are respectively given by
 
 $$\begin{align*} 
-w_\pi (u) &= \#u\\
-w_{E_\pi} (uv) &= \# \{ij \in E ~|~i \in u, j \in v\}.
+w_\pi (u) &= |u|\\
+w_{E_\pi} (uv) &= | \{ij \in E ~|~i \in u, j \in v\}|.
 \end{align*}$$
 
-It is easy to see that $G/0$ is a weighted graph isomorphic to $G$, with the all weights equal to one, and that $G/1$ is the weighted graph with a single vertex and a single edge (a loop), with respective weights $\#V$ and $\#E$. Note that in general, a coarse-grained graph will have loops.
+It is easy to see that $G/0$ is a weighted graph isomorphic to $G$, with the all weights equal to one, and that $G/1$ is the weighted graph with a single vertex and a single edge (a loop), with respective weights $|V|$ and $|E|$. Note that in general, a coarse-grained graph will have loops.
 
 Since we have a nice categorical structure on $\Pi(V)$, we might wonder if there is one too for coarse-grained graphs. We only need to define an appropriate notion of morphism of two weighted graphs. This is fairly straightforward. A morphism of weighted graphs $f : (V_1, E_1, w_1, w_{E_1}) \rightarrow (V_2, E_2, w_2, w_{E_2})$ is given by a map $f_V : V_1 \rightarrow V_2$ that satisfies the following.
 
@@ -144,7 +144,7 @@ where $W$ is the diagonal matrix with entries $w(u)$. We can apply the same tric
 
 $$ \frac{\beta}{\gamma} > \frac{1}{\rho(WA)}. $$
 
-It's worth checking that this construction yields the HMF and IBMF when coarse-graining with respect to the $1$ and $0$ partitions, respectively. Using $G/0$ trivially yields the IBMF model. For $G/1$, there is only one partition set, so the "adjacency matrix" becomes $A = \#E/N^2 = \langle k\rangle / 2N$ by using some well-known identities. This is close to the approximation we derived earlier, with an additional factor of $1/2$ (I have yet to check the all the calculations, so this might be a mistake).
+It's worth checking that this construction yields the HMF and IBMF when coarse-graining with respect to the $1$ and $0$ partitions, respectively. Using $G/0$ trivially yields the IBMF model. For $G/1$, there is only one partition set, so the "adjacency matrix" becomes $A = |E|/N^2 = \langle k\rangle / 2N$ by using some well-known identities. This is close to the approximation we derived earlier, with an additional factor of $1/2$ (I have yet to check the all the calculations, so this might be a mistake).
 
 I will leave it at that for now, but here are some targets for after checking the calculations.
 
