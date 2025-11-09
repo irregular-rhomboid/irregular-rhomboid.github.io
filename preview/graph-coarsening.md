@@ -105,7 +105,7 @@ It is easy to see that $G/0$ is a weighted graph isomorphic to $G$, with the all
 Since we have a nice categorical structure on $\Pi(V)$, we might wonder if there is one too for coarse-grained graphs. We only need to define an appropriate notion of morphism of two weighted graphs. This is fairly straightforward. A morphism of weighted graphs $f : (V_1, E_1, w_1, w_{E_1}) \rightarrow (V_2, E_2, w_2, w_{E_2})$ is given by a map $f_V : V_1 \rightarrow V_2$ that satisfies the following.
 
 1. $f_V$ is a *graph homomorphism* from $(V_1,E_1)$ to $(V_2,E_2)$, i.e. if $ij \in E_1$, then $f_V(i)f_V(j) \in E_2$.
-2. For any $u\in V_2$, the weight of $u$ is the sum of weights of. $$
+2. For any $u\in V_2$, the weight of $u$ is the sum of weights of vertices in $V_1$ that get mapped to it. $$ w_2(u) = \sum \left\{ w_1(i) ~|~ f(i) = u \right\}. $$
 3. For any $uv \in E_2$, $$ w_{E_2} (uv) = \sum \{ w_{E_1}(ij) ~|~ ij \in E_1, f_V(i)=u, f_V(j)=v\}. $$
 
 The composition $g \circ f$ of weighted graph morphisms $f : (V_1,E_1,w_1,w_{E_1}) \rightarrow (V_2,E_2,w_2,w_{E_2})$, $g : (V_2,E_2,w_2,w_{E_2}) \rightarrow (V_3,E_3,w_3,w_{E_3})$ is simply defined in terms of the composition of the vertex maps $g_V \circ f_V$, and it is easy to see that this composition is associative, and that we may define identity morphisms using the identity maps on vertex sets. We therefore have a well-defined category of weighted graphs.
