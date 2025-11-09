@@ -34,7 +34,7 @@ $$ \dot{I} \approx (\beta N - \gamma) I, $$
 
 which is unstable if $\beta N - \gamma > 0$, or after some trivial manipulations, 
 
-$$ \frac{\beta}{\gamma} > \frac{1}{N}. $$ $$
+$$ \frac{\beta}{\gamma} > \frac{1}{N}. $$
 
 This last equation is known as the epidemic threshold equation, and gives an (approximate) condition for when the disease risks spreading to the entire population. In practice, the dependence on $N$ here is annoying and we typically get rid of rid by rescaling $\beta$ by $1/N$ so that the epidemic threshold becomes $\beta/\gamma > 1$. One issue with that for our purposes is that the $\beta$ parameters from the HMF and IBMF models have different meaning. I prefer to stick to interpreting $\beta$ as the *transmission rate*, i.e. the rate at which the disease gets transmitted from an infected individual to a susceptible individual through a single contact, which is the interpretation from the IBMF model. This is ultimately a choice of scaling, so it's not essential.
 
@@ -105,8 +105,13 @@ It is easy to see that $G/0$ is a weighted graph isomorphic to $G$, with the all
 Since we have a nice categorical structure on $\Pi(V)$, we might wonder if there is one too for coarse-grained graphs. We only need to define an appropriate notion of morphism of two weighted graphs. This is fairly straightforward. A morphism of weighted graphs $f : (V_1, E_1, w_1, w_{E_1}) \rightarrow (V_2, E_2, w_2, w_{E_2})$ is given by a map $f_V : V_1 \rightarrow V_2$ that satisfies the following.
 
 1. $f_V$ is a *graph homomorphism* from $(V_1,E_1)$ to $(V_2,E_2)$, i.e. if $ij \in E_1$, then $f_V(i)f_V(j) \in E_2$.
-2. For any $u\in V_2$, the weight of $u$ is the sum of weights of vertices in $V_1$ that get mapped to it. $$ w_2(u) = \sum \left\{ w_1(i) ~|~ f(i) = u \right\}. $$
-3. For any $uv \in E_2$, $$ w_{E_2} (uv) = \sum \{ w_{E_1}(ij) ~|~ ij \in E_1, f_V(i)=u, f_V(j)=v\}. $$
+2. For any $u\in V_2$, the weight of $u$ is the sum of weights of vertices in $V_1$ that get mapped to it. 
+
+$$ w_2(u) = \sum \left\{ w_1(i) ~|~ f(i) = u \right\}. $$
+
+3. For any $uv \in E_2$, 
+
+$$ w_{E_2} (uv) = \sum \{ w_{E_1}(ij) ~|~ ij \in E_1, f_V(i)=u, f_V(j)=v\}. $$
 
 The composition $g \circ f$ of weighted graph morphisms $f : (V_1,E_1,w_1,w_{E_1}) \rightarrow (V_2,E_2,w_2,w_{E_2})$, $g : (V_2,E_2,w_2,w_{E_2}) \rightarrow (V_3,E_3,w_3,w_{E_3})$ is simply defined in terms of the composition of the vertex maps $g_V \circ f_V$, and it is easy to see that this composition is associative, and that we may define identity morphisms using the identity maps on vertex sets. We therefore have a well-defined category of weighted graphs.
 
@@ -117,7 +122,8 @@ It is furthermore reasonably easy to see that if $\pi_1 \le \pi_2$ in $\Pi(V)$, 
 We have just defined how to coarse-grain a graph using a partition of its vertex set, and that this operation is a functor from the category of partitions of $V$ to the category of weighted graphs. We will now look at how to coarse-grain data associated to the graph, namely, SIR-style dynamical systems.
 
 Given some weighted graph $(V,E,w,w_E)$, we define its weighted adjacency matrix as 
-$$A_{uv} = \frac{w_E (uv)}{w(u)w(v)}.$$
+
+$$ A_{uv} = \frac{w_E (uv)}{w(u)w(v)}. $$
 
 This quantity can be interpreted as the probability of an edge between two vertices taken at random in the clusters $u$ and $v$.
 
