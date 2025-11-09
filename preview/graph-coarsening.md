@@ -60,6 +60,7 @@ with $A = [A_{ij}]$ the adjacency matrix of $G$. These equations are known as th
 $$ \mathcal{I} = (\beta A - \gamma I) \mathcal{I}, $$
 
 where here, $I$ denotes the identity matrix. This system is unstable if at least one eigenvalue of $A$ is larger than $\gamma$, which we can conveniently express using the spectral radius $\rho(A)$ as $\beta \rho(A) - \gamma > 0$, or after some manipulations,
+
 $$ \frac{\beta}{\gamma} > \frac{1}{\rho(A)}. $$
 
 There are many other ways to further refine or approximate the above two models. What I'll try to do in the rest of this note is the sketch a framework that includes many of them in a principled way that looks like we're doing some form of renormalization.
@@ -72,6 +73,7 @@ $$\begin{align*}
 \dot{S} &= \sum_i \dot{S}_i = -\beta \left(\sum_i S_i \right) \sum_j (1-\delta_{ij}) I_j = -\beta SI + \beta\sum_{i} S_i I_i\\
 &\approx -\beta SI,
 \end{align*}$$
+
 with the other equations being straightforward. The error term $\sum_i S_i I_i$ is negligible as $N$ becomes large, so we may ignore it.
 
 We can actually adapt this to obtain a reasonable approximation of the IBMF by a HMF under certain conditions. Suppose that $I_i$ is approximately equal $I/N$ for all $i$, then we may write
@@ -107,7 +109,7 @@ Since we have a nice categorical structure on $\Pi(V)$, we might wonder if there
 1. $f_V$ is a *graph homomorphism* from $(V_1,E_1)$ to $(V_2,E_2)$, i.e. if $ij \in E_1$, then $f_V(i)f_V(j) \in E_2$.
 2. For any $u\in V_2$, the weight of $u$ is the sum of weights of vertices in $V_1$ that get mapped to it. 
 
-$$ w_2(u) = \sum \left\{ w_1(i) ~|~ f(i) = u \right\}. $$
+$$ w_2(u) = \sum \{ w_1(i) ~|~ f(i) = u \}. $$
 
 3. For any $uv \in E_2$, 
 
