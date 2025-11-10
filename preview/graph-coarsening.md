@@ -1,6 +1,6 @@
 # Graph coarsening
 
-The purpose of this note is to elaborate a concrete example of what I *think* might be an instance of "renormalization". Renormalization is a concept from physics I regularly run into (read: hear the word thrown around), but as a mathematician, I have yet to find a satisfying (e.g. axiomatic) explanation of what it's supposed to be.
+The purpose of this note is to elaborate a concrete example of what I *think* might be an instance of “renormalization”. Renormalization is a concept from physics I regularly run into (read: hear the word thrown around), but as a mathematician, I have yet to find a satisfying (e.g. axiomatic) explanation of what it's supposed to be.
 
 ## Prelude: Epidemic spreading on networks
 
@@ -89,9 +89,9 @@ where $k_i = \sum_j A_{ij}$ and $\langle k \rangle = \frac{1}{N} \sum_i k_i$ are
 
 We will build up the framework mentionned just before from the bottom up, starting with a principled way to "coarse-grain" a graph and associated data on it. Morally, coarse-graining involves taking a set of data, grouping them together according to some rule and aggregating the data within each group. A natural way to separate a set of data is to partition it. It is therefore a good idea to consider the set of all possible ways to partition a set, and look at the structure this might have.
 
-Given a finite set $V = \{1,\dots, N\}$ (which we'll later think of as the set of vertices in a graph), we write the sets of partitions of $V$ as $\Pi(V)$. The set $\Pi(V)$ can be equipped with a partial order given by $P \le Q$, for $P = \{P_1,\dots,P_n\}$, $Q = \{Q_1,\dots,Q_m\}$, if every element of $P$ is a subset of an element of $Q$. We say that $P$ is finer than $Q$, or that $P$ is a *refinement* of $Q$. It is easy to see that $\{\{v\}~|~v \in V \}$ is the unique minimal element of $P(V)$ and $\{V\}$ is the unique maximal element. On top of that, for any two $P,Q \in \Pi(V)$, there is a unique *least upper bound* (also known as *join*) $P \vee Q$ and a unique *greatest lower bound* (also known as *meet*) $P \wedge Q$, which gives $\Pi(V)$ the structure of a *bounded lattice*.
+Given a finite set $V = \lbrace 1,\dots, N\rbrace$ (which we'll later think of as the set of vertices in a graph), we write the sets of partitions of $V$ as $\Pi(V)$. The set $\Pi(V)$ can be equipped with a partial order given by $P \le Q$, for $P = \lbrace P_1,\dots,P_n\rbrace$, $Q = \lbrace Q_1,\dots,Q_m\rbrace$, if every element of $P$ is a subset of an element of $Q$. We say that $P$ is finer than $Q$, or that $P$ is a *refinement* of $Q$. It is easy to see that $\lbrace\lbrace v\rbrace~|~v \in V \rbrace$ is the unique minimal element of $P(V)$ and $\lbrace V\rbrace$ is the unique maximal element. On top of that, for any two $P,Q \in \Pi(V)$, there is a unique *least upper bound* (also known as *join*) $P \vee Q$ and a unique *greatest lower bound* (also known as *meet*) $P \wedge Q$, which gives $\Pi(V)$ the structure of a *bounded lattice*.
 
-We can restate the above in terms of categories. The set of partitions $\Pi(V)$ is a (poset) category with initial object $0 = \{\{v\}~|~v \in V \}$, terminal object $1 = \{V\}$, with finite products (meets) and coproducts (joins).
+We can restate the above in terms of categories. The set of partitions $\Pi(V)$ is a (poset) category with initial object $0 = \lbrace\lbrace v\rbrace~|~v \in V \rbrace$, terminal object $1 = \lbrace V\rbrace$, with finite products (meets) and coproducts (joins).
 
 ## Coarse-graining of finite graphs
 
@@ -99,7 +99,7 @@ Suppose we have some graph $G = (V,E)$ that we would like to coarse-grain. It se
 
 $$\begin{align*} 
 w_\pi (u) &= |u|\\
-w_{E_\pi} (uv) &= | \{ij \in E ~|~i \in u, j \in v\}|.
+w_{E_\pi} (uv) &= | \lbrace ij \in E ~|~i \in u, j \in v\rbrace|.
 \end{align*}$$
 
 It is easy to see that $G/0$ is a weighted graph isomorphic to $G$, with the all weights equal to one, and that $G/1$ is the weighted graph with a single vertex and a single edge (a loop), with respective weights $|V|$ and $|E|$. Note that in general, a coarse-grained graph will have loops.
@@ -109,11 +109,11 @@ Since we have a nice categorical structure on $\Pi(V)$, we might wonder if there
 1. $f_V$ is a *graph homomorphism* from $(V_1,E_1)$ to $(V_2,E_2)$, i.e. if $ij \in E_1$, then $f_V(i)f_V(j) \in E_2$.
 2. For any $u\in V_2$, the weight of $u$ is the sum of weights of vertices in $V_1$ that get mapped to it. 
 
-$$ w_2(u) = \sum \{ w_1(i) ~|~ f(i) = u \}. $$
+$$ w_2(u) = \sum \lbrace w_1(i) ~|~ f(i) = u \rbrace. $$
 
 3. For any $uv \in E_2$, 
 
-$$ w_{E_2} (uv) = \sum \{ w_{E_1}(ij) ~|~ ij \in E_1, f_V(i)=u, f_V(j)=v\}. $$
+$$ w_{E_2} (uv) = \sum \lbrace w_{E_1}(ij) ~|~ ij \in E_1, f_V(i)=u, f_V(j)=v\rbrace. $$
 
 The composition $g \circ f$ of weighted graph morphisms $f : (V_1,E_1,w_1,w_{E_1}) \rightarrow (V_2,E_2,w_2,w_{E_2})$, $g : (V_2,E_2,w_2,w_{E_2}) \rightarrow (V_3,E_3,w_3,w_{E_3})$ is simply defined in terms of the composition of the vertex maps $g_V \circ f_V$, and it is easy to see that this composition is associative, and that we may define identity morphisms using the identity maps on vertex sets. We therefore have a well-defined category of weighted graphs.
 
@@ -125,7 +125,10 @@ We have just defined how to coarse-grain a graph using a partition of its vertex
 
 Given some weighted graph $(V,E,w,w_E)$, we define its weighted adjacency matrix as 
 
-$$ A_{uv} = \frac{w_E (uv)}{w(u)w(v)}. $$
+$$ A_{uv} = \begin{cases} 
+    \frac{w_E (uv)}{w(u)w(v)} & u\neq v\\
+    \frac{2 w_E (uu)}{w(u)(w(u)-1)} & u=v 
+\end{cases}$$
 
 This quantity can be interpreted as the probability of an edge between two vertices taken at random in the clusters $u$ and $v$.
 
@@ -152,10 +155,11 @@ where $W$ is the diagonal matrix with entries $w(u)$. We can apply the same tric
 
 $$ \frac{\beta}{\gamma} > \frac{1}{\rho(WA)}. $$
 
-It's worth checking that this construction yields the HMF and IBMF when coarse-graining with respect to the $1$ and $0$ partitions, respectively. Using $G/0$ trivially yields the IBMF model. For $G/1$, there is only one partition set, so the "adjacency matrix" becomes $A = |E|/N^2 = \langle k\rangle / 2N$ by using some well-known identities. This is close to the approximation we derived earlier, with an additional factor of $1/2$ (I have yet to check the all the calculations, so this might be a mistake).
+It's worth checking that this construction yields the HMF and IBMF when coarse-graining with respect to the $1$ and $0$ partitions, respectively. Using $G/0$ trivially yields the IBMF model. For $G/1$, there is only one partition set, so the "adjacency matrix" becomes $A = 2|E|/N(N-1) = \langle k\rangle / (N-1)$ by using some well-known identities. This is close to the approximation we derived earlier, and is in fact the correct one, as it yields the correct scaling when $G$ is a complete graph.
 
 I will leave it at that for now, but here are some targets for after checking the calculations.
 
 1. Beyond, the $0$ and $1$ partitions, another natural one from the network science literature is to partition vertices by degree. The weighted adjacency matrix would then encode the pairwise degree-degree distribution, and we should expect to recover the epidemic threshold from the literature. Note that a common simplification is to assume the degree-degree distribution is uncorrelated.
 2. It is not yet clear if there is a reasonable notion of morphism for these weighted SIR models. I have some idea to what they might look like, and if it works, this would give a principled way to perform the kind of parameter transfer done at the beginning. My current understanding of renormalization is that it describes this parameter transfer, with morphism composition providing the "group" in "renormalization group". Is this accurate? If not, what is missing?
 3. Beyond finite graphs, the coarse-graining framework could be applied to graph limits (namely, graphons) by replacing partitions with partitions into measurable sets with non-zero measure. One nice interpretation of that is that we would be studying a continuous object (the graphon) by looking at discretizations of it, much like the (homotopy/homology) structure of a topological space can be studied by studying the structure of its discretizations into simplicial complexes.
+4. When modeling real life epidemics, we usually don't have access to any kind of ground truth social graph (and even if we did, it would be too large to be practical). Instead, we usually partition the population based on relevant factors (usually, age and geography) and estimate the number of contacts between partition sets. These estimates are then used to construct “contact matrices” which are essentially the same as the weighted adjacency matrices defined here.
