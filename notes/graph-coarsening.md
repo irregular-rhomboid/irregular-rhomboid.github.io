@@ -1,16 +1,20 @@
+---
+lang: "en"
+---
+
 # Graph coarsening
 
 The purpose of this note is to elaborate a concrete example of what I *think* might be an instance of “renormalization”. Renormalization is a concept from physics I regularly run into (read: hear the word thrown around), but as a mathematician, I have yet to find a satisfying (e.g. axiomatic) explanation of what it's supposed to be.
 
 ## Prelude: Epidemic spreading on networks
 
-The main object that will serve as the central example in what follows is epidemic spreading on networks, or more precisely, its various mean-field approximations. In broad strokes, we have a population of individuals through which some infectious disease is spreading. To model the spread of the disease through time, we assume that each individual in the population is in one of finitely many states (called *compartments*) that approximate the stages of the disease. For example, the classical SIR model has states Susceptible (not yet infected), Infected (carries the disease and is infectious) and Recovered (has developed immunity and is no longer infectious). 
+The main object that will serve as the central example in what follows is epidemic spreading on networks, or more precisely, its various mean-field approximations. In broad strokes, we have a population of individuals through which some infectious disease is spreading. To model the spread of the disease through time, we assume that each individual in the population is in one of finitely many states (called *compartments*) that approximate the stages of the disease. For example, the classical SIR model has the states Susceptible (not yet infected), Infected (carries the disease and is infectious) and Recovered (has developed immunity and is no longer infectious). 
 
 In addition to these epidemic states, we also model transitions between them. In the SIR case, an infected individual can transmit the disease to a susceptible individual, which eventually causes said susceptible individual to transition to the infected state. An infected individual can also spontaneously become Recovered.
 
 ### Homogeneous mean-field (HMF)
 
-How to translate this into equations requires some additional assumptions on the population. For example, the seminal paper introducing the SIR model, the authors assumed that the population is "homogeneously mixed", meaning that any infected individual has the same probability of transmitting disease to any susceptible individual. In practice, this means that we can think of the various compartments as chemical species $S$, $I$, $R$ homogeneously mixed in a fixed volume, with the epidemic transitions being modelled as chemical reactions. Specifically,
+How to translate this into equations requires some additional assumptions on the population. For example, in the seminal paper introducing the SIR model, the authors assumed that the population is "homogeneously mixed", meaning that any infected individual has the same probability of transmitting disease to any susceptible individual. In practice, this means that we can think of the various compartments as chemical species $S$, $I$, $R$ homogeneously mixed in a fixed volume, with the epidemic transitions being modeled as chemical reactions. Specifically,
 
 $$
 \begin{align*}
@@ -26,9 +30,9 @@ $$\begin{align*}
 \dot{R} &= \gamma I.
 \end{align*}$$
 
-The above equations are recognizable to anyone who learned about epidemic modelling, and are known as the *homogeneous meanfield approximation* of the SIR model. It's only an approximation because the "true" model would be the stochastic one, which is a continuous-time Markov chain with $3^N$ states, where $N$ is the size of the population. In theory, we could get an exact ODE from the stochastic model, but the exponential size of the system makes this impractical, which is why we use approximation like above in practice (the HMF is describes the expected value of the stochastic system). All such approximations can be derived by assuming that certain quantities are independent at all times, which is wrong, but works well in practice with large populations.
+The above equations are recognizable to anyone who learned about epidemic modeling, and are known as the *homogeneous meanfield approximation* of the SIR model. It's only an approximation because the "true" model would be the stochastic one, which is a continuous-time Markov chain with $3^N$ states, where $N$ is the size of the population. In theory, we could get an exact ODE from the stochastic model, but the exponential size of the system makes this impractical, which is why we use approximation like the above in practice (the HMF is describes the expected value of the stochastic system). All such approximations can be derived by assuming that certain quantities are independent at all times, which is wrong, but works well in practice with large populations.
 
-One the main questions of interest in epidemic modelling is predicting whether a disease is going to spread to the whole population or die out. This can be translated into whether the disease-free state $(N,0,0)$ is stable under the dynamics. Computing the Jacobian of the dynamics around this point quickly reveals a single decoupled linear equation for $I$,
+One of the main questions of interest in epidemic modeling is predicting whether a disease is going to spread to the whole population or die out. This can be translated into whether the disease-free state $(N,0,0)$ is stable under the dynamics. Computing the Jacobian of the dynamics around this point quickly reveals a single decoupled linear equation for $I$,
 
 $$ \dot{I} \approx (\beta N - \gamma) I, $$
 
@@ -55,7 +59,7 @@ $$\begin{align*}
 \dot{R}_i &= \gamma I_i, 
 \end{align*}$$
 
-with $A = [A_{ij}]$ the adjacency matrix of $G$. These equations are known as the *individual based mean-field* model. We can compute the epidemic threshold for this model. The disease-free state is the one where $S_i = 1$ for all $i$, all other variables being zero, and the linearized equation for $\mathcal{I} = [I_1, \dots, I_N]$ is given by
+with $A = [A_{ij}]$, the adjacency matrix of $G$. These equations are known as the *individual based mean-field* model. We can compute the epidemic threshold for this model. The disease-free state is the one where $S_i = 1$ for all $i$, all other variables being zero, and the linearized equation for $\mathcal{I} = [I_1, \dots, I_N]$ is given by
 
 $$ \mathcal{I} = (\beta A - \gamma I) \mathcal{I}, $$
 
@@ -89,17 +93,17 @@ where $k_i = \sum_j A_{ij}$ and $\langle k \rangle = \frac{1}{N} \sum_i k_i$ are
 
 We will build up the framework mentionned just before from the bottom up, starting with a principled way to "coarse-grain" a graph and associated data on it. Morally, coarse-graining involves taking a set of data, grouping them together according to some rule and aggregating the data within each group. A natural way to separate a set of data is to partition it. It is therefore a good idea to consider the set of all possible ways to partition a set, and look at the structure this might have.
 
-Given a finite set $V = \lbrace 1,\dots, N\rbrace$ (which we'll later think of as the set of vertices in a graph), we write the sets of partitions of $V$ as $\Pi(V)$. The set $\Pi(V)$ can be equipped with a partial order given by $P \le Q$, for $P = \lbrace P_1,\dots,P_n\rbrace$, $Q = \lbrace Q_1,\dots,Q_m\rbrace$, if every element of $P$ is a subset of an element of $Q$. We say that $P$ is finer than $Q$, or that $P$ is a *refinement* of $Q$. It is easy to see that $\lbrace\lbrace v\rbrace~|~v \in V \rbrace$ is the unique minimal element of $P(V)$ and $\lbrace V\rbrace$ is the unique maximal element. On top of that, for any two $P,Q \in \Pi(V)$, there is a unique *least upper bound* (also known as *join*) $P \vee Q$ and a unique *greatest lower bound* (also known as *meet*) $P \wedge Q$, which gives $\Pi(V)$ the structure of a *bounded lattice*.
+Given a finite set $V = \lbrace 1,\dots, N\rbrace$ (which we'll later think of as the set of vertices in a graph), we write the set of partitions of $V$ as $\Pi(V)$. The set $\Pi(V)$ can be equipped with a partial order given by $P \le Q$, for $P = \lbrace P_1,\dots,P_n\rbrace$, $Q = \lbrace Q_1,\dots,Q_m\rbrace$, if every element of $P$ is a subset of an element of $Q$. We say that $P$ is finer than $Q$, or that $P$ is a *refinement* of $Q$. It is easy to see that $\lbrace\lbrace v\rbrace~|~v \in V \rbrace$ is the unique minimal element of $P(V)$ and $\lbrace V\rbrace$ is the unique maximal element. On top of that, for any two $P,Q \in \Pi(V)$, there is a unique *least upper bound* (also known as *join*) $P \vee Q$ and a unique *greatest lower bound* (also known as *meet*) $P \wedge Q$, which gives $\Pi(V)$ the structure of a *bounded lattice*.
 
 We can restate the above in terms of categories. The set of partitions $\Pi(V)$ is a (poset) category with initial object $0 = \lbrace\lbrace v\rbrace~|~v \in V \rbrace$, terminal object $1 = \lbrace V\rbrace$, with finite products (meets) and coproducts (joins).
 
 ## Coarse-graining of finite graphs
 
-Suppose we have some graph $G = (V,E)$ that we would like to coarse-grain. It seems natural to aggregate vertices using partitions, but we also need to preserve information about the "size" of these partitions. We can do this by lifting our graph to a weighted graph. Given some partition $\pi \in \Pi(V)$, the *coarse-grained graph*ws $G/\pi$ is the weighted graph $(\pi, E_\pi, w_\pi, w_{E_\pi})$, with vertex set $\pi$, with an edge $uv \in E_\pi$ if there exist vertices $i \in u, j \in v$ such that $ij \in E$. The vertex and edge weights are respectively given by
+Suppose we have some graph $G = (V,E)$ that we would like to coarse-grain. It seems natural to aggregate vertices using partitions, but we also need to preserve information about the "size" of these partitions. We can do this by lifting our graph to a weighted graph. Given some partition $\pi \in \Pi(V)$, the *coarse-grained graph* $G/\pi$ is the weighted graph $(\pi, E_\pi, w_\pi, w_{E_\pi})$, with vertex set $\pi$, with an edge $uv \in E_\pi$ if there exist vertices $i \in u, j \in v$ such that $ij \in E$. The vertex and edge weights are respectively given by
 
 $$\begin{align*} 
 w_\pi (u) &= |u|\\
-w_{E_\pi} (uv) &= | \lbrace ij \in E ~|~i \in u, j \in v\rbrace|.
+w_{E_\pi} (uv) &= |\lbrace ij \in E ~|~i \in u, j \in v\rbrace|.
 \end{align*}$$
 
 It is easy to see that $G/0$ is a weighted graph isomorphic to $G$, with the all weights equal to one, and that $G/1$ is the weighted graph with a single vertex and a single edge (a loop), with respective weights $|V|$ and $|E|$. Note that in general, a coarse-grained graph will have loops.
