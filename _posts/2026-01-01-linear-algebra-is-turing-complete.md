@@ -11,20 +11,20 @@ Turing Machines are the classic formalization of computation, later followed by 
 
 Note: While I try to provide intuitions for the things I do, I assume at least that the reader is familiar with basic linear algebra. However, this post discusses some intuitions I have which are hard to express (and indeed are not completely deconfused for me), so your mileage may vary.
 
-I started writing this post a few years ago, and kept not knowing what to do with it, which might explain it's uneven pace, and not too pleasant notation. 
+I started writing this post a few years ago, and kept not knowing what to do with it, which might explain it's uneven pace, and not too pleasant notations. 
 
 ## Turing Machines
 
-Let's start by defining Turing Machines. The original definition in Turing's seminal paper goes something like this. We have an infinite roll of tape with slots containing symbols, along with a device with a reading head that looks at a specific slot on the tape, and based on its internal rules, writes a new symbol in the slot, and moves the tape exactly one slot left or right. [More formally](https://en.wikipedia.org/wiki/Turing_machine#Formal_definition), a Turing Machine is characterized by
+Let's start by defining Turing Machines. The original definition in [Turing's seminal paper](https://www.cs.virginia.edu/~robins/Turing_Paper_1936.pdf) goes something like this. We have an infinite roll of tape with slots containing symbols, along with a device with a reading head that looks at a specific slot on the tape, and based on its internal rules, writes a new symbol in the slot, and moves the tape exactly one slot left or right. [More formally](https://en.wikipedia.org/wiki/Turing_machine#Formal_definition), a Turing Machine is characterized by
 
 * A finite non-empty set of *tape-symbols* $\Gamma$, which usually includes a special *blank symbol* $b$,
 * A set $$\Sigma \subset \Gamma \setminus \lbrace b\rbrace $$ of *input symbols*,
 * A finite non-empty set of *machine states* $Q$,
 * An *initial state* $q_0 \in Q$,
 * A set $F \subseteq Q$ of *terminating states*, which is usually just a singleton $$\lbrace HALT \rbrace,$$
-* A partial *transition function* $\delta: (Q\setminus F)\times \Gamma \rightarrow Q \times \Gamma \times \lbrace L,R\rbrace,$ that takes as input a machine state and a tape-symbol, and returns the new internal state of the machine, the new symbol to write on the tape, and which direction to move the tape.
+* A partial *transition function* $\delta: (Q\setminus F)\times \Gamma \rightarrow Q \times \Gamma \times \lbrace L,R\rbrace,$ that takes as input a machine state and a tape symbol, and returns the new internal state of the machine, the new symbol to write on the tape, and which direction to move the tape.
 
-In order to make our lives easier, we will slightly modify this definition, in a way that won't change its fundamental properties. In particular, the transition function, which is really the meat of the Turing Machine, is not defined everywhere, which won't translate nicely to the Banach space setting, so we'd like to extend it in a natural way, such that the behavior of the machine is defined when it has reached a terminating state.
+In order to make our lives easier, we will slightly modify this definition, in a way that won't change its fundamental properties. Specifically, the transition function, which is really the meat of the Turing Machine, is not defined everywhere, which won't translate nicely to the Banach space setting, so we'd like to extend it in a natural way, such that the behavior of the machine is defined when it has reached a terminating state.
 
 The simplest way to do that is to make the transition function the identity function once the machine reaches a terminating state. But we also need to leave the tape unchanged, so let's add a "no-op" symbol $N$ to the set of tape movements, which just means that the tape stays in place. This doesn't change the computational power of the machine, and will come in very handy later.
 
@@ -45,7 +45,8 @@ Of course, we need to extend this according to our modifications, which just mea
 
 
 ## Into Banach Spaces
-In order to translate our Turing Machine into the language of Functional Analysis, we'll first have to translate its parts. Luckily, this is fairly straightforward. We can just map the sets $\Gamma$ and $Q$ to vector spaces! Now, since we want to express the action of the Turing Machine as a linear operator, and the Turing machine fundamentally manipulates symbols, we need to map these symbols to their equivalents for linear operators.
+
+In order to translate our Turing Machine into the language of functional analysis, we'll first have to translate its parts. Luckily, this is fairly straightforward. We can just map the sets $\Gamma$ and $Q$ to vector spaces! Now, since we want to express the action of the Turing Machine as a linear operator, and the Turing machine fundamentally manipulates symbols, we need to map these symbols to their equivalents for linear operators.
 
 What do linear operators fundamentally operate on? Well, you may recall that if you take a linear operator, and equip its input and output spaces with bases, you can completely characterize the operator by taking each input basis element, applying the operator to it and look at how the result is expressed in the output basis (In other words, we're looking at the *matrix representation* of the operator, with respect to the input and output bases). This lets us translate the mapping of symbol to symbol as a mapping of basis element to basis element. Just what we need!
 
@@ -58,7 +59,7 @@ $$ (\dots, t_{-2}, t_{-1}, t_0, t_1, t_2, \dots) = (t_n)_{n\in \mathbb{Z}} \subs
 where $t_0$ is the slot under the reading head.
 
 Now we're entering into [*Banach space*](https://en.wikipedia.org/wiki/Banach_space) territory proper, so let's name the space where those objects live. Due to the way we're representing the tape-symbols, the simplest such space is $T = \ell^\infty (\mathbb{Z},\mathbb{R}^{\vert\Gamma\vert})$, that is the *space of bounded two-sided infinite sequences in* $\mathbb{R}^{\vert\Gamma\vert}$. We also define $M = \mathbb{R}^{\vert Q\vert}$ as a shorthand.
-Let's wrap this part up by defining the space where the complete state of our Turing machine resides. The machine at a given point in time is completely characterized by its machine state and tape-state, so the straightforward way to translate this into the language of functional analysis is to take the [*direct sum*](https://en.wikipedia.org/wiki/Direct_sum) of our representations of the machine states and tape-states. In other words, our state space is
+Let's wrap this part up by defining the space where the complete state of our Turing machine resides. The machine at a given point in time is completely characterized by its machine state and tape state, so the straightforward way to translate this into the language of functional analysis is to take the [*direct sum*](https://en.wikipedia.org/wiki/Direct_sum) of our representations of the machine states and tape-states. In other words, our state space is
 
 $$ X = M \oplus T, $$
 
@@ -94,7 +95,7 @@ where $\pi_0:T\rightarrow \mathbb{R}^{\vert\Gamma \vert}; t \mapsto t_0$ is the 
 
 $$ \left\lbrace u_i \otimes v_j | i\in I, j\in J \right\rbrace, $$
 
-Intuitively, $U \otimes V$ is isomorphic to the space of linear maps from $V$ to $U$, with the basis elements $u_i \otimes v_j$ forming the canonical matrix basis induced by the bases on $U$ and $V$[^matrix-basis]. Why do this? Simply put, we'd like to work as much as possible with linear operators, but in order to encode every row of the table, we need a basis vector for every possible combination of $m$ and $x$. Taking the outer product is a bilinear operation (in that it is linear in $m$ and $x$ separately) that produces just that, and so we can now express the table using a linear map acting on $M \times \mathbb{R}^{\vert \Gamma \vert}$.
+Intuitively, $U \otimes V$ is isomorphic to the space of linear maps from $V$ to $U$, with the basis elements $u_i \otimes v_j$ forming the canonical matrix basis induced by the bases on $U$ and $V$[^matrix-basis]. Why do this? Simply put, we'd like to work as much as possible with linear operators, but in order to encode every row of the table, we need a basis vector for every possible combination of $m$ and $t_0$. Taking the outer product is a bilinear operation (in that it is linear in $m$ and $t_0$ separately) that produces just that, and so we can now express the table using a linear map acting on $M \times \mathbb{R}^{\vert \Gamma \vert}$.
 
 [^quantum]: Readers familiar with quantum theory may see where this is going. See also: [^unitball].
 
@@ -125,7 +126,7 @@ Finally, the operator $S^1\in L(T)$ is simply the *right-shift operator*, which 
 
 $$ S^1 ((t_n)_{n\in\mathbb{Z}}) = (t_{n-1})_{n\in\mathbb{Z}}. $$
 
-Along, with $S^1$, we can also define its cousins the *left-shift operator* $S^{-1}$ and the *no-shift operator* (aka the identity) $S^0 = Id$.
+Along, with $S^1$, we can also define its cousins the *left-shift operator* $S^{-1}$ and the *no-shift operator* (aka the identity) $S^0 = \operatorname{Id}$.
 
 Putting things together, we have
 
@@ -133,23 +134,23 @@ $$ [\delta_X(m,t)](m,t) =  \big(P_A^B \oplus (S^1 \circ D_0^1)\big)(m,t) = (P_A^
 
 From this example, it should be clear that for any line of our table, we can construct a corresponding linear operator on $X$, so that $\tilde{\delta}$ is well-defined (and linear while we're at it!).
 
-After doing all this, we'll be left with a map that expresses a single iteration of the Turing machine. It's probably good to reiterate what it does. Given some state $(q,t)$ we first take the zero-th element $t_0$ of the tape state, and take its tensor product $q \otimes t_0$ with the machine state (this is a bilinear map). We then map this linearly to an appropriate operator in $L(X)$, which in this case is just a pair of maps $M \rightarrow M$ and $T \rightarrow T$. This is a nonlinear map, because when taking the outer product, we are multiplying coefficients of $m$ and $t_0$ (so we may think of the outer product as a "quadratic" operation), and applying the resulting operator to $(m,t)$ adds another "multiplication", so we may think of the whole mapping as a "cubic" operation.
+After doing all this, we'll be left with a map that expresses a single iteration of the Turing machine. It's probably good to reiterate what it does. Given some state $(m,t)$ we first take the zero-th element $t_0$ of the tape state, and take its tensor product $q \otimes t_0$ with the machine state (this is a bilinear map). We then map this linearly to an appropriate operator in $L(X)$, which in this case is just a pair of maps $M \rightarrow M$ and $T \rightarrow T$. This is a nonlinear map, because when taking the outer product, we are multiplying coefficients of $m$ and $t_0$ (so we may think of the outer product as a "quadratic" operation), and applying the resulting operator to $(m,t)$ adds another "multiplication", so we may think of the whole mapping as a "cubic" operation.
 
 Let us also note an important property of the transition operator $\delta_X$, which is that it is norm preserving. This is because all the operations $$P^{q'}_q$$, $$D^{\gamma'}_\gamma$$ just map basis vectors to basis vectors, and the shifts obviously don't change the norm either. This means in particular, that a state embedded into the unit ball will stay in the unit ball when applying the transition map.
 
 ## The Halting Problem
 
-Now that we've completely ported Turing Machines to the language of linear algebra, we can ask what fundamental questions from computability theory look like in this language. In particular, let us look at the *Halting Problem*, i.e. whether a given machine presented with a certain input will reach the halting state after a finite number of transitions. This problem is famously *undecidable*, in the sense that it cannot be solved using a Turing Machine.
+Now that we've completely ported Turing Machines to the language of linear algebra, we can ask what fundamental questions from computability theory look like in this language. In particular, let us look at the *Halting Problem*, i.e. whether a given machine presented with a certain input will reach the halting state after a finite number of transitions. As Turing showed in his original paper, this problem is *undecidable*, in the sense that it cannot be solved using a Turing Machine.
 
 In our linear algebraic setting, the operation of the machine can be framed as a nonlinear discrete-time dynamical system. Due to the way we modified the definition of Turing machines at the beginning of this post, once the machine reaches the halting state, it just stays in the same state forever. In the language of dynamical systems, this is called a *fixed point*.
 
 The Halting problem then translates to whether the dynamical system we obtained will reach a fix point. As one might expect, this is also undecidable. It's worth thinking about why stepping to the language of dynamical systems doesn't really help us here. Usually, when studying a discrete-time dynamical system such as this one, the first step is to identify any fixed points. In the case of our Turing machines, any state $(m,t)$ such that $m$ is the halting state is a fixed point, so we have infinitely many fixed points, most of which are spurious.
 
-So identifying *which* fixed points we care about is already nontrivial, but on top of that, it is not straightforward at all to apply the standard stability analysis tools from finite dimensional spaces. In finite dimensions, we would compute the *Jacobian* of the dynamics at the fixed point and compute its spectrum. If all eigenvalues are less than one in magnitude, then the fixed point is stable. In infinite dimensions, computing the equivalent of the Jacobian is highly nontrivial, as there are [multiple definitions of functional derivatives](https://en.wikipedia.org/wiki/Functional_derivative), which depend on the actual topology we have on the space. Even if we did compute the derivative, computing spectra of linear operators in infinite dimensional spaces is a *lot more cursed*, as the spectrum may be uncountable, or contain no eigenvalues, meaning the stability criterion from finite dimensions no longer applies so easily[^stability].
+So identifying *which* fixed points we care about is already nontrivial, but on top of that, it is not straightforward at all to apply the standard stability analysis tools from finite dimensional spaces. In finite dimensions, we would compute the *Jacobian* of the dynamics at the fixed point and compute its spectrum. If all eigenvalues are less than one in magnitude, then the fixed point is stable. In infinite dimensions, computing the equivalent of the Jacobian is highly nontrivial, as there are [multiple definitions of functional derivatives](https://en.wikipedia.org/wiki/Functional_derivative), which depend on the actual topology we have on the space. Even if we did manage to compute the derivative, computing spectra of linear operators in infinite dimensional spaces is a *lot more cursed*, as the spectrum may be uncountable, or contain no eigenvalues, meaning the stability criterion from finite dimensions no longer applies so easily[^stability].
 
 [^stability]: In fact, this is why there entire fields of researchers studying infinite-dimensional stability analysis of PDEs.
 
-If you have studied topology, you might hope to use the fact that state live in the unit sphere with some compactness argument. Unfortunately, the unit sphere in infinite-dimensional normed spaces is not compact.
+If you have studied topology, you might hope to use the fact that state live in the unit sphere with some compactness argument. Unfortunately, the unit sphere in infinite-dimensional normed spaces is not compact, so this doesn't work.
 
 ## Linear combinations
 
@@ -161,7 +162,7 @@ We can also implement a form of [nondeterministic Turing machines](https://en.wi
 
 The way we have implemented Turing machines bears similarities to the Attention mechanism used in Transformers. To see this, let's think back on how we defined the transition operator as a map $X \rightarrow L(X)$. In general, such a map can be decomposed into two maps, $M \times T \rightarrow M$ and $M \times T \rightarrow T$. While the latter space is too large to be nicely described, we can look at a smaller class of maps by abstracting away the details of $\delta_X$. 
 
-We defined $\delta_X$ as a map $\tilde{\delta}$ applied to the outer product $m \otimes t_0$. We can think of $m$ and $t_0$ as projections from $X$ to finite-dimensional spaces, and a natural way to abstract it would be to replace $m$ with some $q = W_q x$ and $t_0$ by $k = W_k x$, have the linear map applied to $x$ be of the form $\tilde{\delta}(q \otimes k)$, or perhaps $W_v \circ \tilde{\delta}(q \otimes k)$, where $W_v \in L(X)$.
+We defined $\delta_X$ as a linear map $\tilde{\delta}$ applied to the outer product $m \otimes t_0$. We can think of $m$ and $t_0$ as projections from $X$ to finite-dimensional spaces, and a natural way to abstract it would be to replace $m$ with some $q = W_q x$ and $t_0$ by $k = W_k x$, where $W_q$ and $W_k$ are linear maps, and have the linear map applied to $x$ be of the form $\tilde{\delta}(q \otimes k)$, or perhaps $\tilde{\delta}(q \otimes k) \circ W_v$, where $W_v \in L(X)$.
 
 At this point you may see where I'm going, given the not so subtle choice of naming. What I described in the previous paragraph looks a lot like the attention mechanism, though this is in part due to a notation trick. The standard definition of (self) attention as a sequence transformation taking as input a sequence $x \in \mathbb{R}^{L \times d}$ of length $L$ and token dimension $d$, is as
 
@@ -171,5 +172,5 @@ where $q = x W_q$, $k = x W_k$ and $v = x W_v$, with $W_q, W_k, W_v \in \mathbb{
 
 ## Terminating state(ment)
 
-I think this post has drawn on for long enough, so lets conclude. The main takeaway is that some relatively simple linear algebra (and some not so simple functional analysis) lets us cast Turing machines in a mathematically convenient language, and that by squinting a bit, the attention mechanism is more or less a generalization of Turing machines with finite tape. This isn't really a serious argument, though since a lot more engineering is needed to make transformers work, and we wouldn't expect Transformers to learn the kind of sparse circuits we derived for Turing Machines. It might be that the "learn a map $X \rightarrow L(X)$" thing has legs for deriving novel architectures, but that is outside the scope of this post.
+I think this post has drawn on for long enough, so lets conclude. The main takeaway is that some relatively simple linear algebra (and some not so simple functional analysis) lets us cast Turing machines in a mathematically convenient language, and that by squinting a bit, the attention mechanism is more or less a generalization of Turing machines with finite tape. This isn't really a serious argument, though, since a lot more engineering is needed to make transformers work, and we wouldn't expect Transformers to learn the kind of sparse circuits we derived for Turing Machines. It might be that the "learn a map $X \rightarrow L(X)$" thing has legs for deriving novel architectures, but that is outside the scope of this post.
 
