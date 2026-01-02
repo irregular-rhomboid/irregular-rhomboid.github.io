@@ -63,6 +63,7 @@ p, ul, ol {
 blockquote {
     border-left: 2px solid;
     padding: 1em 1em;
+      font-family: $font-family-emph;
 }
 blockquote p:last-child,
 footer p:last-child {
@@ -72,6 +73,7 @@ table {
   table-layout:fixed;
   width:100%;
   word-wrap:break-word;
+  max-width: 850px;
 }
 td,
 th {
@@ -102,11 +104,18 @@ dd {
 }
 p, ol, ul, dl, .math-display {
   line-height: 1.5;
-  margin-bottom: 1em;  
+  margin-bottom: 1em;
+  max-width: 850px;
+  padding-left: 0;
+}
+mjx-container {
+    max-width: 850px !important;
+    padding-left: 0 !important;
 }
 // KaTeX math display
 .math-display {
   display: inline-block;
+  max-width: 850px;
   width: 100%;
 }
 li {
