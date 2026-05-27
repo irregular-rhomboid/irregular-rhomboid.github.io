@@ -12,4 +12,6 @@ Jekyll::Hooks.register [:pages, :documents], :pre_render do |doc|
     io.close_write
     io.read
   end
+
+  doc.content = doc.content.gsub('<mo>\</mo>', '<mo>&#x2216;</mo>')
 end
