@@ -11,13 +11,13 @@ Turing Machines are the classic formalization of computation, later followed by 
 
 Note: While I try to provide intuitions for the things I do, I assume at least that the reader is familiar with basic linear algebra. However, this post discusses some intuitions I have which are hard to express (and indeed are not completely deconfused for me), so your mileage may vary.
 
-I started writing this post a few years ago, and kept not knowing what to do with it, which might explain it's uneven pace, and not too pleasant notations. 
+I started writing this post a few years ago, and kept not knowing what to do with it, which might explain its uneven pace, and not too pleasant notations. 
 
 ## Turing Machines
 
 Let's start by defining Turing Machines. The original definition in [Turing's seminal paper](https://www.cs.virginia.edu/~robins/Turing_Paper_1936.pdf) goes something like this. We have an infinite roll of tape with slots containing symbols, along with a device with a reading head that looks at a specific slot on the tape, and based on its internal rules, writes a new symbol in the slot, and moves the tape exactly one slot left or right. [More formally](https://en.wikipedia.org/wiki/Turing_machine#Formal_definition), a Turing Machine is characterized by
 
-* A finite non-empty set of *tape-symbols* $\Gamma$, which usually includes a special *blank symbol* $b$,
+* A finite non-empty set of *tape symbols* $\Gamma$, which usually includes a special *blank symbol* $b$,
 * A set $$\Sigma \subset \Gamma \setminus \lbrace b\rbrace $$ of *input symbols*,
 * A finite non-empty set of *machine states* $Q$,
 * An *initial state* $q_0 \in Q$,
@@ -30,18 +30,21 @@ The simplest way to do that is to make the transition function the identity func
 
 Before moving to the next section, let's talk about another common way to specify Turing Machines. As we can see, the transition function is what's doing the heavy lifting in this definition, with the rest being setup. Since it's a function defined on a finite set, we can completely characterize it by a table of all its input-ouput pairs. As an example, we'll take the table of the 3-state busy beaver from the wikipedia page on Turing Machines.
 
-| **Machine State** | **Tape Symbol** || **New State** | **Write Symbol** | **Move** |
-| A | 0 || B | 1 | R |
-| A | 1 || C | 1 | L |
-| B | 0 || A | 1 | L |
-| B | 1 || B | 1 | R |
-| C | 0 || B | 1 | L |
-| C | 1 || HALT | 1 | R |
+| **Machine State** | **Tape Symbol** | **New State** | **Write Symbol** | **Move** |
+|---|---|---|---|---|
+| A | 0 | B | 1 | R |
+| A | 1 | C | 1 | L |
+| B | 0 | A | 1 | L |
+| B | 1 | B | 1 | R |
+| C | 0 | B | 1 | L |
+| C | 1 | HALT | 1 | R |
 
 Of course, we need to extend this according to our modifications, which just means adding these two rows to the table
 
-| HALT | 0 || HALT | 0 | N |
-| HALT | 1 || HALT | 1 | N |
+| **Machine State** | **Tape Symbol** | **New State** | **Write Symbol** | **Move** |
+|---|---|---|---|---|
+| HALT | 0 | HALT | 0 | N |
+| HALT | 1 | HALT | 1 | N |
 
 
 ## Into Banach Spaces
@@ -50,7 +53,7 @@ In order to translate our Turing Machine into the language of functional analysi
 
 What do linear operators fundamentally operate on? Well, you may recall that if you take a linear operator, and equip its input and output spaces with bases, you can completely characterize the operator by taking each input basis element, applying the operator to it and look at how the result is expressed in the output basis (In other words, we're looking at the *matrix representation* of the operator, with respect to the input and output bases). This lets us translate the mapping of symbol to symbol as a mapping of basis element to basis element. Just what we need!
 
-So let us take a finite dimensional vector space of dimension $\vert\Gamma\vert$ (respectively $\vert Q\vert$), along with a basis (for instance, $\mathbb{R}^{\vert\Gamma\vert}$ with its canonical basis) and simply map the symbols from $\Gamma$ to the basis elements. To put this more concretely, let $\lbrace e_\gamma\rbrace_{\gamma\in\Gamma}$ and $\lbrace\epsilon_q\rbrace_{q\in Q}$ be the canonical bases of $\mathbb{R}^{\vert\Gamma\vert}$ and $\mathbb{R}^{\vert Q\vert}$, and simply bijectively map each tape-symbol $\gamma\in \Gamma$ to some basis element $e_\gamma$, and each machine state $q\in Q$ to some corresponding $\epsilon_q$.
+So let us take a finite dimensional vector space of dimension $\vert\Gamma\vert$ (respectively $\vert Q\vert$), along with a basis (for instance, $\mathbb{R}^{\vert\Gamma\vert}$ with its canonical basis) and simply map the symbols from $\Gamma$ to the basis elements. To put this more concretely, let $\lbrace e_\gamma\rbrace_{\gamma\in\Gamma}$ and $\lbrace\epsilon_q\rbrace_{q\in Q}$ be the canonical bases of $\mathbb{R}^{\vert\Gamma\vert}$ and $\mathbb{R}^{\vert Q\vert}$, and simply bijectively map each tape symbol $\gamma\in \Gamma$ to some basis element $e_\gamma$, and each machine state $q\in Q$ to some corresponding $\epsilon_q$.
 
 Now that we have the symbols covered, let's move on to representing the tape itself. Back in the Turing Machine setting, the tape is supposed to be this infinite roll of paper with slots for symbols that can be winded arbitrarily far to the left or right. It turns out that we have a natural way to represent this in functional analysis, namely *two-sided infinite sequences*. Formally, the tape is an object of the form
 
@@ -58,7 +61,7 @@ $$ (\dots, t_{-2}, t_{-1}, t_0, t_1, t_2, \dots) = (t_n)_{n\in \mathbb{Z}} \subs
 
 where $t_0$ is the slot under the reading head.
 
-Now we're entering into [*Banach space*](https://en.wikipedia.org/wiki/Banach_space) territory proper, so let's name the space where those objects live. Due to the way we're representing the tape-symbols, the simplest such space is $T = \ell^\infty (\mathbb{Z},\mathbb{R}^{\vert\Gamma\vert})$, that is the *space of bounded two-sided infinite sequences in* $\mathbb{R}^{\vert\Gamma\vert}$. We also define $M = \mathbb{R}^{\vert Q\vert}$ as a shorthand.
+Now we're entering into [*Banach space*](https://en.wikipedia.org/wiki/Banach_space) territory proper, so let's name the space where those objects live. Due to the way we're representing the tape symbols, the simplest such space is $T = \ell^\infty (\mathbb{Z},\mathbb{R}^{\vert\Gamma\vert})$, that is the *space of bounded two-sided infinite sequences in* $\mathbb{R}^{\vert\Gamma\vert}$. We also define $M = \mathbb{R}^{\vert Q\vert}$ as a shorthand.
 Let's wrap this part up by defining the space where the complete state of our Turing machine resides. The machine at a given point in time is completely characterized by its machine state and tape state, so the straightforward way to translate this into the language of functional analysis is to take the [*direct sum*](https://en.wikipedia.org/wiki/Direct_sum) of our representations of the machine states and tape-states. In other words, our state space is
 
 $$ X = M \oplus T, $$
@@ -91,7 +94,7 @@ Now that we've expressed the state of our Turing machine as an element in a Bana
 
 $$ \delta_X(m,t) = \tilde{\delta}(m \otimes \pi_0(t)), $$
 
-where $\pi_0:T\rightarrow \mathbb{R}^{\vert\Gamma \vert}; t \mapsto t_0$ is the linear operator that returns the $0$-th element of the tape. This corresponds to reading the tape-symbol under the reading head. The operator $\tilde{\delta}: M \otimes \mathbb{R}^{\vert \Gamma \vert} \rightarrow L(X)$ acts on the [*tensor product*](https://en.wikipedia.org/wiki/Tensor_product)[^quantum] of $M$ and $\mathbb{R}^{\vert \Gamma \vert}$. Given two finite dimensional vector spaces $U$ and $V$, with bases $$\lbrace u_i\rbrace_{i\in I}$$ and $$\lbrace v_j\rbrace_{j\in J}$$, a basis of $U \otimes V$ can be obtained with
+where $\pi_0:T\rightarrow \mathbb{R}^{\vert\Gamma \vert}; t \mapsto t_0$ is the linear operator that returns the $0$-th element of the tape. This corresponds to reading the tape symbol under the reading head. The operator $\tilde{\delta}: M \otimes \mathbb{R}^{\vert \Gamma \vert} \rightarrow L(X)$ acts on the [*tensor product*](https://en.wikipedia.org/wiki/Tensor_product)[^quantum] of $M$ and $\mathbb{R}^{\vert \Gamma \vert}$. Given two finite dimensional vector spaces $U$ and $V$, with bases $$\lbrace u_i\rbrace_{i\in I}$$ and $$\lbrace v_j\rbrace_{j\in J}$$, a basis of $U \otimes V$ can be obtained with
 
 $$ \left\lbrace u_i \otimes v_j | i\in I, j\in J \right\rbrace, $$
 
@@ -105,7 +108,7 @@ Remember that we previously chose to use basis elements to represent our symbols
 
 | A | 0 || B | 1 | R |
 
-Recall that it means that when the machine state is A and the currently read tape-symbol is 0, then the machine writes 1 to the current slot, shifts the tape one slot to the right and switches its machine state to B. This can be translated as
+Recall that it means that when the machine state is A and the currently read tape symbol is 0, then the machine writes 1 to the current slot, shifts the tape one slot to the right and switches its machine state to B. This can be translated as
 
 $$ \tilde{\delta}(\epsilon_A \otimes e_0) = P_A^B \oplus (S^1 \circ D_0^1), $$
 
@@ -134,7 +137,7 @@ $$ [\delta_X(m,t)](m,t) =  \big(P_A^B \oplus (S^1 \circ D_0^1)\big)(m,t) = (P_A^
 
 From this example, it should be clear that for any line of our table, we can construct a corresponding linear operator on $X$, so that $\tilde{\delta}$ is well-defined (and linear while we're at it!).
 
-After doing all this, we'll be left with a map that expresses a single iteration of the Turing machine. It's probably good to reiterate what it does. Given some state $(m,t)$ we first take the zero-th element $t_0$ of the tape state, and take its tensor product $q \otimes t_0$ with the machine state (this is a bilinear map). We then map this linearly to an appropriate operator in $L(X)$, which in this case is just a pair of maps $M \rightarrow M$ and $T \rightarrow T$. This is a nonlinear map, because when taking the outer product, we are multiplying coefficients of $m$ and $t_0$ (so we may think of the outer product as a "quadratic" operation), and applying the resulting operator to $(m,t)$ adds another "multiplication", so we may think of the whole mapping as a "cubic" operation.
+After doing all this, we'll be left with a map that expresses a single iteration of the Turing machine. It's probably good to reiterate what it does. Given some state $(m,t)$ we first take the zero-th element $t_0$ of the tape state, and take its tensor product $m \otimes t_0$ with the machine state (this is a bilinear map). We then map this linearly to an appropriate operator in $L(X)$, which in this case is just a pair of maps $M \rightarrow M$ and $T \rightarrow T$. This is a nonlinear map, because when taking the outer product, we are multiplying coefficients of $m$ and $t_0$ (so we may think of the outer product as a "quadratic" operation), and applying the resulting operator to $(m,t)$ adds another "multiplication", so we may think of the whole mapping as a "cubic" operation.
 
 Let us also note an important property of the transition operator $\delta_X$, which is that it is norm preserving. This is because all the operations $$P^{q'}_q$$, $$D^{\gamma'}_\gamma$$ just map basis vectors to basis vectors, and the shifts obviously don't change the norm either. This means in particular, that a state embedded into the unit ball will stay in the unit ball when applying the transition map.
 
