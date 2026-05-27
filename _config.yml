@@ -71,15 +71,19 @@ paginate: 5
 paginate_path: "blog/page:num"
 
 # BUILD SETTINGS
-markdown: kramdown
-kramdown:
-  math_engine: mathjax
+markdown: Pandoc
+pandoc:
+  extensions:
+    - mathml
+#kramdown:
+#  math_engine: mathjax
 
 highlighter: rouge
 sass:
   sass_dir: _sass
   style: :compressed
 plugins: [jekyll-paginate]
+plugins_dir: "_plugins"
 exclude:
   - Gemfile
   - Gemfile.lock

@@ -1,0 +1,25 @@
+name: Deploy Jekyll site
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Pandoc
+        run: sudo apt-get install -y pandoc
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - run: bundle exec jekyll build
+
+      - uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./_site
