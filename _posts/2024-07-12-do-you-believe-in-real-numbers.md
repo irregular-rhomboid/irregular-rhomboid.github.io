@@ -68,7 +68,7 @@ Before moving on to the next section, we still need to define some arithmetic op
 
 - Order relation: $0 < S(n)$; $S(m) < S(n) \Leftrightarrow m < n$.
 - Addition: $m + 0 := m$; $m + S(n) := S(m+n)$.
-- Multiplication: $m\ast 0 := 0$; $m\ast S(n) := (m\ast n) + m$.
+- Multiplication: $m \cdot 0 := 0$; $m \cdot S(n) := (m \cdot n) + m$.
 
 It is tedious, but relatively straightforward to show that addition is associative, commutative and has $0$ as an identity element, that is, that $(\mathbb{N}, +, 0)$ is a commutative [*monoid*](https://en.wikipedia.org/wiki/Monoid), and that multiplication is associative, commutative and distributive with addition.
 
@@ -78,7 +78,7 @@ So far, we've constructed the natural numbers, which lack the notion of additive
 
 $$ \mathbb{Z} = \{ (m,n) \,|\, m, n \in \mathbb{N} \}, $$
 
-where each pair $(m,n)$ should be interpreted as '$m-n$'. To wrap your head around this, it is helpful to think of fractions (it's exactly the same idea). Let us also notice that any integer admits an infinite number of representations, much like rational numbers can be represented by different fractions. We also have a canonical injection of $\mathbb{N}$ into $\mathbb{Z}$ given by $ n \mapsto (n,0)$.
+where each pair $(m,n)$ should be interpreted as '$m-n$'. To wrap your head around this, it is helpful to think of fractions (it's exactly the same idea). Let us also notice that any integer admits an infinite number of representations, much like rational numbers can be represented by different fractions. We also have a canonical injection of $\mathbb{N}$ into $\mathbb{Z}$ given by $n \mapsto (n,0)$.
 
 We need to extend our arithmetical operations on $\mathbb{Z}$:
 
@@ -87,12 +87,12 @@ $$
 (m_1, n_1) = (m_2,n_2) \; &\Leftrightarrow \; m_1 + n_2 = m_2 + n_1, \\
 (m_1,n_2) < (m_2,n_2) \; &\Leftrightarrow \; m_1 + n_2 < m_2 + n_1, \\
 (m_1,n_2) + (m_2,n_2) \; &:= \; (m_1+m_2, n_1+n_2), \\
-(m_1,n_1) \,\ast (m_2,n_2) \; &:= \; (m_1 \ast m_2 + n_1 \ast n_2, m_1 \ast n_2 + m_2 \ast n_1),\\
+(m_1,n_1) \,\cdot (m_2,n_2) \; &:= \; (m_1 \cdot m_2 + n_1 \cdot n_2, m_1 \cdot n_2 + m_2 \cdot n_1),\\
 -(m,n) \; &:= \; (n,m).
 \end{align*}
 $$
 
-These operations inherit the properties of the ones defined on natural numbers, so that with the addition of additive inverses, $(\mathbb{Z}, +, \ast)$ is now a [*ring*](https://en.wikipedia.org/wiki/Ring_(mathematics)).
+These operations inherit the properties of the ones defined on natural numbers, so that with the addition of additive inverses, $(\mathbb{Z}, +, \cdot)$ is now a [*ring*](https://en.wikipedia.org/wiki/Ring_(mathematics)).
 
 ## Rational Numbers
 
@@ -104,10 +104,10 @@ That last constraint needs some additional care to preserve, but otherwise exten
 
 $$
 \begin{align*}
-(p_1, q_1) = (p_2, q_2) \; &\Leftrightarrow \; p_1 \ast q_2 = p_2 \ast q_1, \\
-(p_1, q_1) < (p_2, q_2) \; &\Leftrightarrow \; p_1 \ast q_2 < p_2 \ast q_1, \\
-(p_1, q_1) + (p_2,q_2) \; &:= \; (p_1 \ast q_2 + p_2 \ast q_1, q_1 \ast q_2), \\
-(p_1, q_1) \ast (p_2,q_2) \; &:= \; (p_1 \ast p_2, q_1 \ast q_2), \\
+(p_1, q_1) = (p_2, q_2) \; &\Leftrightarrow \; p_1 \cdot q_2 = p_2 \cdot q_1, \\
+(p_1, q_1) < (p_2, q_2) \; &\Leftrightarrow \; p_1 \cdot q_2 < p_2 \cdot q_1, \\
+(p_1, q_1) + (p_2,q_2) \; &:= \; (p_1 \cdot q_2 + p_2 \cdot q_1, q_1 \cdot q_2), \\
+(p_1, q_1) \cdot (p_2,q_2) \; &:= \; (p_1 \cdot p_2, q_1 \cdot q_2), \\
 -(p,q) \; &:= \; (-p,q), \\
 (p,q)^{-1} \; &:= \; \begin{cases} (q,p) & \text{if } p>0, \\ (-q,-p) & \text{if } p<0. \end{cases}
 \end{align*}
@@ -163,15 +163,15 @@ L_1 + L_2 \; &:= \; \{s + t \, \vert \, s \in L_1, t \in L_2\}, \\
 The tricky part is defining multiplication. Simply taking the set of products of elements of $L_1$ and $L_2$ will not work, because $L_1$ and $L_2$ both contain unbounded negative numbers, whose products are unbounded positive numbers. To resolve this, we first define a new "signed" product on $\mathbb{Q}$
 
 $$ q_1 \circledast  q_2 \; := \; \begin{cases}
-q_1 \ast q_2 & \text{if } q_1,q_2 \ge 0 \text{ or } q_1 \ast q_2 \le 0, \\
-- q_1 \ast q_2 & \text{if } q_1,q_2 < 0. 
+q_1 \cdot q_2 & \text{if } q_1,q_2 \ge 0 \text{ or } q_1 \cdot q_2 \le 0, \\
+- q_1 \cdot q_2 & \text{if } q_1,q_2 < 0. 
 \end{cases} $$
 
-It is not too complicated to show[^formality] that if $x,y \in \mathbb{R}$ and $p,q \in \mathbb{Q}$ such that $p \le x$ and $q \le y$, then $p \circledast  q \le x \ast y$, so that we may define the product of two real numbers as
+It is not too complicated to show[^formality] that if $x,y \in \mathbb{R}$ and $p,q \in \mathbb{Q}$ such that $p \le x$ and $q \le y$, then $p \circledast  q \le x \cdot y$, so that we may define the product of two real numbers as
 
 [^formality]: I'm being less than entirely formal here, but to be rigorous, we should interpret $p \le x$ and $q \le y$ as $p \in x$ and $q \in y$.
 
-$$L_1 * L_2 \; := \; \{ s \circledast  t \, | \, s \in L_1, t \in L_2 \}. $$
+$$L_1 \cdot L_2 \; := \; \{ s \circledast  t \, | \, s \in L_1, t \in L_2 \}. $$
 
 To recap a bit, we've just constructed real numbers as sets of rational numbers, which are just pairs of integers, which themselves are just pairs of natural numbers. Since $\mathbb{Q}$ is countable, there is a bijection between $\mathbb{Q}$ and $\mathbb{N}$, so that real numbers can be equivalently expressed as sets of natural numbers, and any real number can be defined in the following form
 
