@@ -519,7 +519,7 @@ function doCraft() {
   const [a, b] = slots;
   if (!a || !b) {
     flashSlots('shake');
-    setMsg('Les deux emplacement doivent etre remplis.');
+    setMsg('Both slots must be filled.');
     slots = [null, null];
     renderSlots();
     return;
@@ -532,7 +532,7 @@ function doCraft() {
 
   if (!match) {
     flashSlots('shake');
-    setMsg('Pas de réaction.');
+    setMsg('No reaction.');
     slots = [null, null];
     renderSlots();
     return;
@@ -549,7 +549,7 @@ function doCraft() {
   renderSymbolList();
 
   if (isNew) {
-    setMsg(`✦ Nouveau symbole: ${resultSym.emoji} ${resultSym.name} ✦`);
+    setMsg(`✦ New symbol: ${resultSym.emoji} ${resultSym.name} ✦`);
     flashSlots('success-flash');
     // flash the new chip
     setTimeout(() => {
@@ -558,7 +558,7 @@ function doCraft() {
     }, 50);
     checkVictory();
   } else {
-    setMsg(`${resultSym.emoji} Déjà connu: ${resultSym.name}`);
+    setMsg(`${resultSym.emoji} Already known: ${resultSym.name}`);
     flashSlots('success-flash');
   }
 }
@@ -584,7 +584,7 @@ function setMsg(txt) {
 function checkVictory() {
   const allFound = CONFIG.targets.every(id => discovered.has(id));
   if (allFound) {
-    setTimeout(() => setMsg('⊛ Transmutation terminée — Le Tao est complété ⊛'), 400);
+    setTimeout(() => setMsg('⊛ Transmutation complete — The Tao is achieved ⊛'), 400);
   }
 }
 
