@@ -1,0 +1,599 @@
+---\n---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>我思故我在 · The Jinese Room</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=Cinzel:wght@400;600&display=swap');
+
+  :root {
+    --ink:       #1a1208;
+    --paper:     #f5ead6;
+    --aged:      #e8d5b0;
+    --vermillion:#c0392b;
+    --gold:      #b8860b;
+    --gold-lt:   #d4a017;
+    --shadow:    rgba(26,18,8,0.18);
+    --red-glow:  rgba(192,57,43,0.25);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Serif SC', serif;
+    background: var(--ink);
+    color: var(--ink);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: hidden;
+  }
+
+  /* ── Paper texture overlay ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background:
+      repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(139,100,20,.07) 39px, rgba(139,100,20,.07) 40px),
+      repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(139,100,20,.04) 39px, rgba(139,100,20,.04) 40px);
+    pointer-events: none; z-index: 0;
+  }
+
+  /* ── Title ── */
+  header {
+    position: relative; z-index: 1;
+    text-align: center;
+    padding: 24px 16px 12px;
+  }
+  header h1 {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    letter-spacing: .2em;
+    color: var(--gold-lt);
+    text-shadow: 0 2px 8px var(--shadow);
+  }
+  header p {
+    font-size: .75rem;
+    color: var(--aged);
+    letter-spacing: .3em;
+    margin-top: 4px;
+    opacity: .8;
+  }
+  .divider {
+    width: 260px; height: 2px; margin: 10px auto 0;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+
+  /* ── Main layout ── */
+  main {
+    position: relative; z-index: 1;
+    display: grid;
+    grid-template-columns: 220px 1fr 200px;
+    gap: 16px;
+    width: 100%;
+    max-width: 960px;
+    padding: 16px;
+  }
+
+  /* ── Panel shared ── */
+  .panel {
+    background: var(--paper);
+    border: 1px solid var(--gold);
+    border-radius: 4px;
+    box-shadow: 0 4px 20px var(--shadow), inset 0 0 60px rgba(184,134,11,.05);
+    padding: 12px;
+    position: relative;
+  }
+  .panel::before {
+    content: attr(data-label);
+    position: absolute; top: -11px; left: 50%; transform: translateX(-50%);
+    background: var(--paper);
+    border: 1px solid var(--gold);
+    border-radius: 2px;
+    font-size: .65rem;
+    letter-spacing: .25em;
+    color: var(--gold);
+    padding: 2px 10px;
+    white-space: nowrap;
+  }
+
+  /* ── Symbol list ── */
+  #symbol-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    max-height: 480px;
+    overflow-y: auto;
+    padding-top: 8px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--gold) var(--aged);
+  }
+  .sym-chip {
+    background: var(--aged);
+    border: 1px solid var(--gold);
+    border-radius: 3px;
+    padding: 6px 10px;
+    font-size: 1.3rem;
+    cursor: pointer;
+    transition: background .15s, transform .1s, box-shadow .15s;
+    user-select: none;
+    line-height: 1;
+    display: flex; align-items: center; gap: 5px;
+  }
+  .sym-chip span.lbl { font-size: .55rem; letter-spacing:.05em; color:var(--gold); line-height:1; }
+  .sym-chip:hover { background: var(--gold-lt); transform: translateY(-2px); box-shadow: 0 3px 8px var(--shadow); }
+  .sym-chip.new-flash { animation: flashNew .6s ease; }
+  @keyframes flashNew {
+    0%,100%{ background: var(--aged); }
+    40%    { background: var(--vermillion); color: var(--paper); }
+  }
+
+  /* ── Forge center ── */
+  #forge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    padding-top: 16px;
+  }
+
+  .slots {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+  }
+  .slot {
+    width: 100px; height: 100px;
+    background: var(--aged);
+    border: 2px solid var(--gold);
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2.8rem;
+    cursor: pointer;
+    position: relative;
+    transition: border-color .2s, box-shadow .2s;
+    box-shadow: inset 0 2px 8px rgba(0,0,0,.08);
+  }
+  .slot.filled { border-color: var(--vermillion); box-shadow: 0 0 12px var(--red-glow), inset 0 2px 8px rgba(0,0,0,.08); }
+  .slot .slot-label {
+    position: absolute; bottom: 4px; width: 100%; text-align: center;
+    font-size: .55rem; letter-spacing: .1em; color: var(--gold); pointer-events: none;
+  }
+  .slot-plus {
+    font-size: 1.6rem;
+    color: var(--gold);
+    opacity: .6;
+    font-family: 'Cinzel', serif;
+  }
+
+  .btn-row { display: flex; gap: 14px; }
+  button {
+    font-family: 'Noto Serif SC', serif;
+    font-size: .8rem;
+    letter-spacing: .15em;
+    padding: 10px 26px;
+    border: 1px solid var(--gold);
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background .18s, transform .1s, box-shadow .15s;
+  }
+  #btn-craft {
+    background: var(--vermillion);
+    color: var(--paper);
+    box-shadow: 0 2px 10px var(--red-glow);
+  }
+  #btn-craft:hover { background: #a93226; transform: translateY(-2px); box-shadow: 0 4px 14px var(--red-glow); }
+  #btn-discard {
+    background: var(--aged);
+    color: var(--ink);
+  }
+  #btn-discard:hover { background: #d5c49a; transform: translateY(-2px); }
+
+  /* Result flash */
+  #result-msg {
+    min-height: 36px;
+    font-size: .85rem;
+    letter-spacing: .1em;
+    text-align: center;
+    color: var(--vermillion);
+    transition: opacity .3s;
+    padding: 0 8px;
+  }
+
+  /* Reaction animation on slots */
+  .slot.shake { animation: shake .35s; }
+  @keyframes shake {
+    0%,100%{ transform:translateX(0); }
+    25%    { transform:translateX(-6px); }
+    75%    { transform:translateX(6px); }
+  }
+  .slot.success-flash { animation: sflash .5s; }
+  @keyframes sflash {
+    0%,100%{ background: var(--aged); }
+    40%    { background: #f9e4b7; }
+  }
+
+  /* ── Targets panel ── */
+  #targets-panel { padding-top: 14px; }
+  #targets-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-top: 4px;
+  }
+  .target-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--aged);
+    border: 1px solid var(--gold);
+    border-radius: 3px;
+    padding: 6px 10px;
+    font-size: 1.3rem;
+    transition: opacity .4s;
+  }
+  .target-item .t-label { font-size: .55rem; letter-spacing:.05em; color: var(--gold); line-height: 1; flex: 1; }
+  .target-item.found {
+    border-color: #5a8a3c;
+    background: #e8f0df;
+    opacity: .55;
+  }
+  .target-item .check { font-size: .85rem; color: #5a8a3c; }
+
+  /* scroll */
+  #targets-list { max-height: 440px; overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--gold) var(--aged); }
+
+  /* responsive */
+  @media (max-width: 700px) {
+    main { grid-template-columns: 1fr; grid-template-rows: auto auto auto; }
+    #symbol-list { max-height: 180px; }
+    #targets-list { max-height: 160px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>我思故我在 · The Jinese Room</h1>
+  <p>Nothing is created · Nothing is lost · All is transformed</p>
+  <div class="divider"></div>
+</header>
+
+<main>
+  <!-- Left: available symbols -->
+  <div class="panel" data-label="⋆ ELEMENTS ⋆" id="left-panel">
+    <div id="symbol-list"></div>
+  </div>
+
+  <!-- Center: forge -->
+  <div class="panel" data-label="⋆ ALCHEMICAL TABLE ⋆" id="forge">
+    <div class="slots">
+      <div class="slot" id="slot-0" onclick="clearSlot(0)">
+        <span id="slot-sym-0"></span>
+        <span class="slot-label">THESIS</span>
+      </div>
+      <div class="slot-plus">✦</div>
+      <div class="slot" id="slot-1" onclick="clearSlot(1)">
+        <span id="slot-sym-1"></span>
+        <span class="slot-label">ANTITHESIS</span>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button id="btn-craft"   onclick="doCraft()">合并 · COMBINE</button>
+      <button id="btn-discard" onclick="doDiscard()">丢弃 · DISCARD</button>
+    </div>
+
+    <div id="result-msg"></div>
+  </div>
+
+  <!-- Right: targets -->
+  <div class="panel" data-label="⋆ TARGETS ⋆" id="targets-panel">
+    <div id="targets-list"></div>
+  </div>
+</main>
+
+<script>
+/* ============================================================
+   CONFIG — edit freely
+   Each combination is { a, b, result }
+   a and b are interchangeable (order doesn't matter).
+   Each symbol: { id, emoji, name }
+   Targets: array of symbol ids the player must discover.
+   ============================================================ */
+const CONFIG = {
+  symbols: [
+    // Starter symbols (always available)
+    { id: "pi",     emoji: "π",  name: ""},
+    { id: "wedge",  emoji: "⋀",  name: ""},
+    { id: "vee",    emoji: "⋁",  name: ""},
+    { id: "vbar",   emoji: "|",  name: ""},
+    { id: "hbar",   emoji: "—",  name: ""},
+    { id: "lt",     emoji: "<",  name: ""},
+    { id: "gt",     emoji: ">",  name: ""},
+  ],
+
+  // Symbols that can be discovered (not available at start)
+  hidden: [
+    { id: "not",        emoji: "¬",    name: ""},
+    { id: "infty",      emoji: "∞",    name: ""},
+    { id: "epsilon",    emoji: "ε",    name: ""},
+    { id: "delta",      emoji: "δ",    name: ""},
+    { id: "Delta",      emoji: "Δ",    name: ""},
+    { id: "sigma",      emoji: "Σ",    name: ""},
+    { id: "empty",      emoji: "∅",    name: ""},
+    { id: "one",        emoji: "𝟏",    name: ""},
+    { id: "two",        emoji: "𝟐",    name: ""},
+    { id: "three",      emoji: "𝟑",    name: ""},
+    { id: "minusone",   emoji: "-𝟏",   name: ""},
+    { id: "i",          emoji: "𝐢",     name: ""},
+    { id: "circle",     emoji: "○",    name: ""},
+    { id: "square",     emoji: "□",    name: ""},
+    { id: "diamond",    emoji: "◇",    name: ""},
+    { id: "larrow",     emoji: "←",    name: ""},
+    { id: "rarrow",     emoji: "→",    name: ""},
+    { id: "uarrow",     emoji: "↑",    name: ""},
+    { id: "darrow",     emoji: "↓",    name: ""},
+    { id: "lrarrow",    emoji: "↔",    name: ""},
+    { id: "udarrow",    emoji: "↕",    name: ""},
+    { id: "plus",       emoji: "+",    name: ""},
+    { id: "sqrt",       emoji: "√",    name: ""},
+    { id: "equals",     emoji: "=",    name: ""},
+    { id: "exists",     emoji: "∃",    name: ""},
+    { id: "forall",     emoji: "∀",    name: ""},
+    { id: "san",        emoji: "㆔",   name: ""},
+    { id: "sqsub",      emoji: "⊏",    name: ""},
+    { id: "sqsup",      emoji: "⊐",    name: ""},
+    { id: "tlcorner",   emoji: "⌜",    name: ""},
+    { id: "trcorner",   emoji: "⌝",    name: ""},
+    { id: "blcorner",   emoji: "⌞",    name: ""},
+    { id: "brcorner",   emoji: "⌟",    name: ""},
+    { id: "integral",   emoji: "∫",    name: ""},
+    { id: "e",          emoji: "𝐞",    name: ""},
+    { id: "E",          emoji: "𝐄",    name: ""},
+    { id: "female",     emoji: "♀",    name: ""},
+    { id: "male",       emoji: "♂",    name: ""},
+    { id: "mcsq",       emoji: "mc²",  name: ""},
+    { id: "foralle",    emoji: "∀ε",   name: ""},
+    { id: "existsd",    emoji: "∃δ",   name: ""},
+    { id: "limit",      emoji: "∀ε∃δ", name: ""},
+    { id: "twomale",    emoji: "⚣",    name: ""},
+    { id: "twofemale",  emoji: "⚢",    name: ""},
+    { id: "malefemale", emoji: "⚤",    name: ""},
+    { id: "trans",      emoji: "⚥",    name: ""},
+    { id: "A",          emoji: "𝐀",    name: ""},
+    { id: "sun",        emoji: "⽇",    name: ""},
+  ],
+
+  combinations: [
+    { a: "pi",      b: "pi",       result: "circle"},
+    { a: "circle",  b: "circle",   result: "infty"},
+    { a: "hbar",    b: "vbar",     result: "not"},
+    { a: "hbar",    b: "not",      result: "sqsup"},
+    { a: "vbar",    b: "sqsup",    result: "square"},
+    { a: "hbar",    b: "hbar",     result: "equals"},
+    { a: "hbar",    b: "sqsup",    result: "exists"},
+    { a: "lt",      b: "gt",       result: "diamond"},
+    { a: "wedge",   b: "vee",      result: "diamond"},
+    { a: "equals",  b: "vbar",     result: "sqsup"},
+    { a: "hbar",    b: "equals",   result: "san"},
+    { a: "san",     b: "vbar",     result: "exists"},
+    { a: "hbar",    b: "vee",      result: "sqrt"},
+    { a: "vee",     b: "hbar",     result: "forall"},
+    { a: "not",     b: "not",      result: "one"},
+    { a: "one",     b: "one",      result: "two"},
+    { a: "one",     b: "two",      result: "three"},
+    { a: "two",     b: "one",      result: "three"},
+    { a: "hbar",    b: "gt",       result: "rarrow"},
+    { a: "lt",      b: "hbar",     result: "larrow"},
+    { a: "larrow",  b: "gt",       result: "lrarrow"},
+    { a: "lt",      b: "rarrow",   result: "lrarrow"},
+    { a: "larrow",  b: "rarrow",   result: "lrarrow"},
+    { a: "vee",     b: "vbar",     result: "darrow"},
+    { a: "vbar",    b: "vee",      result: "darrow"},
+    { a: "wedge",   b: "vbar",     result: "uarrow"},
+    { a: "vbar",    b: "wedge",    result: "uarrow"},
+    { a: "uarrow",  b: "vee",      result: "udarrow"},
+    { a: "vee",     b: "uarrow",   result: "udarrow"},
+    { a: "darrow",  b: "wedge",    result: "udarrow"},
+    { a: "wedge",   b: "darrow",   result: "udarrow"},
+    { a: "darrow",  b: "uarrow",   result: "udarrow"},
+    { a: "three",   b: "lrarrow",  result: "epsilon"},
+    { a: "exists",  b: "lrarrow",  result: "E"},
+    { a: "hbar",    b: "wedge",    result: "Delta"},
+    { a: "wedge",   b: "hbar",     result: "Delta"},
+    { a: "Delta",   b: "darrow",   result: "delta"},
+    { a: "E",       b: "darrow",   result: "e"},
+    { a: "hbar",    b: "one",      result: "minusone"},
+    { a: "E",       b: "equals",   result: "mcsq"},
+    { a: "gt",      b: "equals",   result: "sigma"},
+    { a: "sigma",   b: "infty",    result: "integral"},
+    { a: "sqrt",    b: "minusone", result: "i"},
+    { a: "hbar",    b: "vbar",     result: "plus"},
+    { a: "vbar",    b: "hbar",     result: "plus"},
+    { a: "circle",  b: "plus",     result: "female"},
+    { a: "circle",  b: "rarrow",   result: "male"},
+    { a: "forall",  b: "epsilon",  result: "foralle"},
+    { a: "exists",  b: "delta",    result: "existsd"},
+    { a: "foralle", b: "existsd",  result: "limit"},
+    { a: "male",    b: "male",     result:  "twomale"},
+    { a: "female",  b: "female",   result:  "twofemale"},
+    { a: "male",    b: "female",   result:  "trans"},
+    { a: "female",  b: "male",     result:  "malefemale"},
+    { a: "forall",  b: "udarrow",  result:  "A"},
+    { a: "vbar",    b: "exists",   result: "sun"},
+    { a: "sqsub",   b: "lrarrow",  result: "sqsup"},
+    { a: "circle",  b: "vbar",     result: "empty"},
+    { a: "vbar",    b: "san",      result: "E"},
+    { a: "san",     b: "vbar",     result: "exists"},
+    { a: "plus",    b: "equals",   result: "sigma"},
+    { a: "circle",  b: "uarrow",   result: "male"},
+  ],
+
+  // Which hidden symbols the player must find (shown in targets panel)
+  targets: ["equals", "sqrt", "empty", "female", "male", "sigma", "i", "e", "integral", "mcsq", "limit"],
+
+  starters: ["pi", "wedge", "vee", "hbar", "vbar", "lt", "gt"],
+};
+
+/* ============================================================
+   State
+   ============================================================ */
+const ALL_SYMBOLS = [...CONFIG.symbols, ...CONFIG.hidden];
+const byId = id => ALL_SYMBOLS.find(s => s.id === id);
+
+let discovered = new Set(CONFIG.starters);
+let slots = [null, null]; // ids
+
+/* ============================================================
+   Render
+   ============================================================ */
+function renderSymbolList() {
+  const el = document.getElementById('symbol-list');
+  el.innerHTML = '';
+  for (const id of discovered) {
+    const sym = byId(id);
+    if (!sym) continue;
+    const chip = document.createElement('div');
+    chip.className = 'sym-chip';
+    chip.dataset.id = id;
+    chip.innerHTML = `${sym.emoji}<span class="lbl">${sym.name}</span>`;
+    chip.onclick = () => fillSlot(id);
+    el.appendChild(chip);
+  }
+}
+
+function renderSlots() {
+  for (let i = 0; i < 2; i++) {
+    const sym = slots[i] ? byId(slots[i]) : null;
+    const slotEl = document.getElementById(`slot-${i}`);
+    document.getElementById(`slot-sym-${i}`).textContent = sym ? sym.emoji : '';
+    slotEl.classList.toggle('filled', !!sym);
+  }
+}
+
+function renderTargets() {
+  const el = document.getElementById('targets-list');
+  el.innerHTML = '';
+  for (const id of CONFIG.targets) {
+    const sym = byId(id);
+    if (!sym) continue;
+    const found = discovered.has(id);
+    const item = document.createElement('div');
+    item.className = 'target-item' + (found ? ' found' : '');
+    item.innerHTML = found
+      ? `${sym.emoji}<span class="t-label">${sym.name}</span><span class="check">✓</span>`
+      : `${sym.emoji}<span class="t-label">${sym.name}</span>`;
+    el.appendChild(item);
+  }
+}
+
+/* ============================================================
+   Interactions
+   ============================================================ */
+function fillSlot(id) {
+  const free = slots.indexOf(null);
+  if (free === -1) return; // both full
+  slots[free] = id;
+  renderSlots();
+  setMsg('');
+}
+
+function clearSlot(i) {
+  if (slots[i]) {
+    slots[i] = null;
+    renderSlots();
+  }
+}
+
+function doDiscard() {
+  slots = [null, null];
+  renderSlots();
+  setMsg('');
+}
+
+function doCraft() {
+  const [a, b] = slots;
+  if (!a || !b) {
+    flashSlots('shake');
+    setMsg('Les deux emplacement doivent etre remplis.');
+    slots = [null, null];
+    renderSlots();
+    return;
+  }
+
+  // Look up combination (order-agnostic)
+  const match = CONFIG.combinations.find(c =>
+    (c.a === a && c.b === b) //|| (c.a === b && c.b === a)
+  );
+
+  if (!match) {
+    flashSlots('shake');
+    setMsg('Pas de réaction.');
+    slots = [null, null];
+    renderSlots();
+    return;
+  }
+
+  const resultId = match.result;
+  const resultSym = byId(resultId);
+  const isNew = !discovered.has(resultId);
+
+  discovered.add(resultId);
+  slots = [null, null];
+  renderSlots();
+  renderTargets();
+  renderSymbolList();
+
+  if (isNew) {
+    setMsg(`✦ Nouveau symbole: ${resultSym.emoji} ${resultSym.name} ✦`);
+    flashSlots('success-flash');
+    // flash the new chip
+    setTimeout(() => {
+      const chip = document.querySelector(`.sym-chip[data-id="${resultId}"]`);
+      if (chip) chip.classList.add('new-flash');
+    }, 50);
+    checkVictory();
+  } else {
+    setMsg(`${resultSym.emoji} Déjà connu: ${resultSym.name}`);
+    flashSlots('success-flash');
+  }
+}
+
+function flashSlots(cls) {
+  for (let i = 0; i < 2; i++) {
+    const el = document.getElementById(`slot-${i}`);
+    el.classList.remove(cls);
+    void el.offsetWidth;
+    el.classList.add(cls);
+    el.addEventListener('animationend', () => el.classList.remove(cls), { once: true });
+  }
+}
+
+let msgTimer = null;
+function setMsg(txt) {
+  const el = document.getElementById('result-msg');
+  el.textContent = txt;
+  clearTimeout(msgTimer);
+  if (txt) msgTimer = setTimeout(() => { el.textContent = ''; }, 3500);
+}
+
+function checkVictory() {
+  const allFound = CONFIG.targets.every(id => discovered.has(id));
+  if (allFound) {
+    setTimeout(() => setMsg('⊛ Transmutation terminée — Le Tao est complété ⊛'), 400);
+  }
+}
+
+/* ============================================================
+   Init
+   ============================================================ */
+renderSymbolList();
+renderSlots();
+renderTargets();
+</script>
+</body>
+</html>
