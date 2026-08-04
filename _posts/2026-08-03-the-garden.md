@@ -12,11 +12,11 @@ Before talking about mathematics proper, I should specify what I mean by "feelin
 
 [^armchair]: This is of course, arm chair philosophy.
 
-Something feels like a place (or has "placehood") if it satisfies the following properties
+Something feels like a place (or has "*placehood*") if it satisfies the following properties
 
 - **Partial Perceptibility** You can perceive or experience a portion of a place, but usually not all at the same time.
 - **Traversability**: You can "move around" a place, which is felt by a change in what you perceive of it.
-- **Coherence**: As you move around in a place, your perceptions form a cohesive whole, e.g. there is no sharp discontinuity. You can come back to portion you've already experienced and find it mostly unchanged. You can build an accurate mental model of it that lets you navigate.
+- **Coherence**: As you move around in a place, your perceptions form a cohesive whole, e.g. there is no sharp discontinuity. You can come back to a portion you've already experienced and find it mostly unchanged. You can build an accurate mental model of it that lets you navigate it.
 - **Permanence**: A place "feels like it exists" independently of you perceiving it. It "exists" through time, and you can observe it change. It has a "history".
 
 To give a few concrete examples:
@@ -38,17 +38,17 @@ Hopefully these examples have helped convey the class of subjective experiences 
 The main point of this post is to explain that Mathematics feel like a place to me. Concretely,
 
 - Mathematics are perceived by doing math, by reading a mathematical text, thinking about a problem (mentally or on paper)... Specific results or theories are "locations" within mathematics.
-- Different parts of mathematics are in relation with one another, and elaborating these connections feels like movement. Going through a proof of a result is a form of "movement". Another example is pedagogy, one can teach a topic by "approaching" from already known topics (For example, The Euler-Lagrange equations can be approached from a mechanics point of view, or from an optimization point of view).
+- Different parts of mathematics are in relation with one another, and elaborating these connections feels like movement. Going through a proof of a result is a form of movement. Another example is pedagogy: One can teach a topic by "approaching" it from already known topics (For example, The Euler-Lagrange equations can be approached from a mechanics point of view, or from an optimization point of view).
 - The relations between different locations of math let one have multiple viewpoints of one location, and those viewpoints are "coherent". (See the example of the Euler-Lagrange equations above)
-- Mathematics [*feel like they have a reality independent of the mathematician*](https://en.wikipedia.org/wiki/Platonism). The subjective experience of doing mathematics is often more like discovering some uncharted territory than inventing something. And in so far as mathematician invent anything, it is closer to naming landmarks than building them.
+- Mathematics [*feel like they have a reality independent of the mathematician*](https://en.wikipedia.org/wiki/Mathematical_Platonism). The subjective experience of doing mathematics is often more like discovering some uncharted territory than inventing something. And in so far as mathematician invent anything, it is closer to naming landmarks than building them.
 
-Poetically, I think of mathematics as a *Garden*. An infinite landscape of nature with many recurring [plants](https://en.wikipedia.org/wiki/Pascal%27s_triangle) and features. Parts of the Garden have been knowns for centuries and are well-trodden. We can see features in the distance which no one has reached yet, and we keep finding new paths between known locations. Some locations are like hills or mountains, in that they let us see entirely new parts of the Garden.
+Poetically, I think of mathematics as a *Garden*. An infinite landscape of nature with many recurring [plants](https://en.wikipedia.org/wiki/Pascal%27s_triangle) and features. Parts of the Garden have been known for centuries and are well-trodden. We can see [features in the distance which no one has reached yet](https://en.wikipedia.org/wiki/Riemann_hypothesis), and we keep finding new paths between known locations. Some locations are like hills or mountains, in that they let us see entirely new parts of the Garden.
 
 What drives most of my enjoyment of mathematics is that the *Garden is beautiful*. It is intricately connected and one can wander at random and expect to find something recognizable in a new context. It has a complex structure, but one can guess about the existence of a path between two locations and often be right.
 
 ## Mathematicians as cartographers
 
-If Mathematics are a place that can be explored, then mathematicians are best described as explorers and cartographers, drafting a map of the Garden. This explains why there is prestige attached to being the first to reach a location, or the first to draw a complete map of an area. Solving a mathematical problem (like proving Fermat's last theorem) is very much like path finding through uncharted territory, or trying to reach the peak of a mountain.
+If Mathematics are a place that can be explored, then mathematicians are best described as explorers and cartographers, drafting a map of the Garden. This explains why there is prestige attached to [being the first to reach a location](https://en.wikipedia.org/wiki/Andrew_Wiles), or the first to [draw a complete map of an area](https://en.wikipedia.org/wiki/Laurent_Schwartz). Solving a mathematical problem (like proving Fermat's last theorem) is very much like [path finding through uncharted territory](https://www.azquotes.com/quote/739811), or trying to reach the peak of a mountain.
 
 In recent years, mapping out the Garden has been a bit of a cottage industry, with many mathematicians working on tiny portions of the garden to avoid competing with others. A side effect of this is that the known parts of the Garden are too numerous to be understood by a single person, and no complete map of the Garden exists. 
 
