@@ -28,7 +28,7 @@ Many thanks to Quentin Anthony for their careful review and pertinent suggestion
 
 ## What is research?
 
-*Scientific Research* is an activity whose nominal aim is to produce novel *scientific knowledge* by following a set of techniques collectively known as the *scientific method*. This entails making claims based on a *mental model* and providing *evidence* for them, either through experiments or mathematical proofs. Importantly, research is a *collaborative* endeavor. A large part of scientific research is communicating with other researchers and collaborating on projects.
+*Scientific Research* is an activity whose nominal aim is to produce novel *scientific knowledge* by following a set of techniques collectively known as the *scientific method*. This entails making *claims* based on a *mental model* and providing *evidence* for them, either through experiments or mathematical proofs. Importantly, research is a *collaborative* endeavor. A large part of scientific research is communicating with other researchers and collaborating on projects.
 
 What exactly counts as ‘novel’ and ‘knowledge’ will be detailed later, but the important part here is that for some work to be considered scientific research, it has to follow certain *norms* that most people outside of academia are not necessarily aware of.
 
@@ -125,6 +125,7 @@ Another type of research output that is not well recognized is code bases. Writi
 ## What counts as novelty?
 
 One of the important norms when trying to publish research is that it should be “*novel*”. This is often confusing, but generally something novel is something that has not been the subject of a publication before. This implies a few things.
+
 - If someone executes on an idea and publishes it before you do, that idea is taken, and you can’t publish it. It doesn’t matter if you had the idea before or if you executed on it better.
 - Papers are expected to be aware of previous and similar works in their topic and credit them accordingly by citing them. This is why being able to survey literature is important.
 - It is a good practice to explicitly highlight a paper’s novel contributions in its text, and many journals require it.
