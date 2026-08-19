@@ -46,6 +46,7 @@ where $\varphi$ is a unary [predicate](https://en.wikipedia.org/wiki/Well-formed
 $$ \mathbb{N} = \{0, S(0), S(S(0)), \dots\}. $$
 
 Of course, the Peano axioms are just *axioms*, i.e. an abstract "interface", which we may implement in various ways. For example, we can implement them in set theory by defining $0$ to be the empty set $\emptyset$, and the successor operation to be 
+
 $$S(n) = n \cup \{n\}.$$
 
 The first few natural numbers then look like
@@ -85,8 +86,8 @@ We need to extend our arithmetical operations on $\mathbb{Z}$:
 $$ 
 \begin{align*}
 (m_1, n_1) = (m_2,n_2) \; &\Leftrightarrow \; m_1 + n_2 = m_2 + n_1, \\
-(m_1,n_2) < (m_2,n_2) \; &\Leftrightarrow \; m_1 + n_2 < m_2 + n_1, \\
-(m_1,n_2) + (m_2,n_2) \; &:= \; (m_1+m_2, n_1+n_2), \\
+(m_1,n_1) < (m_2,n_2) \; &\Leftrightarrow \; m_1 + n_2 < m_2 + n_1, \\
+(m_1,n_1) + (m_2,n_2) \; &:= \; (m_1+m_2, n_1+n_2), \\
 (m_1,n_1) \,\cdot (m_2,n_2) \; &:= \; (m_1 \cdot m_2 + n_1 \cdot n_2, m_1 \cdot n_2 + m_2 \cdot n_1),\\
 -(m,n) \; &:= \; (n,m).
 \end{align*}
@@ -140,6 +141,7 @@ $$ \{q \in \mathbb{Q} \, | \, \varphi(q)\}, $$
 where $\varphi$ is a unary predicate on $\mathbb{Q}$. This will be important later, as we will be restricting the class of predicates that can be used to define a real number.
 
 Note that in this definition, we now allow $L$ to have a greatest element. This allows us to include the rationals with a canonical injection given by 
+
 $$q \mapsto  \{ p \in \mathbb{Q} \,|\, p \le q\}.$$
 
 Due to real numbers being sets, the equality and order relations are easily defined as set equality and set inclusion:
@@ -232,7 +234,9 @@ For example, a string of alternating '0's and '1's could be computed in many pro
 Now for an infinite string of symbols, we can look at how the Kolmogorov complexity of its finite prefixes evolves. Based on the examples in the previous paragraphs, we can expect two main cases. Either the string is simple enough that there is a single program that can generate all its prefixes and the Kolmogorov complexity remains bounded, or there isn't and Kolmogorov complexity diverges to infinity.
 
 Using this notion, we can define an [*algorithmically random number*](https://en.wikipedia.org/wiki/Algorithmically_random_sequence) as a real number such that the Kolmogorov complexity of its truncated binary expansions $s$ satisfies 
+
 $$K_A(s) > |s| - O(1),$$ 
+
 where $|s|$ denotes the length of the finite string $s$. In other words, the prefixes of $s$ are all "maximally complex", and their Kolmogorov complexity diverges. 
 
 Algorithmically random numbers capture the idea of "random" numbers due to an important characterization: They are indistinguishable from random noise by *any* statistical test[^randomness]. Another (which is really the same), is that there is no computable betting strategy that reliably makes money against the sequence of digits of an algorithmically random number.
