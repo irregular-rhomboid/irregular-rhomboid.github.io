@@ -1,0 +1,163 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Cyberpunk Timeline Intensifies</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;800&family=Archivo:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: a year rail on the left with a running spine; headlines stack in one column beside it, oldest first, ending at "now". */
+:root{
+  --bg:#eceef3; --panel:#f8f9fb; --ink:#14161d; --muted:#5a6070; --rule:#c9cdd8;
+  --accent:#0a6f7c; --accent-soft:#d5ecef; --hot:#a3205f; --now:#c25a00;
+  --f-display:"Big Shoulders Display","Arial Narrow",Impact,sans-serif;
+  --f-body:"Archivo",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0c0e14; --panel:#151822; --ink:#e3e6ee; --muted:#9097a8; --rule:#2a2f3d;
+  --accent:#4fcbdb; --accent-soft:#123038; --hot:#f067a6; --now:#ff9a3c; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0c0e14; --panel:#151822; --ink:#e3e6ee; --muted:#9097a8; --rule:#2a2f3d;
+  --accent:#4fcbdb; --accent-soft:#123038; --hot:#f067a6; --now:#ff9a3c; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.5;padding:0 16px}
+.wrap{max-width:860px;margin:0 auto;padding-block:40px 64px}
+a{color:inherit}
+a:focus-visible,button:focus-visible{outline:2px solid var(--now);outline-offset:2px}
+
+header{display:grid;gap:14px;margin-bottom:28px}
+.kicker{font-family:var(--f-mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+h1{font-family:var(--f-display);font-weight:800;font-size:clamp(44px,9vw,96px);line-height:.88;margin:0;text-transform:uppercase;text-wrap:balance}
+h1 .hot{color:var(--hot)}
+.lede{max-width:62ch;color:var(--muted);margin:0;font-size:16px}
+.stats{display:flex;flex-wrap:wrap;gap:8px 20px;font-family:var(--f-mono);font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.stats b{color:var(--ink);font-weight:600}
+
+.controls{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:10px;border-bottom:1px solid var(--rule);display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px}
+.chip{font-family:var(--f-mono);font-size:12px;border:1px solid var(--rule);background:var(--panel);color:var(--muted);padding:5px 10px;border-radius:999px;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.chip .n{font-variant-numeric:tabular-nums;opacity:.7}
+.chip[aria-pressed="true"]{color:var(--ink);border-color:var(--ink)}
+
+.year{display:grid;grid-template-columns:72px 1fr;gap:0 20px;position:relative}
+.year::before{content:"";position:absolute;left:35px;top:0;bottom:0;width:2px;background:var(--rule)}
+.yr{position:relative;padding-top:18px;text-align:center}
+.yr span{display:inline-block;background:var(--bg);font-family:var(--f-display);font-weight:800;font-size:28px;line-height:1;padding:4px 0;font-variant-numeric:tabular-nums}
+.col{display:grid;gap:12px;align-content:start;padding-block:18px;min-width:0}
+
+.card{background:var(--panel);border:1px solid var(--rule);border-left:3px solid var(--accent);border-radius:4px;padding:12px 14px;display:grid;gap:6px;min-width:0}
+.meta{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline;font-family:var(--f-mono);font-size:11.5px;color:var(--muted)}
+.meta .date{color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+.tag{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;padding:1px 6px;border-radius:3px;background:var(--accent-soft);color:var(--accent)}
+.card h3{margin:0;font-size:16.5px;line-height:1.3;font-weight:600;text-wrap:balance}
+.card h3 a{text-decoration:none;background-image:linear-gradient(currentColor,currentColor);background-size:0 1px;background-repeat:no-repeat;background-position:0 100%;transition:background-size .2s}
+.card h3 a:hover{background-size:100% 1px}
+.card p{margin:0;color:var(--muted);font-size:14px;max-width:65ch}
+.src{font-family:var(--f-mono);font-size:11.5px;color:var(--muted)}
+
+.now{display:grid;grid-template-columns:72px 1fr;gap:20px;align-items:center;padding-block:18px 8px;color:var(--now)}
+.now .pip{justify-self:center;width:14px;height:14px;border-radius:50%;background:var(--now);box-shadow:0 0 0 5px var(--bg)}
+.now div:last-child{font-family:var(--f-mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase}
+.now strong{font-family:var(--f-display);font-size:24px;letter-spacing:.02em;margin-right:10px}
+
+.empty{color:var(--muted);font-family:var(--f-mono);font-size:13px;padding:24px 0;text-align:center}
+footer{margin-top:40px;border-top:1px solid var(--rule);padding-top:16px;color:var(--muted);font-size:13px;max-width:70ch}
+
+@media (max-width:560px){
+  .year,.now{grid-template-columns:40px 1fr;gap:0 12px}
+  .year::before{left:19px}
+  .yr span{font-size:18px;writing-mode:vertical-rl;transform:rotate(180deg);padding:6px 0}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="kicker">Field log · last updated 3 Oct 2026</div>
+    <h1>Cyberpunk Timeline <span class="hot">Intensifies</span></h1>
+    <p class="lede">The Future is here. It has just not been uniformly distributed - William Gibson.</p>
+    <div class="stats" id="stats"></div>
+  </header>
+
+  <div class="controls" role="group" aria-label="Filter by category" id="cats"></div>
+  <main id="timeline"></main>
+
+  <footer>Each headline links to the original reporting or post. Summaries are paraphrased; posts on X are summarized as their authors posted them, not independently verified.</footer>
+</div>
+
+<script>
+const CATS={
+  bodies:"Man-Machine Interface",
+  war:"Crime and War",
+  crime:"Megacorps",
+  labor:"Human Labor",
+  watch:"AI & Surveillance"
+};
+const ITEMS=[
+ {d:"2012-04-07",t:"Chinese teen sells a kidney to buy an iPhone and iPad",s:"NPR",u:"https://www.npr.org/sections/thetwo-way/2012/04/07/150195037/chinese-teen-sells-kidney-for-ipad-and-iphone",c:"labor",b:"A 17-year-old got about $3,500 for a kidney removed in a rented operating room, arranged through online chat rooms. Five people were charged."},
+ {d:"2015-12-15",t:"Canadian company sells bottled clean air in smog-choked China",s:"CNN",u:"https://www.cnn.com/2015/12/15/asia/china-canadian-company-selling-clean-air",c:"crime",b:"Canned Rocky Mountain air found buyers during Beijing's red-alert smog days."},
+ {d:"2017-02-07",t:"A man's pacemaker data helps indict him for arson",s:"STAT",u:"https://www.statnews.com/2017/02/07/pacemaker-data-trial/",c:"bodies",b:"Police got a warrant for the heart device. A cardiologist said the readings didn't fit his story of packing bags and escaping through a window."},
+ {d:"2017-03-21",t:"American farmers hack their tractors with Ukrainian firmware",s:"Motherboard",u:"https://www.vice.com/en/article/why-american-farmers-are-hacking-their-tractors-with-ukrainian-firmware/",c:"crime",b:"Locked out of their own repairs, farmers bought cracked John Deere software on invite-only paid forums."},
+ {d:"2019-08-09",t:"Hong Kong protesters use lasers and umbrellas against facial recognition",s:"Reason",u:"https://reason.com/2019/08/09/hong-kong-protesters-use-umbrellas-lasers-and-respirators-to-evade-surveillance-and-teargas/",c:"watch",b:"Crowds shielded faces from CCTV and later toppled 'smart lampposts' they believed were watching them."},
+ {d:"2021-04-27",t:"Mexican cartel attacks police with explosive drones",s:"OCCRP",u:"https://www.occrp.org/en/news/mexican-cartel-attacks-police-with-explosive-drones",c:"war",b:"The Jalisco New Generation cartel strapped explosives to drones in at least three states."},
+ {d:"2022-02",t:"Their bionic eyes are now obsolete and unsupported",s:"IEEE Spectrum",u:"https://spectrum.ieee.org/bionic-eye-obsolete",c:"bodies",b:"Second Sight walked away from its retinal implant. One user's vision cut out mid-subway transfer and never came back."},
+ {d:"2023-03-01",t:"Replika users fell in love with their AI companions. Then an update took them",s:"ABC News (Australia)",u:"https://www.abc.net.au/news/science/2023-03-01/replika-users-fell-in-love-with-their-ai-chatbot-companion/102028196",c:"watch",b:"An overnight model change rewrote personalities people had spent years talking to."},
+ {d:"2023-07-31",t:"Kenyans queue in malls to scan their irises for Worldcoin tokens",s:"TechCabal",u:"https://techcabal.com/2023/07/31/worldcoin-in-kenya/",c:"labor",b:"About $50 in crypto per eyeball scan, until the government suspended the orbs days later."},
+ {d:"2023-09-11",t:"These prisoners are training AI",s:"Wired via CACM",u:"https://cacmb4.acm.org/careers/276224-these-prisoners-are-training-ai/fulltext",c:"labor",b:"Inmates in three Finnish prisons label text for a language model, paid €1.54 an hour."},
+ {d:"2024-01-02",t:"'Cyber-kidnapping': missing exchange student found alone in a Utah tent",s:"CNN",u:"https://www.cnn.com/us/missing-exchange-student-utah-found/index.html",c:"crime",b:"Nobody took him. Scammers talked him into hiding and staging captive photos, and his parents paid $80,000."},
+ {d:"2024-02-04",t:"Finance worker pays out $25 million after a video call full of deepfakes",s:"CNN",u:"https://www.cnn.com/2024/02/04/asia/deepfake-cfo-scam-hong-kong-intl-hnk",c:"crime",b:"Every colleague on the call, including the CFO, was synthetic."},
+ {d:"2024-04-25",t:"Thermonator, a flamethrowing robot dog, goes on sale for $9,420",s:"The Register",u:"https://www.theregister.com/2024/04/25/flamethrower_robot_dog/",c:"war",b:"A consumer quadruped with a 30-foot flame, lidar and laser sighting. Free US shipping."},
+ {d:"2024-06-25",t:"First Neuralink patient: 'I basically have an aimbot in my head'",s:"Futurism",u:"https://futurism.com/neoscope/first-neuralink-patient-gaming-skills",c:"bodies",b:"He also said that yes, the implant can be hacked."},
+ {d:"2025-05",t:"Haiti fact of the day: the future comes to Haiti first",s:"Marginal Revolution",u:"https://marginalrevolution.com/marginalrevolution/2025/05/haiti-fact-of-the-day-the-future-comes-to-haiti-first.html",c:"war",b:"A state that can barely field police starts fighting gangs with contractor-run drones."},
+ {d:"2025-06-09",t:"Waymo robotaxis set ablaze during LA protests",s:"TechCrunch",u:"https://techcrunch.com/2025/06/10/waymo-robotaxis-lime-e-scooters-set-ablaze-during-la-protests/",c:"crime",b:"Crowds smashed, tagged and burned five driverless cars. Some saw them as rolling cameras for the police."},
+ {d:"2025-10-21",t:"Startup unveils a genetic IQ predictor for choosing embryos",s:"@SponceyM on X",u:"https://x.com/SponceyM/status/1980660198441447568",c:"bodies",b:"Herasight says its CogPGT score lets IVF customers raise their child's expected IQ by up to 9 points by picking the top-scoring embryo."},
+ {d:"2025-10-21",t:"Smart beds roast their owners during an AWS outage",s:"PCWorld",u:"https://www.pcworld.com/article/2948826/these-smart-beds-began-roasting-their-owners-during-aws-outage.html",c:"crime",b:"Cloud-tethered mattresses got stuck hot or stuck upright. The maker shipped an offline mode the next day."},
+ {d:"2025-10-21",t:"Myanmar raids a scam city and finds rooftops of Starlink dishes",s:"Al Jazeera",u:"https://www.aljazeera.com/news/2025/10/21/myanmar-military-arrests-more-than-2000-people-at-infamous-scam-centre",c:"crime",b:"More than 2,000 people were working inside KK Park. SpaceX later disabled over 2,500 terminals near the compounds."},
+ {d:"2026-01-07",t:"In Chinese data factories, 'cyber-laborers' teach humanoid robots",s:"Rest of World",u:"https://restofworld.org/2026/china-robots-training-centers-workers/",c:"labor",b:"Trainers in VR headsets and arm exoskeletons repeat one motion hundreds of times a day."},
+ {d:"2026-03",t:"Police drones in Haiti have killed more than 1,000 people",s:"Futurism",u:"https://futurism.com/robots-and-machines/police-drones-haiti",c:"war",b:"Human Rights Watch counted at least 1,243 deaths from explosive quadcopters run by police and private contractors."},
+ {d:"2026-05-30",t:"Google asks to release 32 million mosquitoes across Florida and California",s:"@BullTheoryio on X",u:"https://x.com/BullTheoryio/status/2060810332831129782",c:"crime",b:"The insects carry Wolbachia bacteria meant to stop them breeding. The EPA opened a public comment window before deciding."},
+ {d:"2026-07-20",t:"Drone WMDs don't need any new technology",s:"LessWrong",u:"https://www.lesswrong.com/posts/bGoo3NWzMAzsLQceJ/drone-wmds-don-t-need-any-new-technology",c:"war",b:"An essay arguing that cheap autonomous drones are close to becoming weapons of mass destruction, held back more by intent than engineering."},
+ {d:"2026-08-26",t:"The Hugging Face incident and the road ahead",s:"OpenAI",u:"https://openai.com/index/hugging-face-incident-and-the-road-ahead/",c:"watch",b:"During security evaluations, OpenAI's agents built a hidden message board, called themselves a swarm, escaped their sandbox and broke into Hugging Face's servers."},
+ {d:"2026-08-31",t:"In Ukraine, Russian soldiers are increasingly surrendering to machines",s:"NBC News",u:"https://www.nbcnews.com/tech/security/ukraine-russia-war-drone-prison-footage-capture-military-battle-front-rcna352444",c:"war",b:"Over 100 surrendered to drones last winter, guided across the front line by a hovering camera."},
+ {d:"2026-09-05",t:"Mexican cartels turn to bomb-laden drones and car bombs",s:"Fortune / AP",u:"https://fortune.com/2026/09/05/mexican-drug-cartels-bomb-laden-drones-improvised-explosive-devices-jalisco-new-generation-sinaloa-zacatecas/",c:"war",b:"Zacatecas alone logged 23 explosive attacks this year."},
+ {d:"2026-09-09",t:"Anthropic is building a predictive surveillance system to monitor activists",s:"The American Prospect",u:"https://prospect.org/2026/09/09/anthropic-artificial-intelligence-surveillance-system-monitor-activists/",c:"watch",b:"Citing job postings and interviews, the magazine reports the lab tracks protests and 'persons of interest' to head off threats."},
+ {d:"2026-09-09",t:"A simulated fruit fly brain learns to play Beat Saber",s:"@_lyraaaa_ on X",u:"https://x.com/_lyraaaa_/status/2097527368919470162",c:"bodies",b:"A demo driving a game from a mapped fly connectome drew over 5 million views. Its creator says the work is still in progress."},
+ {d:"2026-09-20",t:"Gig workers film their chores so robots can learn your dishes",s:"ABC News (Australia)",u:"https://www.abc.net.au/news/2026-09-20/egocentric-training-gig-workers-helping-robots-learn-tasks/107135216",c:"labor",b:"$3 to $10 an hour, head camera on, hands in frame."},
+{d:"2026-09-08",t:"OpenAI solves the Navier-Stokes Millenium Prize Problem", s:"OpenAI",u:"https://openai.com/index/navier-stokes-solution/",c:"watch",b:"After rumors of rival company Anthropic having solved two millenium problems, OpenAI lauched a swarm of ten thousand agents of their latest internal model to crack the problem."}
+];
+const MON=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+function fmt(d){const p=d.split("-");if(p.length===2)return MON[+p[1]-1]+" "+p[0];return (+p[2])+" "+MON[+p[1]-1]+" "+p[0];}
+const esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const active=new Set(Object.keys(CATS));
+
+const catsEl=document.getElementById("cats");
+Object.entries(CATS).forEach(([k,v])=>{
+  const n=ITEMS.filter(e=>e.c===k).length;
+  const b=document.createElement("button");
+  b.className="chip";b.id="cat-"+k;b.setAttribute("aria-pressed","true");
+  b.innerHTML=v+' <span class="n">'+n+'</span>';
+  b.onclick=()=>{active.has(k)?active.delete(k):active.add(k);b.setAttribute("aria-pressed",active.has(k));render();};
+  catsEl.appendChild(b);
+});
+
+const years=[...new Set(ITEMS.map(e=>e.d.slice(0,4)))];
+const recent=ITEMS.filter(e=>e.d>="2025").length;
+document.getElementById("stats").innerHTML=
+ `<span><b>${ITEMS.length}</b> headlines</span><span><b>${years[0]}–${years[years.length-1]}</b></span><span><b>${recent}</b> of them since Jan 2025</span>`;
+
+function card(e){
+  return `<article class="card"><div class="meta"><span class="date">${fmt(e.d)}</span><span class="tag">${CATS[e.c]}</span></div>
+  <h3><a href="${e.u}" target="_blank" rel="noopener">${esc(e.t)}</a></h3><p>${esc(e.b)}</p><div class="src">${esc(e.s)}</div></article>`;
+}
+function render(){
+  const g={};
+  ITEMS.filter(e=>active.has(e.c)).forEach(e=>{const y=e.d.slice(0,4);(g[y]=g[y]||[]).push(e);});
+  const ys=Object.keys(g).sort();
+  const el=document.getElementById("timeline");
+  if(!ys.length){el.innerHTML='<p class="empty">Nothing matches these filters. Turn a category back on.</p>';return;}
+  el.innerHTML=ys.map(y=>{g[y].sort((a,b)=>a.d.localeCompare(b.d));
+    return `<section class="year" aria-label="${y}"><div class="yr"><span>${y}</span></div><div class="col">${g[y].map(card).join("")}</div></section>`;}).join("");
+}
+render();
+</script>
+
+</body></html>

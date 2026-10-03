@@ -1,0 +1,1162 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Algebraic Kanji</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Klee+One:wght@400;600&family=Noto+Serif+JP:wght@500&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: quests, a practice-sheet workbench and the parts tray on the left; a living family tree on the right.
+   Indigo ink on cool paper; teacher's red only for discoveries, quests and rank-ups. */
+:root{
+  --paper:#EBEFF1;
+  --sheet:#F8FAFB;
+  --ink:#17202E;
+  --ink-2:#556173;
+  --rule:#C8D0D9;
+  --guide:#D3DAE2;
+  --indigo:#2A4A8C;
+  --indigo-soft:#DDE4F3;
+  --shu:#CF3F2A;
+  --shu-soft:#F7E1DC;
+  --on-indigo:#F8FAFB;
+  --f-kanji:"Klee One","Noto Serif JP","Hiragino Mincho ProN","Yu Mincho",serif;
+  --f-body:"Zen Kaku Gothic New",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#11151B; --sheet:#181D25; --ink:#E6E9EE; --ink-2:#9DA7B6; --rule:#2D3542; --guide:#262E3A;
+    --indigo:#91ACEF; --indigo-soft:#222C44; --shu:#FF7A61; --shu-soft:#3A221E; --on-indigo:#11151B; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#11151B; --sheet:#181D25; --ink:#E6E9EE; --ink-2:#9DA7B6; --rule:#2D3542; --guide:#262E3A;
+  --indigo:#91ACEF; --indigo-soft:#222C44; --shu:#FF7A61; --shu-soft:#3A221E; --on-indigo:#11151B; color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:14px;line-height:1.5}
+button{font:inherit;color:inherit}
+button:disabled{cursor:not-allowed}
+:focus-visible{outline:2px solid var(--indigo);outline-offset:2px}
+.wrap{max-width:1440px;margin:0 auto;padding-inline:clamp(16px,3vw,32px);padding-block:20px 28px;display:flex;flex-direction:column;gap:18px}
+.kj{font-family:var(--f-kanji);font-size:1.25em}
+
+/* header */
+.top{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px 28px}
+.brand{display:flex;flex-direction:column;gap:2px;min-width:0}
+.brand h1{margin:0;font-family:var(--f-kanji);font-weight:600;font-size:clamp(28px,4vw,40px);line-height:1.1;text-wrap:balance}
+.brand .jp{font-family:var(--f-kanji);color:var(--ink-2);font-size:15px}
+.brand p{margin:4px 0 0;color:var(--ink-2);max-width:62ch}
+.rankbox{display:flex;gap:14px;align-items:center;min-width:0}
+.rank{display:flex;flex-direction:column;align-items:center;justify-content:center;width:64px;height:64px;border:2px solid var(--shu);border-radius:50%;color:var(--shu);flex:none}
+.rank b{font-family:var(--f-kanji);font-size:22px;line-height:1;font-weight:600}
+.rank small{font-size:9px;letter-spacing:.14em;text-transform:uppercase}
+.rank.up{animation:pop .6s}
+@keyframes pop{40%{transform:scale(1.15)}}
+.rankinfo{display:flex;flex-direction:column;gap:6px;min-width:0}
+.count{font-family:var(--f-mono);font-variant-numeric:tabular-nums;font-size:12px;color:var(--ink-2)}
+.count b{color:var(--ink);font-weight:500;font-size:14px}
+.bar{width:230px;max-width:100%;height:5px;background:var(--guide);border-radius:3px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--shu);transition:width .5s}
+
+.op-ico{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.3;flex:none}
+.op-ico .in{fill:currentColor;fill-opacity:.28;stroke:none}
+
+/* main grid */
+.app{display:grid;grid-template-columns:minmax(0,480px) minmax(0,1fr);gap:18px;align-items:start}
+@media (max-width:960px){.app{grid-template-columns:minmax(0,1fr)}}
+.col{display:flex;flex-direction:column;gap:18px;min-width:0}
+.panel{background:var(--sheet);border:1px solid var(--rule);border-radius:10px;min-width:0}
+.panel-h{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 16px 0;flex-wrap:wrap}
+.label{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2);font-weight:700}
+.panel-h .aside{font-size:12px;color:var(--ink-2)}
+
+/* quests */
+.quests{padding:8px 16px 14px;display:flex;flex-direction:column;gap:8px}
+.quest{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:12px;align-items:center;padding:8px 10px;border:1px solid var(--rule);border-radius:8px;background:var(--paper)}
+.quest.done{border-color:var(--shu);background:var(--shu-soft)}
+.q-ico{width:38px;height:38px;border-radius:6px;border:1px dashed var(--ink-2);display:grid;place-items:center;color:var(--indigo);background:var(--sheet);cursor:pointer;padding:0}
+.q-ico .op-ico{width:20px;height:20px}
+.q-ico .wd{font-family:var(--f-kanji);font-size:18px;color:var(--indigo)}
+.q-ico:hover{border-color:var(--indigo)}
+.q-body{min-width:0;display:flex;flex-direction:column;gap:1px}
+.q-title{font-weight:700;font-size:14px;line-height:1.3}
+.q-title .q-k{font-weight:400;color:var(--ink-2);font-size:11px;letter-spacing:.08em;text-transform:uppercase;margin-right:6px}
+.q-sub{font-size:12px;color:var(--ink-2)}
+.q-clue{font-size:12.5px;color:var(--ink);margin-top:3px}
+.q-btn{border:1px solid var(--rule);background:var(--sheet);border-radius:6px;padding:5px 10px;font-size:12px;cursor:pointer;white-space:nowrap}
+.q-btn:hover{border-color:var(--indigo)}
+.q-empty{color:var(--ink-2);font-size:13px;margin:0}
+.q-note{font-size:11.5px;color:var(--ink-2);margin:0}
+
+/* practice grid background */
+.grid-bg{
+  background-color:var(--sheet);
+  background-image:
+    repeating-linear-gradient(to bottom,var(--guide) 0 4px,transparent 4px 8px),
+    repeating-linear-gradient(to right,var(--guide) 0 4px,transparent 4px 8px);
+  background-size:1px 100%,100% 1px;background-position:center,center;background-repeat:no-repeat;
+}
+
+/* tabs */
+.tabs{display:inline-flex;border:1px solid var(--rule);border-radius:7px;padding:2px;gap:2px;background:var(--paper)}
+.tab{border:0;background:none;padding:4px 12px;border-radius:5px;font-size:12px;font-weight:700;cursor:pointer;color:var(--ink-2)}
+.tab[aria-selected="true"]{background:var(--sheet);color:var(--indigo);box-shadow:0 0 0 1px var(--rule)}
+.tab:disabled{opacity:.6}
+.tab small{font-weight:400;font-family:var(--f-mono);font-size:10px;margin-left:4px}
+
+/* workbench */
+.bench{padding:0 16px 16px;display:flex;flex-direction:column;gap:14px}
+.equation{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:nowrap;padding-top:14px;min-height:150px}
+.slot{position:relative;width:72px;height:72px;border:1.5px solid var(--rule);border-radius:6px;cursor:pointer;display:grid;place-items:center;padding:0;flex:none}
+.slot .g{font-family:var(--f-kanji);font-size:44px;line-height:1}
+.slot .sl{position:absolute;bottom:-18px;left:50%;transform:translateX(-50%);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);white-space:nowrap}
+.slot.active{border-color:var(--indigo);box-shadow:0 0 0 2px var(--indigo-soft)}
+.slot.empty .g{color:var(--guide)}
+.opsym{color:var(--indigo);display:grid;place-items:center}
+.opsym .op-ico{width:22px;height:22px}
+.plus{font-family:var(--f-mono);font-size:18px;color:var(--ink-2)}
+.eqs{font-family:var(--f-mono);font-size:22px;color:var(--ink-2)}
+.preview{position:relative;--pv:128px;width:var(--pv);height:var(--pv);border:1.5px solid var(--ink-2);border-radius:4px;flex:none}
+.region{position:absolute}
+.region.empty{border:1px dashed var(--ink-2);opacity:.45;border-radius:2px}
+.region .pg{position:absolute;left:0;top:0;width:var(--pv);height:var(--pv);font-family:var(--f-kanji);font-size:calc(var(--pv) * .86);line-height:var(--pv);text-align:center;transform-origin:0 0;color:var(--ink-2);opacity:.75;pointer-events:none;transition:opacity .35s}
+.preview .result{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--f-kanji);font-size:calc(var(--pv) * .8);line-height:1;color:var(--ink);opacity:0;transition:opacity .45s;pointer-events:none}
+.preview.solved .pg{opacity:0}
+.preview.solved .result{opacity:1}
+.maru{position:absolute;inset:-14px;width:calc(100% + 28px);height:calc(100% + 28px);pointer-events:none;fill:none;stroke:var(--shu);stroke-width:2.2;stroke-linecap:round;stroke-dasharray:340;stroke-dashoffset:340;opacity:0}
+.solved .maru{opacity:1;animation:draw .7s .15s ease-out forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.shake{animation:shake .35s}
+@keyframes shake{25%{transform:translateX(-4px)}50%{transform:translateX(4px)}75%{transform:translateX(-2px)}}
+@media (max-width:440px){.slot{width:58px;height:58px}.slot .g{font-size:34px}.preview{--pv:104px}.equation{gap:6px}}
+
+/* word bench */
+.wslots{display:flex;gap:6px}
+.wslot{width:62px;height:62px}
+.wslot .g{font-size:38px}
+.wres{position:relative;min-width:120px;height:96px;padding:8px 12px;border:1.5px solid var(--ink-2);border-radius:4px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:2px;text-align:center}
+.wres .ww{font-family:var(--f-kanji);font-size:28px;line-height:1.1;color:var(--ink-2)}
+.wres .wr{font-size:13px;color:var(--ink-2)}
+.wres .wm{font-size:12px;font-weight:700}
+.wres.solved .ww{color:var(--ink)}
+@media (max-width:440px){.wslot{width:52px;height:52px}.wslot .g{font-size:30px}.wres{min-width:90px}}
+
+.ops{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:5px;margin-top:10px}
+@media (max-width:520px){.ops{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.opb{display:flex;flex-direction:column;align-items:center;gap:4px;padding:7px 2px 6px;border:1px solid var(--rule);border-radius:6px;background:var(--sheet);cursor:pointer;color:var(--ink-2);min-width:0}
+.opb .op-ico{width:20px;height:20px}
+.opb span{font-size:10px;line-height:1.2;text-align:center}
+.opb:hover{border-color:var(--indigo);color:var(--ink)}
+.opb[aria-checked="true"]{background:var(--indigo-soft);border-color:var(--indigo);color:var(--indigo)}
+.opdesc{margin:0;color:var(--ink-2);font-size:13px;min-height:2.9em}
+.opdesc b{color:var(--ink);font-weight:700}
+.actions{display:flex;flex-wrap:wrap;gap:8px}
+.btn{border:1px solid var(--rule);background:var(--sheet);border-radius:6px;padding:8px 14px;cursor:pointer;font-weight:500}
+.btn:hover{border-color:var(--indigo)}
+.btn.primary{background:var(--indigo);border-color:var(--indigo);color:var(--on-indigo);padding-inline:22px}
+.btn.primary:hover{filter:brightness(1.08)}
+.msg{margin:0;min-height:1.5em;font-size:14px}
+.msg .new{color:var(--shu);font-weight:700}
+.msg.err{color:var(--ink-2)}
+.msg .unlock{display:block;margin-top:4px;padding:6px 10px;border-radius:6px;background:var(--shu-soft);color:var(--ink)}
+
+/* tray */
+.tray{padding:4px 16px 16px;display:flex;flex-direction:column;gap:12px}
+.group h3{margin:10px 0 8px;font-size:12px;font-weight:700;color:var(--ink-2);display:flex;gap:8px;align-items:baseline}
+.group h3 small{font-weight:400;font-family:var(--f-mono);font-size:11px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(54px,1fr));gap:6px}
+.tile{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 2px 5px;border:1px solid var(--rule);border-radius:6px;background:var(--sheet);cursor:pointer;min-width:0;-webkit-touch-callout:none;user-select:none}
+.tile .tg{font-family:var(--f-kanji);font-size:26px;line-height:1.15}
+.tile .tm{font-size:9.5px;color:var(--ink-2);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding-inline:2px}
+.tile .tauto{position:absolute;top:3px;left:3px;color:var(--indigo)}
+.tile .tauto .op-ico{width:11px;height:11px}
+.tile:hover{border-color:var(--indigo)}
+.tile.rad{border-style:dashed}
+.tile.comp{background:var(--indigo-soft);border-color:transparent}
+.tile.comp:hover{border-color:var(--indigo)}
+.tile.inslot{outline:2px solid var(--indigo);outline-offset:-1px}
+.tile.fresh::after{content:"";position:absolute;top:4px;right:4px;width:6px;height:6px;border-radius:50%;background:var(--shu)}
+.tile:disabled{opacity:.35}
+.tile.locked{background:none;border-style:dotted}
+.tile.locked .tg{color:var(--ink-2)}
+.empty-note{color:var(--ink-2);font-size:13px;margin:0}
+
+/* graph */
+.graph-panel{position:sticky;top:calc(env(safe-area-inset-top,0px) + 12px);display:flex;flex-direction:column;height:min(88vh,900px);min-height:480px}
+@media (max-width:960px){.graph-panel{position:relative;top:0;height:540px}}
+.graph-wrap{position:relative;flex:1;min-height:0}
+#graph{position:absolute;inset:0;width:100%;height:100%;display:block;cursor:grab;touch-action:none}
+#graph:active{cursor:grabbing}
+.gtools{display:flex;gap:10px;align-items:center}
+.gtools .btn{padding:4px 10px;font-size:12px}
+.gtools label{font-size:12px;color:var(--ink-2);display:inline-flex;gap:5px;align-items:center;cursor:pointer}
+.legend{position:absolute;left:12px;bottom:10px;display:flex;flex-wrap:wrap;gap:4px 14px;font-size:11px;color:var(--ink-2);pointer-events:none;max-width:calc(100% - 24px)}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;vertical-align:-2px;margin-right:5px;border:1px solid var(--ink-2);background:var(--sheet)}
+.legend i.r{border-style:dashed}
+.legend i.c{background:var(--indigo-soft);border-color:var(--indigo)}
+.legend i.w{border-radius:6px;width:18px;border-color:var(--shu)}
+.gempty{position:absolute;inset:0;display:grid;place-items:center;text-align:center;color:var(--ink-2);padding:24px;pointer-events:none}
+.gempty b{display:block;font-family:var(--f-kanji);font-size:44px;color:var(--guide);font-weight:400}
+
+.link{fill:none;stroke:var(--rule);stroke-width:1.4;transition:stroke .2s,opacity .2s}
+.link.wl{stroke-dasharray:3 3}
+.node rect.body{fill:var(--sheet);stroke:var(--ink-2);stroke-width:1;transition:opacity .2s}
+.node.rad rect.body{stroke-dasharray:3 2}
+.node.comp rect.body{fill:var(--indigo-soft);stroke:var(--indigo);stroke-width:1.3}
+.node.word rect.body{fill:var(--sheet);stroke:var(--shu);stroke-width:1.3}
+.node text{font-family:var(--f-kanji);font-size:24px;fill:var(--ink);text-anchor:middle;dominant-baseline:central;pointer-events:none}
+.node.word text{font-size:17px}
+.node .badge rect{fill:var(--sheet);stroke:var(--indigo);stroke-width:1}
+.node .badge svg{color:var(--indigo)}
+.node{cursor:pointer}
+.node.fresh rect.body{stroke:var(--shu);stroke-width:2.2}
+.graph.hl .node{opacity:.22}
+.graph.hl .link{opacity:.12}
+.graph.hl .node.on{opacity:1}
+.graph.hl .link.on{opacity:1;stroke:var(--indigo);stroke-width:2}
+
+/* info card */
+.info{position:fixed;z-index:20;width:330px;max-width:calc(100vw - 24px);max-height:calc(100vh - 24px);overflow:auto;background:var(--sheet);border:1px solid var(--ink-2);border-radius:10px;box-shadow:0 10px 30px -12px rgba(10,20,40,.35);padding:14px 16px;display:flex;flex-direction:column;gap:10px;pointer-events:none}
+.info.pinned{pointer-events:auto;border-color:var(--indigo)}
+.info.sheet{left:12px!important;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));top:auto!important;width:auto;max-width:none;max-height:60vh}
+.i-head{display:flex;gap:14px;align-items:flex-start}
+.i-glyph{font-family:var(--f-kanji);font-size:58px;line-height:1;min-width:72px;height:72px;padding:0 6px;display:grid;place-items:center;flex:none;border:1px solid var(--rule);border-radius:6px}
+.i-glyph.long{font-size:34px}
+.i-main{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.i-kind{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2);font-weight:700}
+.i-mean{font-size:17px;font-weight:700;line-height:1.25}
+.i-read{font-size:13px;display:grid;grid-template-columns:auto 1fr;gap:1px 8px;align-items:baseline}
+.i-read .lbl{font-family:var(--f-mono);font-size:10px;color:var(--ink-2);letter-spacing:.06em}
+.i-close{display:none;border:0;background:none;font-size:20px;line-height:1;color:var(--ink-2);cursor:pointer;padding:0 2px}
+.info.pinned .i-close{display:block}
+.i-formula{display:flex;align-items:center;gap:8px;font-family:var(--f-kanji);font-size:22px;padding:6px 10px;background:var(--paper);border-radius:6px;flex-wrap:wrap}
+.i-formula .op-ico{color:var(--indigo)}
+.i-formula .eqs,.i-formula .plus{font-size:16px}
+.i-formula .on{margin-left:auto;font-family:var(--f-body);font-size:11px;color:var(--ink-2)}
+.i-note{margin:0;font-size:13px}
+.i-sec{display:flex;flex-direction:column;gap:5px}
+.i-sec h4{margin:0;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2);font-weight:700}
+.i-words{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:3px}
+.i-words li{display:grid;grid-template-columns:auto auto 1fr;gap:8px;align-items:baseline;font-size:13px}
+.i-words .w{font-family:var(--f-kanji);font-size:17px}
+.i-words .r{color:var(--ink-2);font-size:12px}
+.i-words .g{text-align:right}
+.chips{display:flex;flex-wrap:wrap;gap:5px;align-items:center}
+.chip{font-family:var(--f-kanji);font-size:18px;min-width:32px;height:32px;display:grid;place-items:center;border-radius:5px;background:var(--indigo-soft);border:1px solid transparent;padding:0 6px;cursor:pointer}
+.chip.wchip{background:var(--sheet);border-color:var(--shu)}
+.chip:hover{border-color:var(--indigo)}
+.chip.unk{background:none;border:1px dashed var(--rule);color:var(--ink-2);font-family:var(--f-mono);font-size:12px;cursor:default}
+.i-snd{font-size:12.5px;color:var(--ink-2);margin:0}
+.i-snd b{color:var(--ink);font-family:var(--f-kanji);font-size:15px;font-weight:400}
+
+.foot{display:flex;flex-wrap:wrap;gap:8px 20px;justify-content:space-between;align-items:center;color:var(--ink-2);font-size:12px}
+.foot p{margin:0;max-width:80ch}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  .solved .maru{stroke-dashoffset:0}
+}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <span class="jp">漢字の足し算</span>
+      <h1>Algebraic Kanji</h1>
+      <p>Combine parts to build kanji. Each one joins your tray as a new part. Points raise your rank, and each rank unlocks more parts.</p>
+    </div>
+    <div class="rankbox">
+      <div class="rank" id="rank" title="Ranks count down from 8級 to 1級, like the Kanji Kentei grades"><b id="rankName">8級</b><small>rank</small></div>
+      <div class="rankinfo">
+        <div class="count" id="nextLine"></div>
+        <div class="bar"><i id="barFill" style="width:0"></i></div>
+        <div class="count" id="countsLine"></div>
+      </div>
+    </div>
+  </header>
+
+  <main class="app">
+    <div class="col">
+      <section class="panel" aria-label="Quests">
+        <div class="panel-h"><span class="label">Quests</span><span class="aside">Quest finds earn a bonus point</span></div>
+        <div class="quests" id="quests"></div>
+      </section>
+
+      <section class="panel" aria-label="Workbench">
+        <div class="panel-h">
+          <span class="label">Workbench</span>
+          <div class="tabs" role="tablist" aria-label="Build mode">
+            <button class="tab" role="tab" id="tabK" aria-selected="true" type="button">Kanji</button>
+            <button class="tab" role="tab" id="tabW" aria-selected="false" type="button">Words</button>
+          </div>
+        </div>
+        <div class="bench" id="benchK">
+          <div class="equation">
+            <button class="slot grid-bg" id="slot0" data-i="0" type="button"><span class="g"></span><span class="sl"></span></button>
+            <div class="opsym" id="opSym"></div>
+            <button class="slot grid-bg" id="slot1" data-i="1" type="button"><span class="g"></span><span class="sl"></span></button>
+            <span class="eqs">=</span>
+            <div class="preview grid-bg" id="preview" aria-live="polite"></div>
+          </div>
+          <div class="ops" role="radiogroup" aria-label="Arrangement" id="ops"></div>
+          <p class="opdesc" id="opDesc"></p>
+        </div>
+        <div class="bench" id="benchW" hidden>
+          <div class="equation">
+            <div class="wslots" id="wslots"></div>
+            <span class="eqs">=</span>
+            <div class="wres" id="wres" aria-live="polite"></div>
+          </div>
+          <p class="opdesc">Line up kanji and starting characters to spell a word. Tap a filled square to remove it.</p>
+        </div>
+        <div class="bench" style="padding-top:0">
+          <div class="actions">
+            <button class="btn primary" id="combine" type="button">Combine</button>
+            <button class="btn" id="swap" type="button">Swap</button>
+            <button class="btn" id="clear" type="button">Clear</button>
+          </div>
+          <p class="msg" id="msg"></p>
+        </div>
+      </section>
+
+      <section class="panel" aria-label="Parts tray">
+        <div class="panel-h"><span class="label">Parts tray</span><span class="aside">Hover or long-press for details</span></div>
+        <div class="tray" id="tray"></div>
+      </section>
+    </div>
+
+    <section class="panel graph-panel" aria-label="Character graph">
+      <div class="panel-h">
+        <span class="label">Family tree</span>
+        <div class="gtools">
+          <label id="wordsToggleWrap"><input type="checkbox" id="wordsToggle" checked> Words</label>
+          <button class="btn" id="fit" type="button">Fit view</button>
+        </div>
+      </div>
+      <div class="graph-wrap" id="graphWrap">
+        <svg id="graph" class="graph" role="img" aria-label="Graph linking each kanji to the parts it is built from"></svg>
+        <div class="gempty" id="gempty"><div><b>樹</b>Your family tree grows here.<br>Build your first kanji to plant it.</div></div>
+        <div class="legend"><span><i></i>Starting character</span><span><i class="r"></i>Radical form</span><span><i class="c"></i>Kanji you built (badge = arrangement)</span><span><i class="w"></i>Word</span></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <p>Decompositions follow modern written shapes and are simplified for play; where they differ from historical etymology the card says so. Each kanji or word is worth a point; a quest find earns one more.</p>
+    <button class="btn" id="reset" type="button">Reset progress</button>
+  </footer>
+</div>
+
+<aside class="info" id="info" hidden></aside>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script>
+(function(){
+/* ---------- arrangements ---------- */
+const BOX='<rect x="1.5" y="1.5" width="13" height="13" rx="1"/>';
+const OPS={
+  lr:{name:'Side by side',slots:['Left','Right'],geo:[[0,0,.5,1],[.5,0,.5,1]],icon:BOX+'<path d="M8 1.5v13"/>',
+      desc:'<b>Left + right.</b> The most common shape. Often a meaning part sits on the left (亻, 氵, 木) and a sound part on the right.'},
+  tb:{name:'Stacked',slots:['Top','Bottom'],geo:[[0,0,1,.5],[0,.5,1,.5]],icon:BOX+'<path d="M1.5 8h13"/>',
+      desc:'<b>Top over bottom.</b> As in a child under a roof, or a field over a heart.'},
+  s:{name:'Enclosed',slots:['Outer','Inner'],geo:[[0,0,1,1],[.25,.25,.5,.5]],icon:BOX+'<rect class="in" x="5" y="5" width="6" height="6"/>',
+      desc:'<b>Fully surrounded.</b> One part is boxed inside another, like a tree fenced in by 囗.'},
+  a:{name:'Gate',slots:['Outer','Inner'],geo:[[0,0,1,1],[.27,.3,.46,.55]],icon:'<path d="M1.5 14.5V1.5h13v13"/><rect class="in" x="5" y="5.5" width="6" height="9"/>',
+      desc:'<b>Open at the bottom.</b> Surrounded from above and both sides, the way 門 frames what stands in the gateway.'},
+  ul:{name:'Awning',slots:['Outer','Inner'],geo:[[0,0,1,1],[.34,.34,.6,.6]],icon:'<path d="M14.5 1.5h-13v13"/><rect class="in" x="5" y="5" width="9.5" height="9.5"/>',
+      desc:'<b>Covered from the upper left.</b> 广 shelters whatever sits under it, like a roof on a cliffside.'},
+  ur:{name:'Hook',slots:['Outer','Inner'],geo:[[0,0,1,1],[.08,.34,.6,.58]],icon:'<path d="M1.5 1.5h13v13"/><rect class="in" x="1.5" y="5" width="9.5" height="9.5"/>',
+      desc:'<b>Covered from the upper right.</b> 勹 curls over and down like an arm wrapping something.'},
+  bl:{name:'Path',slots:['Outer','Inner'],geo:[[0,0,1,1],[.36,.02,.6,.66]],icon:'<path d="M1.5 1.5v13h13"/><rect class="in" x="5" y="1.5" width="9.5" height="9.5"/>',
+      desc:'<b>Wrapped from the lower left.</b> The sweep of 辶 (movement, road) carries the other part along.'},
+  ov:{name:'Overlay',slots:['Base','Across'],geo:[[0,0,1,1],[0,0,1,1]],icon:'<rect x="1.5" y="1.5" width="9" height="9"/><rect x="5.5" y="5.5" width="9" height="9"/>',
+      desc:'<b>Drawn across each other.</b> One part crosses the other, as a stroke marks the root of a tree.'}
+};
+const OP_ORDER=['lr','tb','s','a','ul','ur','bl','ov'];
+const opIcon=op=>`<svg class="op-ico" viewBox="0 0 16 16" aria-hidden="true">${OPS[op].icon}</svg>`;
+
+/* ---------- data ---------- */
+const DB={}; const PARTS=[]; const RECIPES=[]; const WORDS=[]; const WDB={};
+// starting part: character
+function B(c,t,m,on,kun,w,note){DB[c]={c,kind:'base',t,m,on,kun,w:w||[],note};PARTS.push(c)}
+// starting part: radical form (auto = [arrangement, slot])
+function Rd(c,t,m,of,name,auto,note){DB[c]={c,kind:'rad',t,m,of,name,auto,note,w:[]};PARTS.push(c)}
+// buildable kanji
+function K(c,op,a,b,m,on,kun,w,note,snd){DB[c]={c,kind:'comp',op,a,b,m,on,kun,w:w||[],note,snd};RECIPES.push(c)}
+// word
+function Wd(w,r,m){WDB[w]={w,r,m};WORDS.push(w)}
+// parts that always take the same position
+const AUTO_CHARS={'門':['a',0],'竹':['tb',0],'雨':['tb',0]};
+
+/* tier thresholds (points) and rank names, counted down like Kanken grades */
+const TIERS=[0,5,12,22,35,55,85,120];
+const RANKS=['8級','7級','6級','5級','4級','3級','2級','1級'];
+const WORD_TIER=4;
+
+/* ---- tier 0 ---- */
+B('日',0,'sun, day','ニチ・ジツ','ひ・か',[['日曜日','にちようび','Sunday'],['毎日','まいにち','every day']]);
+B('月',0,'moon, month','ゲツ・ガツ','つき',[['月曜日','げつようび','Monday'],['今月','こんげつ','this month']],'As a component on the left it often means flesh, not moon.');
+B('木',0,'tree, wood','ボク・モク','き・こ',[['木曜日','もくようび','Thursday'],['木材','もくざい','timber']]);
+B('口',0,'mouth, opening','コウ・ク','くち',[['入口','いりぐち','entrance'],['人口','じんこう','population']]);
+B('人',0,'person','ジン・ニン','ひと',[['日本人','にほんじん','Japanese person'],['大人','おとな','adult']]);
+B('女',0,'woman','ジョ・ニョ','おんな・め',[['女の子','おんなのこ','girl'],['女性','じょせい','woman']]);
+B('子',0,'child','シ・ス','こ',[['子供','こども','child'],['様子','ようす','appearance']]);
+B('田',0,'rice field','デン','た',[['田んぼ','たんぼ','rice paddy'],['田舎','いなか','countryside']]);
+B('力',0,'power, strength','リョク・リキ','ちから',[['協力','きょうりょく','cooperation'],['力','ちから','strength']]);
+B('十',0,'ten','ジュウ・ジッ','とお',[['十月','じゅうがつ','October'],['十分','じゅうぶん','enough']]);
+B('一',0,'one','イチ・イツ','ひと(つ)',[['一人','ひとり','one person'],['一月','いちがつ','January']]);
+Rd('亻',0,'person','人','にんべん',['lr',0],'The form 人 takes on the left side of a character.');
+/* ---- tier 1 ---- */
+B('心',1,'heart, mind','シン','こころ',[['中心','ちゅうしん','center'],['心配','しんぱい','worry']]);
+B('言',1,'say, word','ゲン・ゴン','い(う)・こと',[['言葉','ことば','word, language'],['言う','いう','to say']]);
+B('土',1,'earth, soil','ド・ト','つち',[['土曜日','どようび','Saturday'],['土地','とち','land']]);
+B('寸',1,'measure, inch','スン','—',[['寸法','すんぽう','measurements']],'As a component, 寸 usually stands for a hand.');
+B('大',1,'big','ダイ・タイ','おお(きい)',[['大学','だいがく','university'],['大きい','おおきい','big']],'A person standing with arms spread wide.');
+Rd('囗',1,'enclosure','—','くにがまえ',['s',0],'A wide box. Looks like 口 but is larger and always surrounds something.');
+Rd('宀',1,'roof','—','うかんむり',['tb',0],'A roof with a chimney. Marks houses and shelter.');
+/* ---- tier 2 ---- */
+B('門',2,'gate','モン','かど',[['専門','せんもん','specialty'],['校門','こうもん','school gate']],'Two swinging doors. As a component it always frames something inside.');
+B('耳',2,'ear','ジ','みみ',[['耳','みみ','ear'],['耳鼻科','じびか','ENT clinic']]);
+B('目',2,'eye','モク・ボク','め',[['目','め','eye'],['目的','もくてき','purpose']]);
+B('生',2,'life, birth','セイ・ショウ','い(きる)・う(まれる)・なま',[['先生','せんせい','teacher'],['学生','がくせい','student']],'A sprout pushing up out of the ground.');
+B('立',2,'stand','リツ・リュウ','た(つ)',[['立つ','たつ','to stand'],['国立','こくりつ','national']],'A person standing on the ground.');
+B('小',2,'small','ショウ','ちい(さい)・こ・お',[['小さい','ちいさい','small'],['小学校','しょうがっこう','elementary school']]);
+Rd('氵',2,'water','水','さんずい',['lr',0],'Three drops: the form 水 takes on the left. Marks liquids, rivers and seas.');
+Rd('艹',2,'grass, plants','草','くさかんむり',['tb',0],'The “grass crown”. Sits on top of plant words.');
+/* ---- tier 3 ---- */
+B('火',3,'fire','カ','ひ・ほ',[['火曜日','かようび','Tuesday'],['火山','かざん','volcano']]);
+B('水',3,'water','スイ','みず',[['水','みず','water'],['水曜日','すいようび','Wednesday']]);
+B('山',3,'mountain','サン','やま',[['富士山','ふじさん','Mount Fuji'],['山','やま','mountain']]);
+B('石',3,'stone','セキ・シャク・コク','いし',[['石','いし','stone'],['石油','せきゆ','petroleum']]);
+B('車',3,'vehicle, wheel','シャ','くるま',[['電車','でんしゃ','train'],['自転車','じてんしゃ','bicycle']]);
+B('工',3,'craft, work','コウ・ク','—',[['工場','こうじょう','factory'],['大工','だいく','carpenter']]);
+B('中',3,'middle, inside','チュウ','なか',[['中心','ちゅうしん','center'],['真ん中','まんなか','the very middle']]);
+B('丁',3,'block; counter','チョウ・テイ','—',[['丁寧','ていねい','polite'],['一丁目','いっちょうめ','1st block (address)']],'Originally a picture of a nail.');
+B('卜',3,'divination','ボク','—',[['卜占','ぼくせん','divination']],'A crack in a heated oracle bone.');
+Rd('忄',3,'heart, feelings','心','りっしんべん',['lr',0],'The upright form of 心 used on the left. Marks emotions and states of mind.');
+Rd('扌',3,'hand','手','てへん',['lr',0],'The form 手 takes on the left. Marks actions done by hand.');
+Rd('广',3,'building on a cliff','—','まだれ',['ul',0],'A lean-to roof. Marks buildings and rooms.');
+Rd('辶',3,'road, movement','—','しんにょう',['bl',0],'A foot on a road. Marks motion and travel.');
+Rd('灬',3,'fire (below)','火','れっか',['tb',1],'Four dots: the form 火 takes along the bottom.');
+/* ---- tier 4 (words) ---- */
+B('糸',4,'thread','シ','いと',[['糸','いと','thread'],['毛糸','けいと','yarn']]);
+B('金',4,'gold, metal, money','キン・コン','かね',[['お金','おかね','money'],['金曜日','きんようび','Friday']]);
+B('雨',4,'rain','ウ','あめ・あま',[['雨','あめ','rain'],['梅雨','つゆ','rainy season']],'On top of a kanji it marks weather.');
+B('竹',4,'bamboo','チク','たけ',[['竹','たけ','bamboo'],['竹刀','しない','bamboo sword']],'On top of a kanji it shrinks to two small tufts and marks things made of bamboo.');
+B('米',4,'rice','ベイ・マイ','こめ',[['米','こめ','rice'],['米国','べいこく','the USA']]);
+B('入',4,'enter','ニュウ','い(る)・はい(る)',[['入る','はいる','to enter'],['入口','いりぐち','entrance']]);
+B('又',4,'again; hand','—','また',[['又','また','again']],'As a component, 又 is a right hand.');
+B('舌',4,'tongue','ゼツ','した',[['舌','した','tongue'],['毒舌','どくぜつ','sharp tongue']]);
+B('主',4,'master, main','シュ・ス','ぬし・おも',[['主人','しゅじん','husband, master'],['主に','おもに','mainly']],'A lamp with its flame on top.');
+B('匕',4,'spoon; person turned over','ヒ','さじ',[['匕首','あいくち','dagger']]);
+B('八',4,'eight','ハチ','や・やっ(つ)',[['八月','はちがつ','August'],['八百屋','やおや','greengrocer']],'Two strokes parting: it also suggests dividing.');
+B('刀',4,'sword, blade','トウ','かたな',[['日本刀','にほんとう','Japanese sword'],['刀','かたな','sword']]);
+B('七',4,'seven','シチ','なな',[['七月','しちがつ','July'],['七つ','ななつ','seven things']],'Originally a picture of a cut.');
+B('手',4,'hand','シュ','て',[['手','て','hand'],['上手','じょうず','skillful']]);
+/* ---- tier 5 ---- */
+B('自',5,'self','ジ・シ','みずか(ら)',[['自分','じぶん','oneself'],['自然','しぜん','nature']],'Originally a picture of a nose; people point at their nose to mean “me”.');
+B('五',5,'five','ゴ','いつ(つ)',[['五月','ごがつ','May'],['五つ','いつつ','five things']]);
+B('白',5,'white','ハク・ビャク','しろ(い)',[['白い','しろい','white'],['面白い','おもしろい','interesting']]);
+B('王',5,'king','オウ','—',[['王','おう','king'],['女王','じょおう','queen']],'As a component on the left it often means jade.');
+B('巳',5,'snake (zodiac)','シ','み',[['巳年','みどし','Year of the Snake']],'A curled snake, or an unborn child.');
+B('夕',5,'evening','セキ','ゆう',[['夕方','ゆうがた','evening'],['七夕','たなばた','Star Festival']],'A crescent moon.');
+B('川',5,'river','セン','かわ',[['川','かわ','river'],['小川','おがわ','brook']]);
+B('未',5,'not yet','ミ','いま(だ)',[['未来','みらい','future'],['未定','みてい','undecided']],'A tree whose top branches have not grown in yet.');
+Rd('冖',5,'cover','—','わかんむり',['tb',0],'A cloth draped over something.');
+Rd('勹',5,'wrap','—','つつみがまえ',['ur',0],'An arm curling around something.');
+/* ---- tier 6 ---- */
+B('禾',6,'grain','カ','のぎ',[],'A ripe stalk of grain, bending under its head.');
+B('貝',6,'shell','バイ','かい',[['貝','かい','shellfish'],['貝殻','かいがら','seashell']],'Shells were once money, so 貝 marks wealth.');
+B('欠',6,'lack; yawn','ケツ','か(ける)',[['欠席','けっせき','absence'],['欠点','けってん','flaw']],'A person with mouth wide open.');
+B('少',6,'few, a little','ショウ','すく(ない)・すこ(し)',[['少し','すこし','a little'],['少年','しょうねん','boy']]);
+B('頁',6,'page; head','ケツ','ページ',[['頁','ページ','page']],'Originally a head. On the right of a kanji it marks the head or face.');
+B('豆',6,'bean','トウ・ズ','まめ',[['豆','まめ','bean'],['豆腐','とうふ','tofu']],'Originally a tall serving dish.');
+B('申',6,'say (humbly)','シン','もう(す)',[['申す','もうす','to say (humble)'],['申し込み','もうしこみ','application']],'Originally lightning, a sign from the gods.');
+Rd('刂',6,'knife','刀','りっとう',['lr',1],'The form 刀 takes on the right side.');
+Rd('礻',6,'altar','示','しめすへん',['lr',0],'The form 示 takes on the left. Marks gods and rites.');
+/* ---- tier 7 ---- */
+B('元',7,'origin','ゲン・ガン','もと',[['元気','げんき','healthy, energetic'],['元日','がんじつ','New Year’s Day']]);
+B('里',7,'village, hometown','リ','さと',[['里','さと','village'],['古里','ふるさと','hometown']],'A field over soil.');
+B('見',7,'see','ケン','み(る)',[['見る','みる','to see'],['意見','いけん','opinion']],'A big eye on legs.');
+B('斤',7,'axe','キン','—',[['一斤','いっきん','one loaf (of bread)']]);
+Rd('阝',7,'hill','阜','こざとへん',['lr',0],'On the left, a hill or terraced slope.');
+
+/* ---------- kanji ---------- */
+K('明','lr','日','月','bright','メイ・ミョウ','あか(るい)・あ(ける)',[['明日','あした','tomorrow'],['説明','せつめい','explanation']],'The sun and the moon side by side: the two brightest things in the sky.');
+K('林','lr','木','木','grove, woods','リン','はやし',[['林','はやし','grove'],['竹林','ちくりん','bamboo grove']],'Two trees side by side make a grove.');
+K('森','tb','木','林','forest','シン','もり',[['森林','しんりん','woodland'],['森','もり','forest']],'One tree stacked on a grove: three trees make a forest.');
+K('好','lr','女','子','like, fond of','コウ','す(き)・この(む)',[['好き','すき','to like'],['好物','こうぶつ','favorite food']],'A woman beside her child: affection.');
+K('男','tb','田','力','man','ダン・ナン','おとこ',[['男の子','おとこのこ','boy'],['男性','だんせい','male']],'Strength in the rice field.');
+K('休','lr','亻','木','rest','キュウ','やす(む)',[['休み','やすみ','break, holiday'],['休日','きゅうじつ','day off']],'A person leaning against a tree.');
+K('古','tb','十','口','old','コ','ふる(い)',[['古い','ふるい','old'],['中古','ちゅうこ','secondhand']],'Ten mouths retelling a story down the generations.');
+K('叶','lr','口','十','come true','キョウ','かな(う)',[['叶う','かなう','to come true']],'The same two parts as “old”, set side by side instead of stacked.');
+K('本','ov','木','一','book; origin','ホン','もと',[['本','ほん','book'],['日本','にほん','Japan']],'A stroke marks the root of a tree: the origin.');
+K('体','lr','亻','本','body','タイ・テイ','からだ',[['体','からだ','body'],['体育','たいいく','physical education']],'A person and their origin. A simplified form of the older 體.');
+K('旦','tb','日','一','dawn','タン・ダン','—',[['元旦','がんたん','New Year’s Day'],['旦那','だんな','husband, master']],'The sun rising over the horizon line.');
+K('早','tb','日','十','early, fast','ソウ・サッ','はや(い)',[['早い','はやい','early'],['早速','さっそく','at once']],'The sun just above the grass, drawn today as the sign for ten.');
+K('加','lr','力','口','add','カ','くわ(える)',[['参加','さんか','participation'],['加える','くわえる','to add']],'Strength plus a mouth: adding your voice to the effort.');
+K('呆','tb','口','木','dumbfounded','ボウ・ホウ','あき(れる)',[['呆然','ぼうぜん','stunned'],['呆れる','あきれる','to be appalled']],'Standing stiff as a tree with mouth agape.');
+
+K('困','s','囗','木','be troubled','コン','こま(る)',[['困る','こまる','to be in trouble'],['困難','こんなん','difficulty']],'A tree fenced in on all sides cannot grow.');
+K('囚','s','囗','人','prisoner','シュウ','—',[['囚人','しゅうじん','prisoner']],'A person shut inside an enclosure.');
+K('回','s','囗','口','turn; times','カイ','まわ(る)',[['今回','こんかい','this time'],['回る','まわる','to turn']],'A box in a box. It was once a spiral.');
+K('固','s','囗','古','hard, firm','コ','かた(い)',[['固い','かたい','hard'],['固定','こてい','fixed']],'Something old, walled in: firm and set. The inside gives the sound コ.','古');
+K('因','s','囗','大','cause','イン','よ(る)',[['原因','げんいん','cause'],['因果','いんが','cause and effect']],'A person stretched out on a mat: what things rest on.');
+K('恩','tb','因','心','gratitude, kindness','オン','—',[['恩','おん','debt of gratitude'],['恩人','おんじん','benefactor']],'A cause held in the heart.');
+K('字','tb','宀','子','character, letter','ジ','あざ',[['漢字','かんじ','kanji'],['文字','もじ','letter, script']],'A child under a roof, learning to write.');
+K('安','tb','宀','女','peaceful; cheap','アン','やす(い)',[['安い','やすい','cheap'],['安心','あんしん','relief']],'A woman safe under a roof.');
+K('守','tb','宀','寸','protect','シュ・ス','まも(る)',[['守る','まもる','to protect'],['留守','るす','being away from home']],'A hand keeping watch under the roof.');
+K('思','tb','田','心','think','シ','おも(う)',[['思う','おもう','to think'],['思い出','おもいで','memory']],'A field over the heart. The top was once a skull: thinking with head and heart.');
+K('寺','tb','土','寸','temple','ジ','てら',[['お寺','おてら','temple'],['寺院','じいん','temple']],'Soil over a hand. The word first meant a government office.');
+K('時','lr','日','寺','time, hour','ジ','とき',[['時間','じかん','time'],['時々','ときどき','sometimes']],'The sun for the meaning, temple for the sound ジ.','寺');
+K('村','lr','木','寸','village','ソン','むら',[['村','むら','village'],['農村','のうそん','farming village']],'Trees and a hand at work.');
+K('計','lr','言','十','measure, plan','ケイ','はか(る)',[['時計','とけい','clock'],['計画','けいかく','plan']],'Words counting up to ten.');
+K('信','lr','亻','言','trust, believe','シン','—',[['信じる','しんじる','to believe'],['自信','じしん','confidence']],'A person standing by their word.');
+K('付','lr','亻','寸','attach','フ','つ(ける)',[['付ける','つける','to attach'],['日付','ひづけ','date']],'A hand reaching out to a person.');
+K('討','lr','言','寸','attack; examine','トウ','う(つ)',[['検討','けんとう','consideration'],['討論','とうろん','debate']],'Words used like a hand: taking an argument apart.');
+
+K('間','a','門','日','interval, space','カン・ケン','あいだ・ま',[['時間','じかん','time'],['人間','にんげん','human being']],'Sunlight through the gap in a gate.');
+K('聞','a','門','耳','hear, ask','ブン・モン','き(く)',[['聞く','きく','to listen'],['新聞','しんぶん','newspaper']],'An ear pressed to the gate. The gate also gives the sound モン.','門');
+K('問','a','門','口','question','モン','と(う)',[['問題','もんだい','problem'],['質問','しつもん','question']],'A mouth at the gate, asking. The gate gives the sound モン.','門');
+K('閑','a','門','木','leisure, quiet','カン','—',[['閑静','かんせい','quiet (neighborhood)'],['農閑期','のうかんき','farming off-season']],'A wooden bar across the gate: closed for the day.');
+K('相','lr','木','目','mutual; minister','ソウ・ショウ','あい',[['相手','あいて','partner, opponent'],['首相','しゅしょう','prime minister']],'An eye looking closely at a tree.');
+K('想','tb','相','心','imagine, concept','ソウ・ソ','—',[['想像','そうぞう','imagination'],['感想','かんそう','impressions']],'The heart, with the sound of “mutual” on top.','相');
+K('星','tb','日','生','star','セイ・ショウ','ほし',[['星','ほし','star'],['火星','かせい','Mars']],'Points of light being born. The bottom gives the sound セイ.','生');
+K('姓','lr','女','生','surname','セイ・ショウ','—',[['姓名','せいめい','full name'],['百姓','ひゃくしょう','farmer']],'Born of a woman: lineage. The right side gives the sound セイ.','生');
+K('音','tb','立','日','sound','オン・イン','おと・ね',[['音楽','おんがく','music'],['足音','あしおと','footsteps']],'Today drawn as “stand” over “sun”; historically a mouth making a sound.');
+K('意','tb','音','心','meaning, intention','イ','—',[['意味','いみ','meaning'],['意見','いけん','opinion']],'The sound of the heart: what you mean.');
+K('位','lr','亻','立','rank, position','イ','くらい',[['位置','いち','position'],['一位','いちい','first place']],'A person standing in their place.');
+K('泣','lr','氵','立','cry','キュウ','な(く)',[['泣く','なく','to cry'],['号泣','ごうきゅう','wailing']],'Water running down someone standing still.');
+K('苗','tb','艹','田','seedling','ビョウ・ミョウ','なえ',[['苗','なえ','seedling'],['苗字','みょうじ','family name']],'Grass in the rice field.');
+K('苦','tb','艹','古','bitter; suffering','ク','くる(しい)・にが(い)',[['苦い','にがい','bitter'],['苦労','くろう','hardship']],'Old grass: bitter herbs. The bottom gives the sound.','古');
+K('枯','lr','木','古','wither','コ','か(れる)',[['枯れる','かれる','to wither'],['枯葉','かれは','dead leaf']],'An old tree. The right side gives the sound コ.','古');
+K('胡','lr','古','月','foreign (old usage)','コ・ゴ','—',[['胡椒','こしょう','pepper'],['胡麻','ごま','sesame']],'“Old” for the sound, flesh for the meaning. Later borrowed for things brought from Central Asia.','古');
+K('湖','lr','氵','胡','lake','コ','みずうみ',[['湖','みずうみ','lake'],['湖畔','こはん','lakeside']],'Water, with the sound コ on the right.','胡');
+K('汁','lr','氵','十','soup, juice','ジュウ','しる',[['味噌汁','みそしる','miso soup'],['果汁','かじゅう','fruit juice']],'Water with ten things in it.');
+K('尖','tb','小','大','pointed','セン','とが(る)',[['尖る','とがる','to be pointed'],['尖塔','せんとう','spire']],'Small on top of big: a point.');
+
+K('性','lr','忄','生','nature; gender','セイ・ショウ','—',[['性格','せいかく','personality'],['女性','じょせい','woman']],'The heart one is born with.','生');
+K('畑','lr','火','田','field (dry)','—','はたけ・はた',[['畑','はたけ','field'],['田畑','たはた','fields']],'Made in Japan (a kokuji): a field cleared by fire. It has no Chinese reading.');
+K('炎','tb','火','火','flame','エン','ほのお',[['炎','ほのお','flame'],['炎上','えんじょう','going up in flames; online backlash']],'Fire stacked on fire.');
+K('談','lr','言','炎','conversation','ダン','—',[['相談','そうだん','consultation'],['冗談','じょうだん','joke']],'Words flaring back and forth.');
+K('岩','tb','山','石','rock, crag','ガン','いわ',[['岩','いわ','rock'],['溶岩','ようがん','lava']],'Stone on the mountain.');
+K('連','bl','辶','車','connect, bring along','レン','つ(れる)',[['連絡','れんらく','contact'],['連れる','つれる','to bring along']],'Carts moving along a road in a line.');
+K('辻','bl','辶','十','crossroads','—','つじ',[['辻','つじ','crossroads']],'Made in Japan (a kokuji): a road with a crossing.');
+K('床','ul','广','木','floor; bed','ショウ','とこ・ゆか',[['床','ゆか','floor'],['起床','きしょう','getting up']],'Wood under a roof.');
+K('江','lr','氵','工','inlet, bay','コウ','え',[['江戸','えど','Edo (old Tokyo)'],['入り江','いりえ','cove']],'Water for the meaning, “craft” for the sound コウ.','工');
+K('功','lr','工','力','achievement','コウ・ク','—',[['成功','せいこう','success'],['功績','こうせき','achievement']],'Work plus strength.','工');
+K('持','lr','扌','寺','hold','ジ','も(つ)',[['持つ','もつ','to hold'],['気持ち','きもち','feeling']],'A hand, with the sound of “temple”.','寺');
+K('担','lr','扌','旦','carry, bear','タン','かつ(ぐ)・にな(う)',[['担当','たんとう','in charge'],['負担','ふたん','burden']],'A hand, with the sound of “dawn” (タン).','旦');
+K('打','lr','扌','丁','hit','ダ','う(つ)',[['打つ','うつ','to hit'],['打ち合わせ','うちあわせ','meeting']],'A hand driving in a nail.');
+K('町','lr','田','丁','town','チョウ','まち',[['町','まち','town'],['町長','ちょうちょう','mayor']],'Fields laid out in blocks.','丁');
+K('灯','lr','火','丁','lamp','トウ','ひ',[['電灯','でんとう','electric light'],['灯台','とうだい','lighthouse']],'A flame on a stand.');
+K('占','tb','卜','口','divine; occupy','セン','うらな(う)・し(める)',[['占い','うらない','fortune-telling'],['独占','どくせん','monopoly']],'A mouth reading the cracks on an oracle bone.');
+K('店','ul','广','占','shop','テン','みせ',[['店','みせ','shop'],['店員','てんいん','shop clerk']],'A building that occupies a spot on the street.','占');
+K('点','tb','占','灬','point, dot','テン','—',[['点','てん','point'],['点数','てんすう','score']],'A mark burned in by fire.','占');
+K('沖','lr','氵','中','open sea','チュウ','おき',[['沖','おき','offshore'],['沖縄','おきなわ','Okinawa']],'The middle of the water.','中');
+K('仲','lr','亻','中','relationship','チュウ','なか',[['仲間','なかま','companion'],['仲良し','なかよし','good friends']],'The person in the middle.','中');
+K('忠','tb','中','心','loyalty','チュウ','—',[['忠実','ちゅうじつ','faithful'],['忠告','ちゅうこく','advice']],'A heart kept centered.','中');
+
+K('取','lr','耳','又','take','シュ','と(る)',[['取る','とる','to take'],['取材','しゅざい','news gathering']],'A hand holding an ear, a trophy of ancient battles.');
+K('化','lr','亻','匕','change','カ・ケ','ば(ける)',[['文化','ぶんか','culture'],['お化け','おばけ','ghost']],'A person standing and a person turned over.');
+K('花','tb','艹','化','flower','カ','はな',[['花火','はなび','fireworks'],['花見','はなみ','flower viewing']],'A plant that changes. The bottom gives the sound カ.','化');
+K('住','lr','亻','主','live, reside','ジュウ','す(む)',[['住所','じゅうしょ','address'],['住む','すむ','to live']],'A person who stays put, like a lamp in its place.','主');
+K('注','lr','氵','主','pour; note','チュウ','そそ(ぐ)',[['注意','ちゅうい','caution'],['注文','ちゅうもん','order']],'Water directed at one spot.','主');
+K('柱','lr','木','主','pillar','チュウ','はしら',[['柱','はしら','pillar'],['電柱','でんちゅう','utility pole']],'The main timber of a house.','主');
+K('活','lr','氵','舌','lively, active','カツ','—',[['生活','せいかつ','daily life'],['活動','かつどう','activity']],'Flowing water: lively. The right side was once a different sound part.');
+K('話','lr','言','舌','talk, story','ワ','はな(す)・はなし',[['電話','でんわ','telephone'],['話す','はなす','to speak']],'Words and the tongue.');
+K('旨','tb','匕','日','tasty; gist','シ','むね',[['要旨','ようし','summary'],['旨い','うまい','tasty']],'A spoon over the mouth, drawn today as the sun.');
+K('指','lr','扌','旨','finger; point','シ','ゆび・さ(す)',[['指','ゆび','finger'],['指す','さす','to point']],'The hand, with the sound シ on the right.','旨');
+K('迷','bl','辶','米','get lost','メイ','まよ(う)',[['迷う','まよう','to get lost'],['迷惑','めいわく','nuisance']],'Roads branching every way, like the strokes of rice.');
+K('込','bl','辶','入','go in; crowded','—','こ(む)',[['込む','こむ','to be crowded'],['申し込み','もうしこみ','application']],'Made in Japan (a kokuji): moving inward.');
+K('細','lr','糸','田','thin, fine','サイ','ほそ(い)・こま(かい)',[['細い','ほそい','thin'],['細かい','こまかい','detailed']],'Thread as fine as the lines between fields.');
+K('紅','lr','糸','工','crimson','コウ・ク','べに・くれない',[['紅茶','こうちゃ','black tea'],['口紅','くちべに','lipstick']],'Dyed thread, with the sound コウ.','工');
+K('針','lr','金','十','needle','シン','はり',[['針','はり','needle'],['方針','ほうしん','policy']],'Metal and a cross-stitch.');
+K('雷','tb','雨','田','thunder','ライ','かみなり',[['雷','かみなり','thunder'],['地雷','じらい','landmine']],'Rain over the fields: a storm rolling in.');
+K('箱','tb','竹','相','box','—','はこ',[['箱','はこ','box'],['本箱','ほんばこ','bookcase']],'Bamboo for the material. The lower part once gave the sound.');
+K('等','tb','竹','寺','equal; etc.','トウ','ひと(しい)・など',[['平等','びょうどう','equality'],['等しい','ひとしい','equal']],'Bamboo slips lined up in an office, all the same.');
+K('分','tb','八','刀','divide; minute; understand','ブン・フン・ブ','わ(ける)・わ(かる)',[['分かる','わかる','to understand'],['自分','じぶん','oneself']],'A blade splitting something in two.');
+K('粉','lr','米','分','powder, flour','フン','こ・こな',[['粉','こな','powder'],['花粉','かふん','pollen']],'Rice divided finely. The right side gives the sound フン.','分');
+K('切','lr','七','刀','cut','セツ・サイ','き(る)',[['切る','きる','to cut'],['大切','たいせつ','important']],'A blade beside a cut mark.');
+
+K('息','tb','自','心','breath; son','ソク','いき',[['息','いき','breath'],['息子','むすこ','son']],'The nose over the heart: breathing.');
+K('吾','tb','五','口','I, myself (literary)','ゴ','われ',[['吾輩','わがはい','I (pompous)']],'Five for the sound ゴ, a mouth for speaking.','五');
+K('語','lr','言','吾','language, tell','ゴ','かた(る)',[['日本語','にほんご','Japanese language'],['物語','ものがたり','story']],'Words for the meaning, “I” for the sound ゴ.','吾');
+K('百','tb','一','白','hundred','ヒャク','もも',[['百','ひゃく','hundred'],['八百屋','やおや','greengrocer']],'One stroke over white.','白');
+K('泊','lr','氵','白','stay overnight','ハク','と(まる)',[['泊まる','とまる','to stay over'],['宿泊','しゅくはく','lodging']],'A boat moored in the water. The right gives the sound ハク.','白');
+K('拍','lr','扌','白','beat, clap','ハク・ヒョウ','—',[['拍手','はくしゅ','applause'],['拍子','ひょうし','rhythm']],'Hands, with the sound ハク.','白');
+K('皇','tb','白','王','emperor','コウ・オウ','—',[['天皇','てんのう','emperor'],['皇居','こうきょ','Imperial Palace']],'A shining king.');
+K('全','tb','入','王','whole, complete','ゼン','まった(く)・すべ(て)',[['全部','ぜんぶ','all'],['安全','あんぜん','safety']],'Jade brought in whole and flawless.');
+K('泉','tb','白','水','spring (water)','セン','いずみ',[['泉','いずみ','spring']],'Clear water bubbling up.');
+K('軍','tb','冖','車','army','グン','—',[['軍','ぐん','army'],['将軍','しょうぐん','shogun']],'Chariots under cover.');
+K('運','bl','辶','軍','carry; luck','ウン','はこ(ぶ)',[['運ぶ','はこぶ','to carry'],['運動','うんどう','exercise']],'An army on the move.','軍');
+K('句','ur','勹','口','phrase','ク','—',[['文句','もんく','complaint'],['俳句','はいく','haiku']],'Words wrapped up together.');
+K('旬','ur','勹','日','season; ten days','ジュン・シュン','—',[['旬','しゅん','in season'],['上旬','じょうじゅん','first ten days of a month']],'Days wrapped up in a bundle.');
+K('包','ur','勹','巳','wrap','ホウ','つつ(む)',[['包む','つつむ','to wrap'],['包丁','ほうちょう','kitchen knife']],'An unborn child wrapped in the womb.');
+K('多','tb','夕','夕','many','タ','おお(い)',[['多い','おおい','many'],['多分','たぶん','probably']],'Evening upon evening.');
+K('名','tb','夕','口','name','メイ・ミョウ','な',[['名前','なまえ','name'],['有名','ゆうめい','famous']],'In the dark evening you call out your name.');
+K('外','lr','夕','卜','outside','ガイ・ゲ','そと・ほか',[['外','そと','outside'],['外国','がいこく','foreign country']],'Divination done in the evening, outside the usual rites.');
+K('訓','lr','言','川','teach; kun reading','クン','—',[['訓読み','くんよみ','kun reading'],['訓練','くんれん','training']],'Words flowing like a river: teaching.');
+K('味','lr','口','未','taste','ミ','あじ',[['味','あじ','taste'],['意味','いみ','meaning']],'A mouth, with the sound ミ.','未');
+K('妹','lr','女','未','younger sister','マイ','いもうと',[['妹','いもうと','younger sister'],['姉妹','しまい','sisters']],'The woman not yet grown.','未');
+
+K('利','lr','禾','刂','profit; effective','リ','き(く)',[['便利','べんり','convenient'],['利用','りよう','use']],'A blade cutting grain: the harvest.');
+K('和','lr','禾','口','harmony; Japanese','ワ・オ','やわ(らぐ)・なご(む)',[['和食','わしょく','Japanese food'],['平和','へいわ','peace']],'Grain and a mouth: everyone fed and at peace.');
+K('秋','lr','禾','火','autumn','シュウ','あき',[['秋','あき','autumn'],['秋分','しゅうぶん','autumn equinox']],'Grain and fire: harvest and burning the stubble.');
+K('香','tb','禾','日','fragrance','コウ・キョウ','か・かお(り)',[['香り','かおり','scent'],['香水','こうすい','perfume']],'Grain warmed in the sun.');
+K('秒','lr','禾','少','second (time)','ビョウ','—',[['秒','びょう','second'],['秒針','びょうしん','second hand']],'A tiny awn of grain: the smallest unit.');
+K('省','tb','少','目','reflect; ministry; omit','セイ・ショウ','かえり(みる)・はぶ(く)',[['反省','はんせい','reflection'],['省く','はぶく','to omit']],'Narrowing the eyes to look closely.');
+K('砂','lr','石','少','sand','サ・シャ','すな',[['砂','すな','sand'],['砂糖','さとう','sugar']],'Small stones.');
+K('劣','tb','少','力','inferior','レツ','おと(る)',[['劣る','おとる','to be inferior'],['劣化','れっか','deterioration']],'Little strength.');
+K('另','tb','口','力','another (Chinese)','レイ','—',[],'Common in Chinese but rare in Japanese. Here it is a stepping stone to a more useful kanji.');
+K('別','lr','另','刂','separate, different','ベツ','わか(れる)',[['特別','とくべつ','special'],['別れる','わかれる','to part']],'A knife separating flesh from bone.');
+K('則','lr','貝','刂','rule','ソク','—',[['規則','きそく','rule'],['原則','げんそく','principle']],'Laws cut into bronze vessels. The left was once a cauldron, not a shell.');
+K('貨','tb','化','貝','goods, money','カ','—',[['通貨','つうか','currency'],['貨物','かもつ','freight']],'Shells that change hands.','化');
+K('賀','tb','加','貝','congratulate','ガ','—',[['年賀状','ねんがじょう','New Year card'],['祝賀','しゅくが','celebration']],'Adding gifts of value.','加');
+K('吹','lr','口','欠','blow','スイ','ふ(く)',[['吹く','ふく','to blow'],['吹雪','ふぶき','snowstorm']],'A mouth wide open, blowing.');
+K('炊','lr','火','欠','cook (rice)','スイ','た(く)',[['炊く','たく','to cook rice'],['自炊','じすい','cooking for oneself']],'Blowing on the fire under the pot.');
+K('社','lr','礻','土','company; shrine','シャ','やしろ',[['会社','かいしゃ','company'],['神社','じんじゃ','shrine']],'An altar to the earth god.');
+K('神','lr','礻','申','god, spirit','シン・ジン','かみ',[['神','かみ','god'],['神社','じんじゃ','shrine']],'An altar and lightning.','申');
+K('伸','lr','亻','申','stretch','シン','の(びる)',[['伸びる','のびる','to stretch'],['追伸','ついしん','P.S.']],'A person stretching, with the sound シン.','申');
+K('順','lr','川','頁','order, sequence','ジュン','—',[['順番','じゅんばん','turn, order'],['順調','じゅんちょう','going smoothly']],'A head following the flow of a river.');
+K('頂','lr','丁','頁','summit; receive','チョウ','いただ(く)',[['頂く','いただく','to receive (humble)'],['頂上','ちょうじょう','summit']],'The top of the head.','丁');
+K('頭','lr','豆','頁','head','トウ・ズ','あたま',[['頭','あたま','head'],['頭痛','ずつう','headache']],'A head, with the sound トウ.','豆');
+
+K('完','tb','宀','元','complete','カン','—',[['完成','かんせい','completion'],['完全','かんぜん','perfect']],'A house built from the ground up.','元');
+K('院','lr','阝','完','institution','イン','—',[['病院','びょういん','hospital'],['大学院','だいがくいん','graduate school']],'A walled compound on a hill.');
+K('理','lr','王','里','reason, logic','リ','—',[['料理','りょうり','cooking'],['理由','りゆう','reason']],'The grain of jade, with the sound リ.','里');
+K('童','tb','立','里','child','ドウ','わらべ',[['童話','どうわ','fairy tale'],['児童','じどう','children']],'A child of the village.');
+K('埋','lr','土','里','bury','マイ','う(める)',[['埋める','うめる','to bury, fill in'],['埋蔵','まいぞう','buried deposits']],'Soil heaped over.');
+K('現','lr','王','見','appear; present','ゲン','あらわ(れる)',[['現在','げんざい','the present'],['表現','ひょうげん','expression']],'The shine of jade, seen.','見');
+K('近','bl','辶','斤','near','キン','ちか(い)',[['近い','ちかい','near'],['最近','さいきん','recently']],'A short walk, with the sound キン.','斤');
+K('折','lr','扌','斤','fold, break','セツ','お(る)',[['折る','おる','to fold, break'],['骨折','こっせつ','fracture']],'A hand with an axe.');
+K('析','lr','木','斤','split; analyze','セキ','—',[['分析','ぶんせき','analysis'],['解析','かいせき','analysis (math)']],'An axe splitting wood.');
+
+/* ---------- words ---------- */
+[
+['日本','にほん','Japan'],['明日','あした','tomorrow'],['本日','ほんじつ','today (formal)'],['人口','じんこう','population'],
+['入口','いりぐち','entrance'],['男子','だんし','boy, man'],['女子','じょし','girl, woman'],['男性','だんせい','male'],['女性','じょせい','female'],
+['休日','きゅうじつ','day off'],['連休','れんきゅう','consecutive holidays'],['時間','じかん','time'],['人間','にんげん','human being'],
+['時計','とけい','clock'],['安心','あんしん','peace of mind'],['安全','あんぜん','safety'],['苗字','みょうじ','family name'],
+['相手','あいて','partner, opponent'],['相談','そうだん','consultation'],['意味','いみ','meaning'],['注意','ちゅうい','caution'],
+['火星','かせい','Mars'],['金星','きんせい','Venus'],['水星','すいせい','Mercury'],['花火','はなび','fireworks'],['花見','はなみ','cherry-blossom viewing'],
+['月見','つきみ','moon viewing'],['火山','かざん','volcano'],['生活','せいかつ','daily life'],['日本語','にほんご','Japanese language'],
+['言語','げんご','language'],['主語','しゅご','grammatical subject'],['多分','たぶん','probably'],['自分','じぶん','oneself'],
+['十分','じゅうぶん','enough'],['大切','たいせつ','important'],['切手','きって','postage stamp'],['大人','おとな','adult'],
+['大工','だいく','carpenter'],['人工','じんこう','artificial'],['中心','ちゅうしん','center'],['中古','ちゅうこ','secondhand'],
+['一人','ひとり','one person, alone'],['月日','つきひ','time, days and months'],['本音','ほんね','true feelings'],['本店','ほんてん','head store'],
+['本名','ほんみょう','real name'],['見本','みほん','sample'],['古本','ふるほん','secondhand book'],['女王','じょおう','queen'],
+['王子','おうじ','prince'],['白米','はくまい','polished rice'],['大雨','おおあめ','heavy rain'],['雷雨','らいう','thunderstorm'],
+['香水','こうすい','perfume'],['竹林','ちくりん','bamboo grove'],['仲間','なかま','companion'],['休息','きゅうそく','rest'],
+['息子','むすこ','son'],['一回','いっかい','once'],['思想','しそう','ideology'],['自信','じしん','confidence'],['自立','じりつ','independence'],
+['岩石','がんせき','rock'],['土木','どぼく','civil engineering'],['寺院','じいん','temple'],['村人','むらびと','villager'],['一目','ひとめ','a glance'],
+['花粉','かふん','pollen'],['小石','こいし','pebble'],['小川','おがわ','brook'],['点火','てんか','ignition'],['百点','ひゃくてん','perfect score'],
+['秋分','しゅうぶん','autumn equinox'],['利口','りこう','clever'],['神社','じんじゃ','Shinto shrine'],['神話','しんわ','myth'],['別名','べつめい','alias'],
+['完全','かんぜん','perfect'],['心理','しんり','psychology'],['童話','どうわ','fairy tale'],['分析','ぶんせき','analysis'],['指名','しめい','nomination'],
+['多少','たしょう','more or less'],['少女','しょうじょ','young girl'],['人生','じんせい','life'],['一生','いっしょう','lifetime'],['化石','かせき','fossil'],
+['加工','かこう','processing'],['入力','にゅうりょく','input'],['全力','ぜんりょく','all-out effort'],['全体','ぜんたい','the whole'],['大体','だいたい','roughly'],
+['体力','たいりょく','stamina'],['主人','しゅじん','husband, master'],['早口','はやくち','fast talking'],['口紅','くちべに','lipstick'],['細工','さいく','craftwork'],
+['針金','はりがね','wire'],['包丁','ほうちょう','kitchen knife'],['丁目','ちょうめ','city block'],['里山','さとやま','village woodland'],['元日','がんじつ','New Year’s Day'],
+['手話','しゅわ','sign language'],['拍手','はくしゅ','applause'],['古里','ふるさと','hometown'],['名人','めいじん','master, expert'],['雨水','あまみず','rainwater'],
+['水田','すいでん','paddy field']
+].forEach(([w,r,m])=>Wd(w,r,m));
+
+
+const byKey={}; RECIPES.forEach(c=>{const e=DB[c];byKey[e.op+'|'+e.a+'|'+e.b]=c});
+const usedIn={}; RECIPES.forEach(c=>{const e=DB[c];[e.a,e.b].forEach(p=>{(usedIn[p]=usedIn[p]||[]); if(!usedIn[p].includes(c)) usedIn[p].push(c)})});
+const soundFam={}; RECIPES.forEach(c=>{const s=DB[c].snd; if(s)(soundFam[s]=soundFam[s]||[]).push(c)});
+const dMemo={}; function depth(c){ if(dMemo[c]!=null) return dMemo[c]; const e=DB[c]; return dMemo[c]= e.op?1+Math.max(depth(e.a),depth(e.b)):0 }
+const tMemo={}; function ktier(c){ if(tMemo[c]!=null) return tMemo[c]; const e=DB[c]; return tMemo[c]= e.op?Math.max(ktier(e.a),ktier(e.b)):e.t }
+const MAXD=Math.max(...RECIPES.map(depth));
+const autoOf=c=>DB[c]&&(DB[c].auto||AUTO_CHARS[c]);
+const gloss=c=>DB[c].m.split(/[,;]/)[0];
+const RANKMAX=TIERS.length-1;
+
+/* ---------- state ---------- */
+const KEY='algebraic-kanji-v2';
+let order=[], wfound=[], questsDone=0, quests=[], tierSeen=0;
+const found=new Set(), wset=new Set(), fresh=new Set();
+let mode='k', slots=[null,null], wslots=[], active=0, op='lr', solved=null, wsolved=null, showWords=true;
+
+const points=()=>order.length+wfound.length+questsDone;
+function tier(){let t=0; TIERS.forEach((v,i)=>{if(points()>=v) t=i}); return t}
+const have=c=>!!DB[c] && (DB[c].kind==='comp' ? found.has(c) : DB[c].t<=tier());
+const wordsOpen=()=>tier()>=WORD_TIER;
+
+function save(){try{localStorage.setItem(KEY,JSON.stringify({d:order,w:wfound,qd:questsDone,q:quests,ts:tierSeen}))}catch(e){}}
+function loadSaved(){try{return JSON.parse(localStorage.getItem(KEY))}catch(e){return null}}
+
+/* ---------- DOM ---------- */
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+const readingOf=e=>[e.kun,e.on].filter(x=>x&&x!=='—').join(' · ');
+
+function renderHeader(){
+  const t=tier(), p=points();
+  $('rankName').textContent=RANKS[t];
+  if(t<RANKMAX){
+    const lo=TIERS[t], hi=TIERS[t+1];
+    $('nextLine').innerHTML=`<b>${p}</b> / ${hi} points to ${RANKS[t+1]}`;
+    $('barFill').style.width=Math.min(100,(p-lo)/(hi-lo)*100)+'%';
+  } else { $('nextLine').innerHTML=`<b>${p}</b> points · top rank`; $('barFill').style.width='100%'; }
+  $('countsLine').textContent=`${order.length}/${RECIPES.length} kanji · ${wfound.length}/${WORDS.length} words · ${questsDone} quests`;
+  const tw=$('tabW'); tw.disabled=!wordsOpen();
+  tw.innerHTML= wordsOpen()?'Words':`Words<small>at ${RANKS[WORD_TIER]}</small>`;
+}
+
+/* quests */
+function questCandidates(type){
+  const taken=new Set(quests.map(q=>q.id));
+  if(type==='k') return RECIPES.filter(c=>!found.has(c)&&!taken.has(c)&&have(DB[c].a)&&have(DB[c].b)
+    && (c!=='另'||have('刂'))); // 另 is only a stepping stone to 別, so offer it once 刂 is out
+  if(!wordsOpen()) return [];
+  return WORDS.filter(w=>!wset.has(w)&&!taken.has(w)&&[...w].every(have));
+}
+function pickLowTier(list,tierFn){
+  if(!list.length) return null;
+  const m=Math.min(...list.map(tierFn)), low=list.filter(x=>tierFn(x)===m);
+  return low[Math.floor(Math.random()*low.length)];
+}
+const wtier=w=>Math.max(...[...w].map(ch=>DB[ch].kind==='comp'?ktier(ch):DB[ch].t));
+function refillQuests(){
+  quests=quests.filter(q=>q.t==='k'?(!found.has(q.id)&&have(DB[q.id].a)&&have(DB[q.id].b)):(!wset.has(q.id)&&wordsOpen()));
+  if(wordsOpen() && !quests.some(q=>q.t==='w')){const w=pickLowTier(questCandidates('w'),wtier); if(w) quests.push({t:'w',id:w,lv:0})}
+  while(quests.length<3){
+    const c=pickLowTier(questCandidates('k'),ktier);
+    if(c){quests.push({t:'k',id:c,lv:0}); continue}
+    const w=pickLowTier(questCandidates('w'),wtier);
+    if(w){quests.push({t:'w',id:w,lv:0}); continue}
+    break;
+  }
+}
+function maskNote(c){
+  const e=DB[c]; if(!e.note) return '';
+  const hide=new Set([c,e.a,e.b]); return esc([...e.note].map(ch=>hide.has(ch)?'？':ch).join(''));
+}
+function renderQuests(){
+  if(!quests.length){$('quests').innerHTML='<p class="q-empty">No open quests. Everything reachable has been found.</p>';return}
+  $('quests').innerHTML=quests.map((q,i)=>{
+    if(q.t==='k'){
+      const e=DB[q.id];
+      let clue='';
+      if(q.lv>=1) clue+= e.note?`<div class="q-clue">${maskNote(q.id)}</div>`:'';
+      if(q.lv>=2 || (q.lv>=1&&!e.note)) clue+=`<div class="q-clue">One part is <span class="kj">${e.a}</span>.</div>`;
+      const maxed= q.lv>=2 || (q.lv>=1&&!e.note);
+      return `<div class="quest" data-i="${i}">
+        <button class="q-ico" type="button" data-act="op" title="Use the ${OPS[e.op].name} arrangement" aria-label="Use the ${OPS[e.op].name} arrangement">${opIcon(e.op)}</button>
+        <div class="q-body"><div class="q-title"><span class="q-k">Kanji</span>${esc(e.m)}</div><div class="q-sub">${OPS[e.op].name} · ${readingOf(e)}</div>${clue}</div>
+        ${maxed?'<span></span>':`<button class="q-btn" type="button" data-act="clue">${q.lv===0?'Clue':'Show a part'}</button>`}
+      </div>`;
+    }
+    const w=WDB[q.id], ch=[...q.id];
+    let clue='';
+    if(q.lv>=1) clue+=`<div class="q-clue">Starts with <span class="kj">${ch[0]}</span>.</div>`;
+    if(q.lv>=2) clue+=`<div class="q-clue">Then <span class="kj">${ch.slice(1).join(' ')}</span>.</div>`;
+    return `<div class="quest" data-i="${i}">
+      <button class="q-ico" type="button" data-act="word" title="Switch to Words" aria-label="Switch to Words"><span class="wd">語</span></button>
+      <div class="q-body"><div class="q-title"><span class="q-k">Word</span>${esc(w.m)}</div><div class="q-sub">${ch.length} characters · ${w.r}</div>${clue}</div>
+      ${q.lv>=2?'<span></span>':`<button class="q-btn" type="button" data-act="clue">${q.lv===0?'Clue':'More'}</button>`}
+    </div>`;
+  }).join('');
+}
+$('quests').addEventListener('click',e=>{
+  const b=e.target.closest('[data-act]'); if(!b) return;
+  const q=quests[+b.closest('.quest').dataset.i]; if(!q) return;
+  if(b.dataset.act==='clue'){q.lv=Math.min(2,q.lv+1); save(); renderQuests()}
+  if(b.dataset.act==='op'){setMode('k'); op=DB[q.id].op; solved=null; renderBench()}
+  if(b.dataset.act==='word'){setMode('w')}
+});
+
+/* bench */
+function renderOps(){
+  $('ops').innerHTML=OP_ORDER.map(k=>`<button type="button" class="opb" role="radio" data-op="${k}" aria-checked="${k===op}">${opIcon(k)}<span>${OPS[k].name}</span></button>`).join('');
+  $('opSym').innerHTML=opIcon(op);
+  $('opDesc').innerHTML=OPS[op].desc;
+}
+function renderSlots(){
+  [0,1].forEach(i=>{
+    const el=$('slot'+i), c=slots[i];
+    el.classList.toggle('active',i===active);
+    el.classList.toggle('empty',!c);
+    el.querySelector('.g').textContent=c||'？';
+    el.querySelector('.sl').textContent=OPS[op].slots[i];
+    el.setAttribute('aria-label',`${OPS[op].slots[i]} part: ${c?c+' ('+gloss(c)+')':'empty'}`);
+  });
+}
+const MARU='<svg class="maru" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path d="M58 6 C84 8 96 30 94 54 C92 80 70 95 46 94 C20 92 5 72 6 47 C8 22 28 7 52 8 C60 8 66 10 70 13"/></svg>';
+function renderPreview(){
+  const pv=$('preview'), g=OPS[op].geo; let h='';
+  [0,1].forEach(i=>{
+    const [x,y,w,hh]=g[i], c=slots[i];
+    const style=`left:${x*100}%;top:${y*100}%;width:${w*100}%;height:${hh*100}%`;
+    h+= c ? `<div class="region" style="${style}"><span class="pg" style="transform:scale(${w},${hh})">${c}</span></div>`
+          : `<div class="region empty" style="${style}"></div>`;
+  });
+  h+=`<span class="result">${solved||''}</span>`+MARU;
+  pv.innerHTML=h; pv.classList.toggle('solved',!!solved);
+}
+function renderWordBench(){
+  let h='';
+  for(let i=0;i<3;i++){const c=wslots[i]; h+=`<button type="button" class="slot grid-bg wslot ${c?'':'empty'} ${i===wslots.length?'active':''}" data-wi="${i}" aria-label="${c?'Remove '+c:'Empty square'}"><span class="g">${c||'？'}</span></button>`}
+  $('wslots').innerHTML=h;
+  const r=$('wres');
+  if(wsolved){const w=WDB[wsolved]; r.innerHTML=`<span class="ww">${wsolved}</span><span class="wr">${w.r}</span><span class="wm">${esc(w.m)}</span>`+MARU; r.classList.add('solved')}
+  else {r.innerHTML=`<span class="ww">${wslots.join('')||'？'}</span><span class="wr">reading</span><span class="wm">meaning</span>`; r.classList.remove('solved')}
+}
+function renderBench(){
+  $('benchK').hidden=mode!=='k'; $('benchW').hidden=mode!=='w';
+  $('tabK').setAttribute('aria-selected',mode==='k'); $('tabW').setAttribute('aria-selected',mode==='w');
+  $('swap').hidden=mode!=='k';
+  if(mode==='k'){renderOps();renderSlots();renderPreview()} else renderWordBench();
+}
+function setMode(m){ if(m==='w'&&!wordsOpen()) return; mode=m; solved=null; wsolved=null; renderBench(); renderTray() }
+
+/* tray */
+function tile(c,locked){
+  const e=DB[c], cls=['tile',e.kind];
+  if(locked) cls.push('locked');
+  if(!locked && (mode==='k'?slots.includes(c):wslots.includes(c))) cls.push('inslot');
+  if(fresh.has(c)) cls.push('fresh');
+  const dis= locked || (mode==='w' && e.kind==='rad');
+  const a=autoOf(c);
+  return `<button type="button" class="${cls.join(' ')}" data-c="${c}" ${dis?'disabled':''} aria-label="${c}, ${esc(e.m)}${locked?' (locked)':''}">${a?`<span class="tauto" title="Always ${OPS[a[0]].name.toLowerCase()}">${opIcon(a[0])}</span>`:''}<span class="tg">${c}</span><span class="tm">${esc(gloss(c))}</span></button>`;
+}
+function renderTray(){
+  const t=tier();
+  const disc=order.slice().reverse();
+  const rads=PARTS.filter(p=>DB[p].kind==='rad'&&DB[p].t<=t), bases=PARTS.filter(p=>DB[p].kind==='base'&&DB[p].t<=t);
+  const next=t<RANKMAX?PARTS.filter(p=>DB[p].t===t+1):[];
+  let h=`<div class="group"><h3>Your kanji <small>${found.size}</small></h3>${disc.length?`<div class="tiles">${disc.map(c=>tile(c)).join('')}</div>`:'<p class="empty-note">Nothing built yet. Combine two parts above and the result lands here.</p>'}</div>
+    <div class="group"><h3>Radical forms <small>${rads.length}</small></h3><div class="tiles">${rads.map(c=>tile(c)).join('')}</div></div>
+    <div class="group"><h3>Starting characters <small>${bases.length}</small></h3><div class="tiles">${bases.map(c=>tile(c)).join('')}</div></div>`;
+  if(next.length) h+=`<div class="group"><h3>Unlocks at ${RANKS[t+1]} <small>${TIERS[t+1]} points</small></h3><div class="tiles">${next.map(c=>tile(c,true)).join('')}</div></div>`;
+  $('tray').innerHTML=h;
+}
+function setMsg(html,kind){const m=$('msg'); m.className='msg '+(kind||''); m.innerHTML=html}
+function renderAll(){renderHeader();renderQuests();renderBench();renderTray()}
+
+/* ---------- actions ---------- */
+function place(c){
+  if(mode==='w'){
+    if(DB[c].kind==='rad') return;
+    if(wslots.length>=3){setMsg('Words here are at most three characters. Tap a square to remove one.','err');return}
+    wslots.push(c); wsolved=null; setMsg(''); renderWordBench(); renderTray(); return;
+  }
+  solved=null; setMsg('');
+  const a=autoOf(c);
+  if(a){
+    const [o,s]=a, other=1-s, prevOp=op;
+    op=o;
+    if(slots[s]&&slots[s]!==c&&!slots[other]) slots[other]=slots[s];
+    slots[s]=c; active=slots[other]?s:other;
+    if(prevOp!==o||DB[c].kind==='rad') setMsg(`<span class="kj">${c}</span> always takes the ${OPS[o].slots[s].toLowerCase()} position, so ${OPS[o].name} is set.`,'err');
+    renderOps();
+  } else {
+    const i=active; slots[i]=c;
+    active = i===0 ? 1 : (slots[0]?1:0);
+  }
+  renderSlots(); renderPreview(); renderTray();
+}
+function afterDiscovery(item,isWord){
+  const before=tierSeen;
+  let html=`<span class="new">New ${isWord?'word':'kanji'}</span> <span class="kj">${item}</span> ${esc(isWord?WDB[item].r+' · '+WDB[item].m:DB[item].m)}`;
+  const qi=quests.findIndex(q=>q.id===item);
+  if(qi>=0){questsDone++; quests.splice(qi,1); html+=' · <span class="new">Quest complete, +1 bonus point</span>'}
+  const t=tier();
+  if(t>before){
+    const newly=PARTS.filter(p=>DB[p].t>before&&DB[p].t<=t);
+    newly.forEach(p=>fresh.add(p));
+    tierSeen=t;
+    html+=`<span class="unlock">Rank up to <b>${RANKS[t]}</b>. New parts: <span class="kj">${newly.join(' ')}</span>${before<WORD_TIER&&t>=WORD_TIER?'. The <b>Words</b> tab is now open: line up kanji you know to spell vocabulary.':''}</span>`;
+    const r=$('rank'); r.classList.remove('up'); void r.offsetWidth; r.classList.add('up');
+  }
+  refillQuests(); save();
+  setMsg(html,'');
+  renderHeader(); renderQuests(); renderTray();
+  updateGraph();
+}
+function combine(){
+  if(mode==='w') return combineWord();
+  const [a,b]=slots;
+  if(!a||!b){setMsg('Pick two parts first.','err'); return}
+  const hit=byKey[op+'|'+a+'|'+b];
+  if(hit){
+    solved=hit; renderPreview();
+    if(found.has(hit)) setMsg(`Already in your tray: <span class="kj">${hit}</span> ${esc(DB[hit].m)}.`,'');
+    else { found.add(hit); order.push(hit); order.forEach(c=>fresh.delete(c)); fresh.add(hit); afterDiscovery(hit,false) }
+    requestAnimationFrame(()=>showInfo(hit,$('preview').getBoundingClientRect(),true));
+    return;
+  }
+  shake($('preview'));
+  if(byKey[op+'|'+b+'|'+a]) setMsg('Close. These parts fit this way, but in the other order. Try Swap.','err');
+  else if(OP_ORDER.some(k=>byKey[k+'|'+a+'|'+b]||byKey[k+'|'+b+'|'+a])) setMsg('These two do combine, in a different arrangement.','err');
+  else setMsg(`No kanji in this set puts ${a} and ${b} together this way.`,'err');
+}
+function combineWord(){
+  const w=wslots.join('');
+  if(wslots.length<2){setMsg('Words need at least two characters.','err'); return}
+  if(WDB[w]){
+    wsolved=w; renderWordBench();
+    if(wset.has(w)) setMsg(`Already found: <span class="kj">${w}</span> ${WDB[w].r} · ${esc(WDB[w].m)}.`,'');
+    else { wset.add(w); wfound.push(w); afterDiscovery(w,true) }
+    requestAnimationFrame(()=>showInfo('w:'+w,$('wres').getBoundingClientRect(),true));
+    return;
+  }
+  shake($('wres'));
+  const rev=[...wslots].reverse().join('');
+  if(WDB[rev]) setMsg('Those characters make a word in the other order.','err');
+  else if(WORDS.some(x=>x.startsWith(w)&&x.length>w.length)) setMsg('Keep going. A longer word starts like this.','err');
+  else setMsg('That is not a word in this set.','err');
+}
+function shake(el){el.classList.remove('shake'); void el.offsetWidth; el.classList.add('shake')}
+
+$('ops').addEventListener('click',e=>{const b=e.target.closest('.opb'); if(!b) return; op=b.dataset.op; solved=null; renderOps(); renderSlots(); renderPreview()});
+$('ops').addEventListener('keydown',e=>{
+  if(!['ArrowRight','ArrowLeft','ArrowDown','ArrowUp'].includes(e.key)) return;
+  e.preventDefault(); const d=(e.key==='ArrowRight'||e.key==='ArrowDown')?1:-1;
+  op=OP_ORDER[(OP_ORDER.indexOf(op)+d+OP_ORDER.length)%OP_ORDER.length]; solved=null; renderOps(); renderSlots(); renderPreview();
+  $('ops').querySelector(`[data-op="${op}"]`).focus();
+});
+[0,1].forEach(i=>$('slot'+i).addEventListener('click',()=>{
+  if(active===i && slots[i]){slots[i]=null; solved=null}
+  active=i; renderSlots(); renderPreview(); renderTray();
+}));
+$('wslots').addEventListener('click',e=>{const b=e.target.closest('[data-wi]'); if(!b) return; const i=+b.dataset.wi; if(wslots[i]){wslots.splice(i,1); wsolved=null; renderWordBench(); renderTray()}});
+$('tabK').onclick=()=>setMode('k');
+$('tabW').onclick=()=>setMode('w');
+$('combine').onclick=combine;
+$('swap').onclick=()=>{slots=[slots[1],slots[0]]; solved=null; renderSlots(); renderPreview()};
+$('clear').onclick=()=>{ if(mode==='k'){slots=[null,null]; active=0; solved=null} else {wslots=[]; wsolved=null} setMsg(''); renderBench(); renderTray()};
+let resetArm=null;
+$('reset').onclick=()=>{
+  const b=$('reset');
+  if(!resetArm){b.textContent='Click again to reset'; resetArm=setTimeout(()=>{resetArm=null;b.textContent='Reset progress'},3000); return}
+  clearTimeout(resetArm); resetArm=null; b.textContent='Reset progress';
+  order=[]; wfound=[]; found.clear(); wset.clear(); fresh.clear(); questsDone=0; tierSeen=0; quests=[];
+  mode='k'; slots=['日','月']; op='lr'; active=1; wslots=[]; solved=null; wsolved=null;
+  quests=[{t:'k',id:'明',lv:0},{t:'k',id:'休',lv:0},{t:'k',id:'好',lv:0}];
+  save(); hideInfo(true); renderAll(); rebuildGraph(); setMsg('Progress cleared. 日 and 月 are ready: press Combine.','');
+};
+
+/* tray: click places, hover shows card, long-press pins card */
+const tray=$('tray'); let lp=null, lpFired=false, hoverT=null;
+tray.addEventListener('click',e=>{const t=e.target.closest('.tile'); if(!t||t.disabled) return; if(lpFired){lpFired=false;return} fresh.delete(t.dataset.c); place(t.dataset.c)});
+tray.addEventListener('pointerdown',e=>{
+  const t=e.target.closest('.tile'); if(!t||e.pointerType==='mouse') return;
+  lpFired=false; clearTimeout(lp);
+  lp=setTimeout(()=>{lpFired=true; showInfo(t.dataset.c,t.getBoundingClientRect(),true)},450);
+});
+['pointerup','pointercancel','pointerleave'].forEach(ev=>tray.addEventListener(ev,()=>clearTimeout(lp)));
+tray.addEventListener('contextmenu',e=>{if(e.target.closest('.tile')) e.preventDefault()});
+tray.addEventListener('pointerover',e=>{
+  if(e.pointerType!=='mouse') return; const t=e.target.closest('.tile'); if(!t) return;
+  clearTimeout(hoverT); hoverT=setTimeout(()=>showInfo(t.dataset.c,t.getBoundingClientRect(),false),220);
+});
+tray.addEventListener('pointerout',e=>{
+  if(e.pointerType!=='mouse') return; const t=e.target.closest('.tile'); if(!t||t.contains(e.relatedTarget)) return;
+  clearTimeout(hoverT); hideInfo(false);
+});
+
+/* ---------- info card ---------- */
+const info=$('info'); let pinned=false;
+function wordInfoHTML(w){
+  const e=WDB[w], ch=[...w];
+  let h=`<div class="i-head"><div class="i-glyph long">${w}</div><div class="i-main"><div class="i-kind">Word you found</div><div class="i-mean">${esc(e.m)}</div><div class="i-read"><span class="lbl">READ</span><span>${e.r}</span></div></div><button class="i-close" type="button" aria-label="Close">×</button></div>`;
+  h+=`<div class="i-formula">${ch.map(c=>`<span>${c}</span>`).join('<span class="plus">+</span>')}<span class="eqs">=</span><span>${w}</span></div>`;
+  h+=`<div class="i-sec"><h4>Built from</h4><ul class="i-words">${[...new Set(ch)].map(c=>`<li><span class="w">${c}</span><span class="r">${readingOf(DB[c])}</span><span class="g">${esc(DB[c].m)}</span></li>`).join('')}</ul></div>`;
+  return h;
+}
+function infoHTML(id){
+  if(id.startsWith('w:')) return wordInfoHTML(id.slice(2));
+  const c=id, e=DB[c];
+  const locked=e.kind!=='comp'&&e.t>tier();
+  const kind=locked?`Unlocks at ${RANKS[e.t]}`:{base:'Starting character',rad:'Radical form',comp:'Kanji you built'}[e.kind];
+  let read='';
+  if(e.kind==='rad') read=`<span class="lbl">FORM OF</span><span>${e.of}</span><span class="lbl">NAME</span><span>${e.name}</span>`;
+  else read=`<span class="lbl">ON</span><span>${e.on||'—'}</span><span class="lbl">KUN</span><span>${e.kun||'—'}</span>`;
+  let h=`<div class="i-head"><div class="i-glyph">${c}</div><div class="i-main"><div class="i-kind">${kind}</div><div class="i-mean">${esc(e.m)}</div><div class="i-read">${read}</div></div><button class="i-close" type="button" aria-label="Close">×</button></div>`;
+  if(e.op) h+=`<div class="i-formula"><span>${e.a}</span>${opIcon(e.op)}<span>${e.b}</span><span class="eqs">=</span><span>${c}</span><span class="on">${OPS[e.op].name}</span></div>`;
+  const a=autoOf(c);
+  if(a) h+=`<p class="i-snd">Always placed ${OPS[a[0]].slots[a[1]].toLowerCase()} in a ${OPS[a[0]].name.toLowerCase()} arrangement; picking it sets that for you.</p>`;
+  if(e.note) h+=`<p class="i-note">${esc(e.note)}</p>`;
+  if(e.w.length) h+=`<div class="i-sec"><h4>In words</h4><ul class="i-words">${e.w.map(([w,r,g])=>`<li><span class="w">${w}</span><span class="r">${r}</span><span class="g">${esc(g)}</span></li>`).join('')}</ul></div>`;
+  const u=usedIn[c]||[];
+  if(u.length){
+    const f=u.filter(x=>found.has(x)), rest=u.length-f.length;
+    h+=`<div class="i-sec"><h4>Part of ${u.length} kanji here</h4><div class="chips">${f.map(x=>`<button type="button" class="chip" data-c="${x}" title="${esc(DB[x].m)}">${x}</button>`).join('')}${rest?`<span class="chip unk">+${rest} to find</span>`:''}</div></div>`;
+  }
+  const wf=wfound.filter(w=>w.includes(c)), wAll=WORDS.filter(w=>w.includes(c)).length;
+  if(wAll&&wordsOpen()) h+=`<div class="i-sec"><h4>Spells ${wAll} word${wAll>1?'s':''} here</h4><div class="chips">${wf.map(w=>`<button type="button" class="chip wchip" data-c="w:${w}" title="${esc(WDB[w].m)}">${w}</button>`).join('')}${wAll-wf.length?`<span class="chip unk">+${wAll-wf.length} to find</span>`:''}</div></div>`;
+  const fam=soundFam[c];
+  if(fam){const ff=fam.filter(x=>found.has(x)); h+=`<p class="i-snd">As a sound part, <b>${c}</b> lends its reading to ${fam.length} kanji in this set${ff.length?`: ${ff.map(x=>`<b>${x}</b>`).join(' ')}`:''}.</p>`}
+  else if(e.snd && soundFam[e.snd].length>1){
+    const sib=soundFam[e.snd].filter(x=>x!==c);
+    h+=`<p class="i-snd">Sound family of <b>${e.snd}</b>: ${sib.map(x=>found.has(x)?`<b>${x}</b>`:'？').join(' ')}</p>`;
+  }
+  return h;
+}
+function positionInfo(rect){
+  if(innerWidth<640){info.classList.add('sheet'); return}
+  info.classList.remove('sheet');
+  const cw=info.offsetWidth, ch=info.offsetHeight, m=12;
+  let x=rect.right+m; if(x+cw>innerWidth-m) x=rect.left-cw-m; if(x<m) x=Math.max(m,Math.min(innerWidth-cw-m,rect.left));
+  let y=rect.top; if(y+ch>innerHeight-m) y=innerHeight-ch-m; if(y<m) y=m;
+  info.style.left=x+'px'; info.style.top=y+'px';
+}
+function showInfo(id,rect,pin){
+  if(pinned && !pin) return;
+  pinned=!!pin; info.innerHTML=infoHTML(id); info.hidden=false;
+  info.classList.toggle('pinned',pinned);
+  positionInfo(rect);
+}
+function hideInfo(force){ if(pinned&&!force) return; pinned=false; info.hidden=true; info.classList.remove('pinned') }
+info.addEventListener('click',e=>{
+  if(e.target.closest('.i-close')){hideInfo(true); highlight(null); return}
+  const ch=e.target.closest('.chip[data-c]');
+  if(ch){const l=info.style.left,t=info.style.top; showInfo(ch.dataset.c,info.getBoundingClientRect(),true); if(!info.classList.contains('sheet')){info.style.left=l;info.style.top=t} highlight(ch.dataset.c)}
+});
+document.addEventListener('pointerdown',e=>{
+  if(!pinned) return;
+  if(info.contains(e.target)||e.target.closest('.tile')||e.target.closest('.node')||e.target.closest('#combine')) return;
+  hideInfo(true); highlight(null);
+});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){hideInfo(true); highlight(null)}});
+
+/* ---------- graph ---------- */
+const svg=d3.select('#graph'), root=svg.append('g'), gL=root.append('g'), gN=root.append('g');
+const zoom=d3.zoom().scaleExtent([.2,3]).on('zoom',e=>root.attr('transform',e.transform));
+svg.call(zoom).on('dblclick.zoom',null);
+let W=600,H=500, nodes=[], links=[]; const nodeMap=new Map();
+const LAYERS=MAXD+2;
+const yFor=d=>H*(.1+ d*(.8/(LAYERS-1)));
+const sim=d3.forceSimulation()
+  .force('link',d3.forceLink().id(d=>d.id).distance(60).strength(.2))
+  .force('charge',d3.forceManyBody().strength(-130).distanceMax(300))
+  .force('collide',d3.forceCollide(d=>d.kind==='word'?d.w/2+6:25))
+  .force('x',d3.forceX(()=>W/2).strength(.04))
+  .force('y',d3.forceY(d=>yFor(d.depth)).strength(.6))
+  .on('tick',ticked);
+
+function graphSet(){
+  const s=new Set(); const add=c=>{if(s.has(c))return; s.add(c); const e=DB[c]; if(e.op){add(e.a);add(e.b)}};
+  order.forEach(add);
+  if(showWords) wfound.forEach(w=>{s.add('w:'+w); [...w].forEach(add)});
+  return s;
+}
+const halfH=d=>d.kind==='word'?15:19;
+function linkPath(d){
+  const s=d.source,t=d.target, my=(s.y+t.y)/2;
+  return `M${s.x},${s.y+halfH(s)} C${s.x},${my} ${t.x},${my} ${t.x},${t.y-halfH(t)}`;
+}
+function ticked(){
+  gL.selectAll('path').attr('d',linkPath);
+  gN.selectAll('g.node').attr('transform',d=>`translate(${d.x},${d.y})`);
+}
+function rebuildGraph(){
+  const ids=graphSet();
+  $('gempty').hidden=ids.size>0;
+  nodes=[...ids].map(id=>{
+    let n=nodeMap.get(id);
+    if(!n){
+      const isW=id.startsWith('w:');
+      n=isW?{id,kind:'word',depth:LAYERS-1,w:(id.length-2)*19+18}:{id,depth:depth(id),kind:DB[id].kind};
+      const kids=isW?[...id.slice(2)]:(DB[id].op?[DB[id].a,DB[id].b]:[]);
+      const ps=kids.map(k=>nodeMap.get(k)).filter(p=>p&&p.x!=null);
+      n.x= ps.length? d3.mean(ps,p=>p.x)+(Math.random()-.5)*24 : W/2+(Math.random()-.5)*W*.6;
+      n.y= yFor(n.depth)+(Math.random()-.5)*10;
+      nodeMap.set(id,n);
+    }
+    return n;
+  });
+  for(const k of [...nodeMap.keys()]) if(!ids.has(k)) nodeMap.delete(k);
+  const seen=new Set(); links=[];
+  nodes.forEach(n=>{
+    const kids= n.kind==='word'?[...n.id.slice(2)]:(DB[n.id].op?[DB[n.id].a,DB[n.id].b]:[]);
+    kids.forEach(p=>{const k=p+'>'+n.id; if(!seen.has(k)){seen.add(k); links.push({source:p,target:n.id,k,w:n.kind==='word'})}});
+  });
+  gL.selectAll('path').data(links,d=>d.k).join('path').attr('class',d=>'link'+(d.w?' wl':''));
+  const ns=gN.selectAll('g.node').data(nodes,d=>d.id).join(enter=>{
+    const g=enter.append('g').attr('class',d=>'node '+d.kind).attr('tabindex',0).attr('role','button')
+      .attr('aria-label',d=>d.kind==='word'?d.id.slice(2)+', '+WDB[d.id.slice(2)].m:d.id+', '+DB[d.id].m);
+    g.append('rect').attr('class','body')
+      .attr('x',d=>d.kind==='word'?-d.w/2:-19).attr('y',d=>-halfH(d))
+      .attr('width',d=>d.kind==='word'?d.w:38).attr('height',d=>halfH(d)*2).attr('rx',d=>d.kind==='word'?15:6);
+    g.append('text').text(d=>d.kind==='word'?d.id.slice(2):d.id);
+    const b=g.filter(d=>d.kind==='comp').append('g').attr('class','badge').attr('transform','translate(11,11)');
+    b.append('rect').attr('width',15).attr('height',15).attr('rx',3);
+    b.append('svg').attr('x',2).attr('y',2).attr('width',11).attr('height',11).attr('viewBox','0 0 16 16').attr('class','op-ico').html(d=>OPS[DB[d.id].op].icon);
+    return g;
+  });
+  ns.classed('fresh',d=>d.kind==='comp'?fresh.has(d.id):false);
+  ns.on('mouseenter',function(e,d){ if(pinned) return; highlight(d.id); showInfo(d.id,this.getBoundingClientRect(),false)})
+    .on('mouseleave',function(){ if(pinned) return; highlight(null); hideInfo(false)})
+    .on('click',function(e,d){ e.stopPropagation(); highlight(d.id); showInfo(d.id,this.getBoundingClientRect(),true)})
+    .on('keydown',function(e,d){ if(e.key==='Enter'||e.key===' '){e.preventDefault(); highlight(d.id); showInfo(d.id,this.getBoundingClientRect(),true)}})
+    .call(d3.drag().clickDistance(4)
+      .on('start',(e,d)=>{if(!e.active) sim.alphaTarget(.2).restart(); d.fx=d.x; d.fy=d.y})
+      .on('drag',(e,d)=>{d.fx=e.x; d.fy=e.y})
+      .on('end',(e,d)=>{if(!e.active) sim.alphaTarget(0); d.fx=null; d.fy=null}));
+  sim.nodes(nodes); sim.force('link').links(links);
+  sim.alpha(.6).restart();
+}
+function updateGraph(){ rebuildGraph(); setTimeout(()=>fit(true),900) }
+function highlight(id){
+  const G=d3.select('#graph');
+  if(!id||!nodeMap.has(id)){G.classed('hl',false); gN.selectAll('g.node').classed('on',false); gL.selectAll('path').classed('on',false); return}
+  const rel=new Set([id]);
+  if(id.startsWith('w:')) [...id.slice(2)].forEach(c=>rel.add(c));
+  else {
+    const e=DB[id]; if(e.op){rel.add(e.a);rel.add(e.b)}
+    (usedIn[id]||[]).forEach(x=>{if(nodeMap.has(x)) rel.add(x)});
+    wfound.forEach(w=>{if(w.includes(id)&&nodeMap.has('w:'+w)) rel.add('w:'+w)});
+  }
+  G.classed('hl',true);
+  gN.selectAll('g.node').classed('on',d=>rel.has(d.id));
+  gL.selectAll('path').classed('on',d=>(d.target.id===id)||(d.source.id===id));
+}
+function fit(animate){
+  if(!nodes.length){svg.call(zoom.transform,d3.zoomIdentity);return}
+  const xs=nodes.map(n=>n.x), ys=nodes.map(n=>n.y);
+  const x0=Math.min(...xs)-40,x1=Math.max(...xs)+40,y0=Math.min(...ys)-34,y1=Math.max(...ys)+60;
+  const k=Math.min(1.6,Math.max(.2,Math.min(W/(x1-x0),H/(y1-y0))));
+  const t=d3.zoomIdentity.translate(W/2-k*(x0+x1)/2,H/2-k*(y0+y1)/2).scale(k);
+  (animate?svg.transition().duration(600):svg).call(zoom.transform,t);
+}
+$('fit').onclick=()=>fit(true);
+$('wordsToggle').onchange=e=>{showWords=e.target.checked; updateGraph()};
+svg.on('click',()=>{ if(pinned){hideInfo(true); highlight(null)} });
+function resize(){
+  const r=$('graphWrap').getBoundingClientRect(); W=Math.max(200,r.width); H=Math.max(200,r.height);
+  sim.force('x').x(W/2); sim.force('y').y(d=>yFor(d.depth)); sim.alpha(.3).restart();
+}
+new ResizeObserver(()=>resize()).observe($('graphWrap'));
+
+/* ---------- boot ---------- */
+function start(data){
+  data=data||{};
+  const s=(data.d?data:loadSaved())||{};
+  order=(s.d||[]).filter(c=>DB[c]&&DB[c].kind==='comp'); order.forEach(c=>found.add(c));
+  wfound=(s.w||[]).filter(w=>WDB[w]); wfound.forEach(w=>wset.add(w));
+  questsDone=s.qd||0; tierSeen=Math.max(s.ts||0,0);
+  if(tier()>tierSeen) tierSeen=tier();
+  quests=Array.isArray(s.q)?s.q.filter(q=>q&&(q.t==='k'?DB[q.id]:WDB[q.id])):[];
+  const fresh0=!order.length&&!wfound.length;
+  if(fresh0 && !quests.length) quests=[{t:'k',id:'明',lv:0},{t:'k',id:'休',lv:0},{t:'k',id:'好',lv:0}];
+  refillQuests();
+  if(Array.isArray(data.s)) slots=data.s; else if(fresh0) slots=['日','月'];
+  if(data.op&&OPS[data.op]) op=data.op;
+  if(data.m==='w'&&wordsOpen()) mode='w';
+  if(Array.isArray(data.ws)) wslots=data.ws;
+  active=slots[0]&&!slots[1]?1:(slots[0]?1:0);
+  renderAll();
+  setMsg(fresh0?'Your first quest is ready: 日 and 月 are in place side by side. Press Combine.':'Welcome back. Your quests are waiting.','');
+  const r=$('graphWrap').getBoundingClientRect(); W=Math.max(200,r.width); H=Math.max(200,r.height);
+  rebuildGraph(); sim.stop(); for(let i=0;i<220;i++) sim.tick(); ticked(); fit(false); sim.alpha(.05).restart();
+  save();
+}
+try{ window.claude?.hot?.snapshot?.(()=>({d:order,w:wfound,qd:questsDone,q:quests,ts:tierSeen,s:slots,op,m:mode,ws:wslots})) }catch(e){}
+window.claude?.hot?.ready ? window.claude.hot.ready(start) : start(window.claude?.hot?.data ?? {});
+})();
+</script>
+
+</body></html>
