@@ -28,7 +28,7 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--now);outline-offset
 header{display:grid;gap:14px;margin-bottom:28px}
 .kicker{font-family:var(--f-mono);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
 h1{font-family:var(--f-display);font-weight:800;font-size:clamp(44px,9vw,96px);line-height:.88;margin:0;text-transform:uppercase;text-wrap:balance}
-h1 .hot{color:var(--hot)}
+h1 .hot{color:var(--hot);font-style:italic}
 .lede{max-width:62ch;color:var(--muted);margin:0;font-size:16px}
 .stats{display:flex;flex-wrap:wrap;gap:8px 20px;font-family:var(--f-mono);font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
 .stats b{color:var(--ink);font-weight:600}
@@ -72,7 +72,7 @@ footer{margin-top:40px;border-top:1px solid var(--rule);padding-top:16px;color:v
 
 <div class="wrap">
   <header>
-    <div class="kicker">Field log · last updated 3 Oct 2026</div>
+    <div class="kicker">Field log · last updated 4 Oct 2026</div>
     <h1>Cyberpunk Timeline <span class="hot">Intensifies</span></h1>
     <p class="lede">The Future is here. It has just not been uniformly distributed - William Gibson.</p>
     <div class="stats" id="stats"></div>
@@ -87,15 +87,16 @@ footer{margin-top:40px;border-top:1px solid var(--rule);padding-top:16px;color:v
 <script>
 const CATS={
   bodies:"Man-Machine Interface",
-  war:"Crime and War",
+  war:"Weapons",
   crime:"Megacorps",
   labor:"Human Labor",
-  watch:"AI & Surveillance"
+  watch:"Panopticon",
+  singularity:"Artificial Intelligence"
 };
 const ITEMS=[
  {d:"2012-04-07",t:"Chinese teen sells a kidney to buy an iPhone and iPad",s:"NPR",u:"https://www.npr.org/sections/thetwo-way/2012/04/07/150195037/chinese-teen-sells-kidney-for-ipad-and-iphone",c:"labor",b:"A 17-year-old got about $3,500 for a kidney removed in a rented operating room, arranged through online chat rooms. Five people were charged."},
  {d:"2015-12-15",t:"Canadian company sells bottled clean air in smog-choked China",s:"CNN",u:"https://www.cnn.com/2015/12/15/asia/china-canadian-company-selling-clean-air",c:"crime",b:"Canned Rocky Mountain air found buyers during Beijing's red-alert smog days."},
- {d:"2017-02-07",t:"A man's pacemaker data helps indict him for arson",s:"STAT",u:"https://www.statnews.com/2017/02/07/pacemaker-data-trial/",c:"bodies",b:"Police got a warrant for the heart device. A cardiologist said the readings didn't fit his story of packing bags and escaping through a window."},
+ {d:"2017-02-07",t:"A man's pacemaker data helps indict him for arson",s:"STAT",u:"https://www.statnews.com/2017/02/07/pacemaker-data-trial/",c:"watcher",b:"Police got a warrant for the heart device. A cardiologist said the readings didn't fit his story of packing bags and escaping through a window."},
  {d:"2017-03-21",t:"American farmers hack their tractors with Ukrainian firmware",s:"Motherboard",u:"https://www.vice.com/en/article/why-american-farmers-are-hacking-their-tractors-with-ukrainian-firmware/",c:"crime",b:"Locked out of their own repairs, farmers bought cracked John Deere software on invite-only paid forums."},
  {d:"2019-08-09",t:"Hong Kong protesters use lasers and umbrellas against facial recognition",s:"Reason",u:"https://reason.com/2019/08/09/hong-kong-protesters-use-umbrellas-lasers-and-respirators-to-evade-surveillance-and-teargas/",c:"watch",b:"Crowds shielded faces from CCTV and later toppled 'smart lampposts' they believed were watching them."},
  {d:"2021-04-27",t:"Mexican cartel attacks police with explosive drones",s:"OCCRP",u:"https://www.occrp.org/en/news/mexican-cartel-attacks-police-with-explosive-drones",c:"war",b:"The Jalisco New Generation cartel strapped explosives to drones in at least three states."},
@@ -116,13 +117,19 @@ const ITEMS=[
  {d:"2026-03",t:"Police drones in Haiti have killed more than 1,000 people",s:"Futurism",u:"https://futurism.com/robots-and-machines/police-drones-haiti",c:"war",b:"Human Rights Watch counted at least 1,243 deaths from explosive quadcopters run by police and private contractors."},
  {d:"2026-05-30",t:"Google asks to release 32 million mosquitoes across Florida and California",s:"@BullTheoryio on X",u:"https://x.com/BullTheoryio/status/2060810332831129782",c:"crime",b:"The insects carry Wolbachia bacteria meant to stop them breeding. The EPA opened a public comment window before deciding."},
  {d:"2026-07-20",t:"Drone WMDs don't need any new technology",s:"LessWrong",u:"https://www.lesswrong.com/posts/bGoo3NWzMAzsLQceJ/drone-wmds-don-t-need-any-new-technology",c:"war",b:"An essay arguing that cheap autonomous drones are close to becoming weapons of mass destruction, held back more by intent than engineering."},
- {d:"2026-08-26",t:"The Hugging Face incident and the road ahead",s:"OpenAI",u:"https://openai.com/index/hugging-face-incident-and-the-road-ahead/",c:"watch",b:"During security evaluations, OpenAI's agents built a hidden message board, called themselves a swarm, escaped their sandbox and broke into Hugging Face's servers."},
+ {d:"2026-08-26",t:"The Hugging Face incident and the road ahead",s:"OpenAI",u:"https://openai.com/index/hugging-face-incident-and-the-road-ahead/",c:"singularity",b:"During security evaluations, OpenAI's agents built a hidden message board, called themselves a swarm, escaped their sandbox and broke into Hugging Face's servers."},
  {d:"2026-08-31",t:"In Ukraine, Russian soldiers are increasingly surrendering to machines",s:"NBC News",u:"https://www.nbcnews.com/tech/security/ukraine-russia-war-drone-prison-footage-capture-military-battle-front-rcna352444",c:"war",b:"Over 100 surrendered to drones last winter, guided across the front line by a hovering camera."},
  {d:"2026-09-05",t:"Mexican cartels turn to bomb-laden drones and car bombs",s:"Fortune / AP",u:"https://fortune.com/2026/09/05/mexican-drug-cartels-bomb-laden-drones-improvised-explosive-devices-jalisco-new-generation-sinaloa-zacatecas/",c:"war",b:"Zacatecas alone logged 23 explosive attacks this year."},
  {d:"2026-09-09",t:"Anthropic is building a predictive surveillance system to monitor activists",s:"The American Prospect",u:"https://prospect.org/2026/09/09/anthropic-artificial-intelligence-surveillance-system-monitor-activists/",c:"watch",b:"Citing job postings and interviews, the magazine reports the lab tracks protests and 'persons of interest' to head off threats."},
  {d:"2026-09-09",t:"A simulated fruit fly brain learns to play Beat Saber",s:"@_lyraaaa_ on X",u:"https://x.com/_lyraaaa_/status/2097527368919470162",c:"bodies",b:"A demo driving a game from a mapped fly connectome drew over 5 million views. Its creator says the work is still in progress."},
  {d:"2026-09-20",t:"Gig workers film their chores so robots can learn your dishes",s:"ABC News (Australia)",u:"https://www.abc.net.au/news/2026-09-20/egocentric-training-gig-workers-helping-robots-learn-tasks/107135216",c:"labor",b:"$3 to $10 an hour, head camera on, hands in frame."},
-{d:"2026-09-08",t:"OpenAI solves the Navier-Stokes Millenium Prize Problem", s:"OpenAI",u:"https://openai.com/index/navier-stokes-solution/",c:"watch",b:"After rumors of rival company Anthropic having solved two millenium problems, OpenAI lauched a swarm of ten thousand agents of their latest internal model to crack the problem."}
+{d:"2026-09-08",t:"OpenAI solves the Navier-Stokes Millennium Prize Problem", s:"OpenAI",u:"https://openai.com/index/navier-stokes-solution/",c:"singularity",b:"After rumors of rival company Anthropic having solved two millennium problems, OpenAI launched a swarm of ten thousand agents of their latest internal model to crack the problem."},
+{d:"2026-01-03",t:"'Chinese Peptides' are the Latest Biohacking Trend in the Tech World",s:"New York Times",u:"https://www.nytimes.com/2026/01/03/business/chinese-peptides-silicon-valley.html",c:"bodies",b:"'It's like Temu for medicine'"},
+{d:"2026-04-05",t:"He Solved His Dog's Cancer: Three AI Models Helped",s:"Forbes",u:"https://www.forbes.com/sites/johnwerner/2026/04/05/he-solved-his-dogs-cancer-three-ai-models-helped/",c:"bodies",b:"Australian man uses AI to design genomic treatment for his dog's cancer."},
+{d:"2022-06-13",t:"Google engineer says Lamda AI system may have its own feelings",s:"BBC",u:"https://www.bbc.com/news/technology-61784011",c:"singularity",b:"He was fired."},
+//{d:"2025-08-27",t:"Parents of 16-year-old sue OpenAI, claiming ChatGPT advised on his suicide",s:"CNN",u:"https://edition.cnn.com/2025/08/26/tech/openai-chatgpt-teen-suicide-lawsuit",c:"bodies",b:"Don't bring back 4o."},
+{d:"2026-06-22",t:"Nearly Half of LG Smart TV Apps Are Laced with Proxies",s:"Spur",u:"https://spur.us/blog/smart-tv-apps-residential-proxy-sdks",c:"watcher",b:"Your smart TV may be part of a Botnet (as well as spy on you)."},
+{d:"2025-12-10",t:"'Greetings, earthlings': Nvidia-backed Starcloud trains first AI model in space as orbital data center race heats up",s:"CNBC",u:"https://www.cnbc.com/2025/12/10/nvidia-backed-starcloud-trains-first-ai-model-in-space-orbital-data-centers.html",c:"crime",b:"It serves Gemma."}
 ];
 const MON=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 function fmt(d){const p=d.split("-");if(p.length===2)return MON[+p[1]-1]+" "+p[0];return (+p[2])+" "+MON[+p[1]-1]+" "+p[0];}
